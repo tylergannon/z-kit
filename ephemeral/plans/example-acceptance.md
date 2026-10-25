@@ -1,6 +1,6 @@
 # One public example: proposed acceptance
 
-Status: **design only**, 2026-10-25. No `example/` sources, library, generated files, dependency lockfile or passing tests exist yet. The primary [mapping proposal](mapping-contract.md) controls semantics; [feature parity IDs](feature-parity.md) connect these cases to peer source. This describes one growing consumer project at exactly `./example`, used for both adopter documentation and integration acceptance. Focused admission/printer tests stay beside future library code; invalid fixtures may live under that example's test inputs without becoming separate projects.
+Status: **design only**, 2026-10-25. Updated preferred direction: native ?T defaults omittable, with a type-owned per-field required override; no dedicated missing-field wrapper. No `example/` sources, library, generated files, dependency lockfile or passing tests exist yet. The primary [mapping proposal](mapping-contract.md) controls semantics; [feature parity IDs](feature-parity.md) connect these cases to peer source. This describes one growing consumer project at exactly `./example`, used for both adopter documentation and integration acceptance. Focused admission/printer tests stay beside future library code; invalid fixtures may live under that example's test inputs without becoming separate projects.
 
 ## Checkpoint A: primitives and a basic struct
 
@@ -13,29 +13,60 @@ Then extend the same model/project to checkpoint B; do not create another consum
 Native shape sketch, **not a proposed public metadata API or compiled probe**:
 
 ```zig
-const Status = enum { queued, ready };
-const Created = struct { id: u32 };
-const Deleted = struct { reason: []const u8 };
-const Event = union(enum) { created: Created, deleted: Deleted };
+const Status = enum {
+    queued, ready,
+    pub const projection = .{
+        .members = .{ .ready = .{ .description = "Ready to deliver." } },
+    };
+};
+const Created = struct {
+    id: u32,
+    pub const projection = .{};
+};
+const Deleted = struct {
+    reason: []const u8,
+    pub const projection = .{ .fields = .{
+        .reason = .{ .bytes = .utf8_text },
+    } };
+};
+const Event = union(enum) {
+    created: Created, deleted: Deleted,
+    pub const projection = .{ .discriminator = "kind" };
+};
 const PointerEvent = union(enum) {
     created: *const Created,
     deleted: *const Deleted,
+    pub const projection = .{ .discriminator = "kind" };
 };
-const Nickname = union(enum) { absent, present: []const u8 };
 const Envelope = struct {
     display_name: []const u8,
     count: u32,
     active: bool,
     status: Status,
-    nickname: Nickname,
+    nickname: ?[]const u8,
     owner: ?[]const u8,
     labels: []const Status,
     samples: [2]i16,
     event: Event,
+
+    pub const projection = .{
+        .description = "A queued delivery.",
+        .fields = .{
+            .display_name = .{
+                .name = "display-name",
+                .bytes = .utf8_text,
+                .description = "Name shown to the recipient.",
+            },
+            .nickname = .{ .bytes = .utf8_text },
+            .owner = .{ .bytes = .utf8_text, .required = true },
+        },
+    };
 };
 ```
 
-An otherwise equivalent `PointerEnvelope` changes only the native event field to `PointerEvent`. Register both models and payload records. The metadata explicitly identifies Nickname as the absent/present field state; it is not inferred from those tag names. Register both events with discriminator `kind`. Specify `display_name` wire key `display-name`, text interpretation for display name, present nickname, owner and Deleted.reason, and these descriptions: Envelope “A queued delivery.”; display name “Name shown to the recipient.”; Status.ready “Ready to deliver.”. Unknown description/rename keys must reject. Labels are tag-name enum strings, not bytes or numeric backing tags.
+An otherwise equivalent `PointerEnvelope` changes only the native event field to `PointerEvent` and supplies the same type-owned configuration. Both models are selected through the eventual public interface. Native fields remain idiomatic Zig data; the inline namespace constant configures wire/projection behavior without adding per-instance fields. **All configuration names above are illustrative and uncompiled, not a finalized API.** Unknown description/rename keys and a misspelled/missing required configuration constant must reject. Labels are tag-name enum strings, not bytes or numeric backing tags.
+
+Both nickname and owner are native `?[]const u8`. Nickname uses the native optional default (omittable); owner has `.required = true`, meaning required key presence, not forced non-null payload. The same native two-state type therefore has different configured wire domains. Null nickname omits its key; null owner emits an own key containing null. An own property containing undefined is a different JS value and is rejected for both fields. Accessing the omitted nickname may return undefined in JS/TS; that is not an explicit-undefined encoding. No Presence or Nullable wrapper is needed, and the example does not request three-state absent/null/value preservation.
 
 Native producer value:
 
@@ -44,7 +75,7 @@ display_name = "Ada"
 count = 7
 active = true
 status = .ready
-nickname = .absent
+nickname = null  // default optional: omit key
 owner = null
 labels = [.ready, .queued]
 samples = [1, -2]
@@ -129,8 +160,8 @@ The planned commands/step names are interface goals, not commands that currently
 | Case | Required observation | Layer |
 | --- | --- | --- |
 | Missing display-name; owner absent | missing required key at `/display-name`, `/owner` | runtime + TS/JSDoc consumers |
-| display-name number; nickname null; owner undefined | expected text/non-null omittable value/native optional value at exact path | runtime + consumer checks where expressible |
-| Explicit nickname undefined | present undefined rejected; checker behavior tested explicitly in each output | runtime + TS/JSDoc |
+| display-name number; nickname null; owner undefined | expected text/non-null omittable value/required optional value at exact path | runtime + consumer checks where expressible |
+| Explicit nickname undefined | own undefined rejected; distinguish hasOwn from reading an omitted key; checker behavior tested explicitly in each output | runtime + TS/JSDoc |
 | Wrong status or kind literal | invalid enum/tag at `/status`, `/event/kind` | runtime + both foreign consumers |
 | kind created with reason but missing id | selected-payload missing/unknown property; no acceptance through another branch | runtime + both consumers |
 | Extra top-level/payload property | closed-record error identifying offending key; TS fresh-literal diagnostic only approximates runtime closure | runtime + fresh foreign literal |
@@ -141,7 +172,7 @@ The planned commands/step names are interface goals, not commands that currently
 | NaN, infinity, -0, BigInt, sparse array, Date | nonfinite/wrong kind/hole rejected; -0 normalizes to +0 | runtime; devalue parser can represent these |
 | Invalid UTF-8; unpaired JS surrogate | reject invalid native text / unsupported received string, never replacement silently | typed text + runtime boundary |
 | Duplicate input property, unknown tag, malformed devalue reference | reject at parser/typed boundary with useful path/format error; verify parser preserves enough evidence | raw-format and typed tests |
-| Metadata typo, unsafe numeric enum, discriminator collision, untagged/scalar-payload union, omission-plus-null | deterministic admission failure before either file is published | focused negative/compile fixtures |
+| Metadata typo, unsafe numeric enum, discriminator collision, untagged/scalar-payload union, combined absent/null/value acceptance | deterministic admission failure before either file is published | focused negative/compile fixtures |
 | Punctuated key and malicious description text | valid type-checkable declarations, escaped comment delimiters/controls; no source injection | both printers/consumers |
 | Partial output failure | failure reported even if a preceding file was written | publication test, after basic generator exists |
 

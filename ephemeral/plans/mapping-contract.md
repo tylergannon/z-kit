@@ -6,21 +6,21 @@ Read the [feature/test parity map](feature-parity.md), [single-example acceptanc
 
 ## Recommendation
 
-Begin with booleans, explicit integer types, finite floating-point values, explicitly classified UTF-8 text, and ordinary structs. Add only closed enums, dense arrays/slices, the three field states, object pointers, discriminated object unions, and productive named recursion. Both declaration outputs support the same admitted values. Never replace an unsupported shape with `any`, `unknown`, a guessed string conversion, or an unchecked codec hook.
+Begin with booleans, explicit integer types, finite floating-point values, explicitly classified UTF-8 text, and ordinary structs. Add only closed enums, dense arrays/slices, the three field policies, object pointers, discriminated object unions, and productive named recursion. Both declaration outputs support the same admitted values. Never replace an unsupported shape with `any`, `unknown`, a guessed string conversion, or an unchecked codec hook.
 
-The JavaScript value is the contract. Zig storage choices do not change it: `Payload` and `*const Payload` may represent the same object; `?T` is a native Zig optional whose admitted field keeps a required key and adds null; a union's integer tag representation does not choose its wire string. Devalue can represent substantially more than this subset. A protocol capability is not automatic admission to a typed API.
+The JavaScript value is the contract. Zig storage choices do not change it: `Payload` and `*const Payload` may represent the same object; `?T` is a native Zig optional whose metadata chooses a required key with null or an omittable key; a union's integer tag representation does not choose its wire string. Devalue can represent substantially more than this subset. A protocol capability is not automatic admission to a typed API.
 
 The first implementation should prove primitives/basic structs in the public `./example`, then extend that same example through the bounded exchange in [the acceptance plan](example-acceptance.md). JSDoc is part of that acceptance, not an eventual add-on. Swift and other projections remain future consumers of the contract, with their own capability and compiler proof.
 
 ## Authority and evidence boundary
 
-Already agreed direction: independent evolution from Go Polytype; one example project; required keys, native optional values and field omission, with omission combined with null rejected; explicit descriptions because reflection exposes no doc strings; inline or pointer-backed union payloads; native schemas/codecs as library capabilities; generic devalue runtime in the shared Go/Zig repository. Earlier milestone order and metadata spelling were proposals.
+Already agreed direction: independent evolution from Go Polytype; one example project; required keys, native optional values and field omission, with omission combined with null rejected; explicit descriptions because reflection exposes no doc strings; inline or pointer-backed union payloads; native schemas/codecs as library capabilities; generic devalue runtime in the shared Go/Zig repository. The latest user choice is per-field configuration inside the type: plain T is required/non-null; ?T defaults to omission; marking ?T required requires the key and admits null. Earlier milestone order and final metadata spelling remain proposals.
 
-Use Zig’s normal **optional** terminology for `?T`; there is no separate Nullable wrapper, type or abstraction. Field omission is the distinct absent/present state, for which Presence remains only a placeholder.
+Use Zig’s normal **optional** terminology for `?T`; there is no separate Nullable wrapper, type or abstraction. Field omission is a wire policy on an ordinary native optional. The chosen default/override semantics need neither a Presence wrapper nor a Nullable wrapper: ?T is omittable by default, and a per-field required override requires the key while preserving null as a valid payload.
 
 This preserves Zig's enforced distinction between an optional value and its payload: ordinary conditional capture or `orelse` handling yields `T` before payload use. A forced `.?` unwrap is a programmer assertion, equivalent to `orelse unreachable`; it is not a compile-time proof that a runtime value cannot be null. The language checks the optional/payload type distinction, not every programmer assertion. [Z2](mapping-evidence.md).
 
-All choices called “proposed” here remain recommendations for review. In particular the exact numeric domain, byte classification, description carrier, collision policy, and restrictions below are not inherited decisions. [Evidence Z1–Z7 and P1–P12](mapping-evidence.md) identify inspected originals. Zig target: 0.17.0 source `7647adab80dd088f4de3610fd245915a912eb6ad`. Peer Go comparison: `c9ae9678816768776569e1157bd3c4372e1be5c6`; it is newer than the cache's Polytype snapshot.
+All choices called “proposed” here remain recommendations for review. In particular the exact numeric domain, byte classification, collision policy, and other unchosen restrictions below are not inherited decisions; the user has chosen the type-owned carrier direction and required-field default/override semantics. [Evidence Z1–Z8 and P1–P12](mapping-evidence.md) identify inspected originals. Zig target: 0.17.0 source `7647adab80dd088f4de3610fd245915a912eb6ad`. Peer Go comparison: `c9ae9678816768776569e1157bd3c4372e1be5c6`; it is newer than the cache's Polytype snapshot.
 
 ## Closed admission rules
 
@@ -28,16 +28,21 @@ The following is a semantic grammar, not an IR or proposed Zig API:
 
 ```text
 Value       = Bool | Integer | Float | Text | Enum | Record | List | FixedArray
-            | ObjectPointer | NamedReference
-RecordField = Value | ?OptionalOperand | Presence(Value)
-            | Union | Presence(Union) | UnionList
-OptionalOperand = Bool | Integer | Float | Text | Enum | Record
-                | ObjectPointer | NamedReference(to one of these)
+            | ObjectPointer | NamedReference(to Value)
+RecordField = Value | ?Value [default: omittable]
+            | ?NullOperand [configured required]
+            | Union | ?Union [default: omittable] | UnionList
+NullOperand = Bool | Integer | Float | Text | Enum | Record
+            | ObjectPointer | NamedReference(to one of these)
 Union       = tagged union of Record or ObjectPointer payloads
 UnionList   = one direct slice of Union
 ```
 
-`Presence(T)` is a semantic name for an explicit absent/present tagged state carrying non-null `T`. It is not an implemented or selected API. It is recognized before ordinary union admission. Recursively, lists/arrays contain `Value`, not field-state wrappers or unions. Inline anonymous records are a direct-field exception only, not arbitrary Value operands. A record inside a collection may itself contain union fields. Only selected roots and their reachable dependencies are inspected; validate every selected root, including anonymous scalar/collection roots, and every reachable shape before any backend publishes output. Do not silently walk all application declarations.
+The bracketed policies above are metadata on a native `?T` field, not type constructors. Plain `?T` defaults to an omittable key; an illustrative per-field `.required = true` override requires key presence and emits null for native null. This does not force unwrap or change ?T into T. Both retain Zig's ordinary null/value representation.
+
+A native optional has exactly null/value states. Mapping native null to wire null or to a missing property is lossless within the selected two-state wire domain. Mapping absent, explicit null and value as three distinct wire states into the same `?T` is not lossless and is outside this proposal. The user has not requested that three-state capability. Metadata selects behavior; no wrapper is required merely to choose it.
+
+Recursively, lists/arrays contain `Value`, not native optional elements or unions. Inline anonymous records are a direct-field exception only, not arbitrary Value operands. A record inside a collection may itself contain union fields. Only selected roots and their reachable dependencies are inspected; validate every selected root, including anonymous scalar/collection roots, and every reachable shape before any backend publishes output. Do not silently walk all application declarations.
 
 | Native input | Admitted meaning and limits | JS value / shared foreign type |
 | --- | --- | --- |
@@ -51,14 +56,14 @@ UnionList   = one direct slice of Union
 | `[]T`, `[]const T` | Dense ordered non-null list; byte operands need explicit classification | array / `Array<T>` |
 | `[N]T`, including `N = 0` | Exact native/wire length; byte arrays are numeric arrays unless explicitly given a future distinct mapping | array / `Array<T>` |
 | `*T`, `*const T` where T is a named admitted record | Non-null indirection to the same object value; ownership below | payload type, no added `null` |
-| `?T` as a direct record field | Native Zig optional; required key, null or admitted optional operand; no nested optional | `T | null`, required property |
-| Explicit absent/present state as a direct field | Omit absent key; present payload must be non-null | optional property `key?: T` |
-| `union(enum)` / union with exhaustive enum tag | Direct field, absent/present field, or direct one-dimensional union slice; named record or object-pointer payloads only | discriminated object union |
+| `?T` direct field, configured required | Native null emits null; missing key rejects; restricted NullOperand | `T \| null`, required property |
+| `?T` direct field, default omittable | Native null omits key; absent key decodes to null; explicit wire null rejects | optional property `key?: T` |
+| `union(enum)` / union with exhaustive enum tag | Direct field, omittable native optional, or direct one-dimensional union slice; named record or object-pointer payloads only | discriminated object union |
 | Named recursive record references | Finite, productive type graph; finite acyclic values | named references |
 
 Every slice whose element type is u8 (including aliases) must explicitly choose `text` or `numeric_list`; neither constness nor a type alias selects semantics. `numeric_list` means dense numbers in 0…255, not base64 or `Uint8Array`. Text mode accepts only `u8` elements. This deliberately differs from Go's blanket byte-slice refusal and avoids confusing Zig strings with binary transport. String literals assigned to text fields use ordinary Zig coercion; arbitrary sentinel/many-item pointer roots are not inferred to be strings. Enum slices retain their registered enum mapping even when their tag type is u8; an enum is not implicitly a byte. No binary mode is admitted yet.
 
-Named pointer/collection roots are allowed where this grammar permits them; bare union roots and wrappers at roots are refused initially. Anonymous records under pointers/collections or at roots are refused for the initial contract, matching the peer typed-codec restriction rather than designing unstable external identities. A later extension needs a named acceptance case, not a permissive fallback. Zig aliases share type identity; alias names do not create independent wire contracts. Reusing one native type with a different wire mapping requires an explicit, separately identified registration, not a printer-local override.
+Named pointer/collection roots are allowed where this grammar permits them; bare union roots and native optional roots are refused initially. Anonymous records under pointers/collections or at roots are refused for the initial contract, matching the peer typed-codec restriction rather than designing unstable external identities. A later extension needs a named acceptance case, not a permissive fallback. Zig aliases share type identity; alias names do not create independent wire contracts. A type-owned configuration supplies one shared mapping across its uses; no printer-local override is allowed. A future third-party/multiple-mapping facility would need explicit identity and conflict rules.
 
 ## Numeric policy: values, not just declarations
 
@@ -74,23 +79,52 @@ This is stricter than peer Go typed devalue, which converts all numeric kinds to
 
 ## Structs, native optionals, omission, names, and descriptions
 
-| State | Native semantic representation | Accepted JS property | Rejected |
-| --- | --- | --- | --- |
-| Required non-null | ordinary admitted field, including a non-null pointer | own key with value | absent, null, undefined |
-| Native Zig optional | direct `?T`; required wire key | own key with value or null | absent, undefined |
-| Omittable non-null | explicit absent/present state | absent key or own key with value | explicit null or undefined |
+| Field policy | Native representation | Encoding native null | Decoding missing / null / undefined | Foreign property |
+| --- | --- | --- | --- | --- |
+| Required non-null | ordinary admitted T | impossible for valid T | reject / reject / reject | `key: T` |
+| Configured required optional | ordinary Zig optional `?T`, `.required = true` | emit own key with null | reject / native null / reject | `key: T \| null` |
+| Default optional | ordinary Zig optional `?T` | omit the key | native null / reject / reject | `key?: T` |
 
-Reject a Presence payload of `?T` (omission plus null), nested `??T`, nested Presence, `?` applied to arrays/slices/unions, collection elements that carry `?` or Presence, and optional scalar pointers. Native optional object pointers are allowed as direct `?*T` / `?*const T`: null is carried by `?`, not by the pointer. These restrictions preserve the peer's narrow value domain; plain text is a scalar despite its Zig byte-slice storage. Do not use a struct default, zero value, empty string/list, `undefined`, pointer validity, or a metadata flag alone to manufacture absence. Empty lists encode as `[]`, never null.
+A JS object with no key and an object with an own key whose value is `undefined` are distinct. Reading an omitted optional property in JS/TS yields undefined; that does **not** mean the encoder emitted an undefined property. **Proposed initial profile: never encode explicit undefined and reject it on decode, in both field policies.** Ordinary JSON has no undefined value. An eventual devalue-only explicit-undefined profile would need its own exact mapping and proof; it is not silently enabled by devalue's sentinel support.
+
+Reject combined omit-and-null wire acceptance, nested `??T`, native optional collection elements and optional scalar pointers. For a configured required optional, arrays/slices/unions remain refused in this restricted contract; a default omittable optional may carry lists/arrays and direct object unions as non-null present values, just as the prior Go omission wrapper allowed them. Native optional object pointers `?*T` / `?*const T` may use either required-key setting: the optional carries null, while a non-null pointer is ordinary object indirection. Text is a scalar despite its byte-slice storage. Field initializer defaults do not override these rules; false, zero, empty text and empty lists stay present. This supersedes the earlier proposal requiring an absent/present wrapper and forbidding metadata-selected omission.
+
+Later schema derives from the same categories: plain T appears in required with no null alternative; default ?T is excluded from required and its present value excludes null; configured required ?T appears in required and allows null. No separate nullable boolean is needed. Configuration cannot invent a third native state, use a zero/empty sentinel to omit a plain T, or turn required=true into a forced unwrap.
 
 All runtime fields participate; comptime fields, tuple structs, `.extern`/`.packed` containers and native-only fields require a refusal in this initial contract. Use a separate application DTO rather than silently omit state. Declarations in the type namespace are not instance fields. Duplicate effective wire keys reject admission, with both native paths in the diagnostic. Preserve declared field order as metadata; JS enumeration of integer-like keys follows JS rules, so object order is not semantic equality.
 
-Proposed metadata is a validated comptime registration supplied alongside an explicit root/type, with entries keyed by native field/tag names. It carries wire names, descriptions (type/field/member/variant), byte interpretation, enum mode/labels, union discriminator/tags, and target integer policy. Default field wire name is the native field name; default enum/union label is the native tag name. Wire labels are UTF-8 strings, including empty/punctuated keys and empty variant tags; the discriminator key must be nonempty. No automatic casing/inflection. Unknown keys, duplicate entries, conflicting mappings, invalid UTF-8, or incompatible options fail admission. Explicit output aliases handle stable public names and collisions; expose the emitted native-to-foreign name map to callers. Native compiler names are not themselves a promised persistent identity.
+**Preferred metadata location:** a public comptime-known namespace constant inside the native struct. Field declarations remain ordinary native data; the constant selects per-field projection/transport behavior. A plain T is required/non-null by default; a ?T is omittable unless configured required. This is an illustrative spelling, not a finalized API or compiled fixture:
 
-Recommend optional, partial descriptions with unknown-key rejection. An external comptime metadata table keeps third-party native types usable and avoids wrapping every field. A type-owned public metadata declaration can later be sugar for the same registration; source-comment extraction is an alternative only if a real adoption need justifies parsing and source association. Reflection's field/type/enum/union metadata contains no doc strings or automatic field source spans. [Z1–Z3](mapping-evidence.md) establish the available mechanism. Do not claim comments or discarded type-expression arguments survive reflection. Caller-supplied registration locations may enrich diagnostics, but paths must work without them.
+```zig
+const Profile = struct {
+    display_name: []const u8,
+    nickname: ?[]const u8,
+    owner: ?[]const u8,
+
+    pub const projection = .{
+        .description = "A delivery profile.",
+        .fields = .{
+            .display_name = .{
+                .name = "display-name",
+                .bytes = .utf8_text,
+                .description = "Name shown to the recipient.",
+            },
+            .nickname = .{ .bytes = .utf8_text },
+            .owner = .{ .bytes = .utf8_text, .required = true },
+        },
+    };
+};
+```
+
+Here nickname uses the ordinary ?T default: native `nickname = null` omits nickname. Owner is configured required: native `owner = null` emits owner:null. Non-null values of both fields emit text. The same rule feeds codec, TS, JSDoc and later schema; JSON Schema's representation follows this decision rather than defining native types.
+
+Read the known public declaration through comptime type/namespace reflection and validate every key against reflected fields/tags. It carries wire names, descriptions (type/field/member/variant), byte interpretation, enum mode/labels, union discriminator/tags, the per-field required override and target integer policy. Default wire name/tag label is the native field/tag name. Plain T is required/non-null; ?T is omittable by default; `.required = true` on ?T requires key presence while still allowing null. Wire labels are UTF-8 strings, including empty/punctuated keys and empty variant tags; discriminator key must be nonempty. No automatic casing/inflection. Unknown keys, duplicate entries, conflicting options, `.required = false` or another omission request on non-optional T, invalid UTF-8, or incompatible options reject. Each named record must opt in with the recognized public constant (an empty .{} is sufficient if no per-field options are needed); a selected record lacking it must diagnose rather than fall back after a misspelled declaration. Explicit aliases/name allocation expose the native-to-foreign name map; native compiler names are not a promised persistent identity.
+
+Recommend partial descriptions with checked keys. Reflection provides public declarations separately from instance fields, but no doc strings or automatic field spans. A namespace const adds no per-instance struct field/storage. It need not retain every description byte in every binary; equally, there is no universal disappearance guarantee: specialized runtime behavior, runtime-accessible schemas/docs and referenced constants may retain data they need. [Z1–Z3, Z8](mapping-evidence.md) support these distinctions. Source-comment extraction remains a separate possible feature, not the preferred path. An external override for third-party types is an open extension only if needed; it is no longer the primary authoring interface. Caller-supplied locations may enrich diagnostics; native/wire paths must work without them.
 
 ## Enums and tagged unions
 
-Use native exhaustive enums, not marker methods. Default labels are tag names; explicit label overrides must be unique. Numeric mode uses reflected backing values, native bounds, and the safe-integer policy; it does not call arbitrary formatting methods. No nonexhaustive enum, duplicate label, mixed numeric/string mode, or unknown runtime member is admitted. Zig does not need Go's alias-value canonicalization or direct-owner restriction for integer-name enums: a registered enum has one mapping across its uses. Changing its field mapping requires a new explicit registration identity. Enum descriptions follow the semantic model into both printers.
+Use native exhaustive enums, not marker methods. Default labels are tag names; explicit label overrides must be unique. Numeric mode uses reflected backing values, native bounds, and the safe-integer policy; it does not call arbitrary formatting methods. No nonexhaustive enum, duplicate label, mixed numeric/string mode, or unknown runtime member is admitted. Zig does not need Go's alias-value canonicalization or direct-owner restriction for integer-name enums: a configured enum has one mapping across its uses. Per-field alternate enum contracts are deferred with the external-override question; printers cannot change the configured mapping. Enum descriptions follow the semantic model into both printers.
 
 Use native tagged unions with object payloads. Tag names select labels unless explicitly overridden; default discriminator key is `"type"`. Every wire variant is a plain object containing that required literal key plus the payload's wire fields. Both `created: Created` and `created: *const Created` with the same tags/metadata project to `{ type: "created", ...CreatedFields }`. No address, pointer wrapper or integer tag is serialized. Permit mixed inline and pointer payload choices within a union. Only the active payload is traversed.
 
@@ -100,7 +134,7 @@ An ordinary inline union reserves its largest inline payload with tag/alignment 
 
 ## References, ownership, and typed transport
 
-Allow named recursive records through pointers/lists and admitted field states when the graph is productive and has finite inhabitants. Reject unresolved references and nonproductive alias loops before printing. Detect recursion by identity and active traversal, not an arbitrary number of repeated type expansions. Runtime cycles are a different issue: the initial typed value domain is acyclic. Reject an ancestor back-edge with its value path on encode/decode; repeated shared subobjects on different non-active paths may be copied and do not promise identity preservation. Devalue runtime cycle/identity support does not expand this contract.
+Allow named recursive records through pointers/lists and admitted field policies when the graph is productive and has finite inhabitants. Reject unresolved references and nonproductive alias loops before printing. Detect recursion by identity and active traversal, not an arbitrary number of repeated type expansions. Runtime cycles are a different issue: the initial typed value domain is acyclic. Reject an ancestor back-edge with its value path on encode/decode; repeated shared subobjects on different non-active paths may be copied and do not promise identity preservation. Devalue runtime cycle/identity support does not expand this contract.
 
 Encoding borrows native values for the call. All pointers/slices/text must be valid and remain stable while read; the library cannot validate arbitrary dangling native pointers. No native allocation is required just because an application uses an inline union; caller-owned stack, arena or heap payloads are all possible when lifetimes are valid. Creating a transport graph or output bytes can separately require allocation.
 
@@ -129,7 +163,7 @@ Keep punctuation/Unicode/empty keys supported through quoting; sanitize descript
 
 ## Refusal and diagnostic contract
 
-Reject `comptime_int`/`comptime_float` roots, widths beyond 64 bits, `f16`/`f80`/`f128`, `type`, bare `null`/`undefined`, `void`/`noreturn`, error sets/unions, functions, opaque/frame/vector types, arbitrary pointer forms (`[*]`, C, sentinel, allowzero, volatile, non-default address space), pointer-to-scalar/collection/pointer, unclassified bytes, maps/sets and implementation containers, custom serializers, provided external schema holes, and every composition not explicitly enumerated above. Types such as ArrayList/HashMap must not accidentally become records by reflection: require explicit record registration for every named record in the reachable model, including dependencies; do not implicitly register a container merely because it is structurally a struct; applications supply API DTOs using slices/records. Unknown future reflection kinds fail closed.
+Reject `comptime_int`/`comptime_float` roots, widths beyond 64 bits, `f16`/`f80`/`f128`, `type`, bare `null`/`undefined`, `void`/`noreturn`, error sets/unions, functions, opaque/frame/vector types, arbitrary pointer forms (`[*]`, C, sentinel, allowzero, volatile, non-default address space), pointer-to-scalar/collection/pointer, unclassified bytes, maps/sets and implementation containers, custom serializers, provided external schema holes, and every composition not explicitly enumerated above. Types such as ArrayList/HashMap must not accidentally become records by reflection: require the explicit type-owned configuration opt-in for every named record in the reachable model, including dependencies; do not implicitly register a container merely because it is structurally a struct; applications supply API DTOs using slices/records. Unknown future reflection kinds fail closed.
 
 | Refused category | Reason and author remedy |
 | --- | --- |
@@ -147,24 +181,25 @@ Examples (wording illustrative; category and meaning are acceptance targets):
 
 ```text
 unclassified_bytes: Envelope.display_name [wire "display-name"]: []const u8 needs text or numeric_list metadata
-omission_and_null: Envelope.nickname: absent/present payload cannot be ?T; choose an omittable field or a native optional
+omission_and_null: Envelope.nickname: one ?T field cannot preserve absent, null and value distinctly; choose default omission or configure the key required
 integer_precision: /count: 9007199254740992 exceeds the JavaScript safe-integer domain
 enum_precision: Status.huge: numeric label 9007199254740993 is outside the shared number domain
 discriminator_collision: Envelope.event.created.type: wire key "type" is reserved; rename it or change the discriminator
 unsupported_kind: Envelope.callback: function values have no admitted wire representation; use a separate DTO
-unsupported_composition: Envelope.labels: ?[]const Status is not an admitted native optional operand
+unsupported_composition: Envelope.labels: required ?[]const Status is outside the null operand subset; use default omission or a non-optional required list
 ```
 
 Descriptions and both declaration outputs must fail together for invalid shared metadata. Validate/render all requested artifacts before publication. Later filesystem failure may still leave earlier completed writes; report it as failure plus actual mutations, not generation success. Preserve equal output bytes/mtimes, repair missing or damaged generated output, and protect application-owned files. Semantic fingerprints may later skip projection, not necessarily reflection/lowering; include dependencies, descriptions, target policy, mapping version and backend/options. No custom native compilation cache is proposed.
 
-## Review decisions and delivery order
+## Chosen direction, remaining review, and delivery order
 
-| Recommendation to accept | Why / cost |
+| Chosen direction or remaining recommendation | Why / cost |
 | --- | --- |
 | Safe integers; exact f32 decode; finite floats; normalize signed zero | One reproducible JS value domain; stricter than Go and may require application rounding or different DTO types |
 | Explicit text/numeric-list bytes | No guessing binary/text; more metadata at byte fields |
-| Three direct field states; retain narrow native-optional/union composition rules | Small state space; optional lists and free nested unions remain intentionally refused |
-| Explicit comptime metadata, partial docs, checked keys | No parser dependency or fictional reflection docs; spelling still open |
+| Chosen: native ?T defaults omittable; per-field required override emits null | Key presence is separate from native payload; no forced unwrap, wrapper or third state |
+| Proposed: retain narrow union/composition restrictions and refuse explicit undefined | Small explicit domain; no three distinct absent/null/value states on one field |
+| Type-owned public comptime constant, partial docs, checked keys | Native declarations stay idiomatic; no per-instance metadata fields; spelling still open |
 | Reserved discriminator and owned decode results | Prevent field replacement and hidden lifetimes; allocation tests needed for pointer variants |
 | TS and JSDoc together in the first acceptance | Both are supported products of one semantic contract; printer details remain separate |
 

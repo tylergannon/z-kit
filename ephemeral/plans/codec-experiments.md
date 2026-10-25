@@ -2,7 +2,7 @@
 
 Status: **deferred, unexecuted**. The [mapping proposal](mapping-contract.md) is now the primary next task, including both TypeScript and JavaScript with JSDoc. Resolve the shared value/admission semantics before comparing codec implementation mechanisms. This document preserves the earlier architecture discussion and comparison; it accepts no exact API, representation, performance target, or implementation milestone. Keep the separate Type Projector repository as the workspace for now; merging it elsewhere remains possible later.
 
-Terminology: below, historical “nullable” means a native Zig optional `?T` with a required wire key and possible null value. No separate Nullable wrapper/type is proposed. Historical “optional” field omission means the distinct absent/present state, whose public spelling remains open. The current mapping proposal uses Zig's own optional terminology.
+Terminology: the current preferred proposal uses ordinary native Zig optionals `?T` plus a type-owned comptime constant carrying per-field required overrides: ?T defaults omittable; required ?T emits null for native null. There is no separate Nullable or Presence wrapper. The same two native states map either to required key with value/null, or to omitted key/non-null value; own undefined is rejected. Exact metadata spelling remains open. The comparison below must use these current semantics when eventually executed.
 
 ## Direction and the question to resolve
 
@@ -28,10 +28,10 @@ Use the same representative native types, metadata, literal expected JSON, and i
 | Field policy | Valid JSON cases | Rejection cases |
 | --- | --- | --- |
 | Required non-null | Key with a valid value | Missing key, explicit `null`, wrong kind |
-| Required nullable | Key with a valid value or `null` | Missing key, wrong kind |
-| Optional non-null | Absent key or key with a valid value | Explicit `null`, wrong kind |
+| Native optional configured required | Key with a valid value or `null` | Missing key, explicit undefined, wrong kind |
+| Native optional (default omittable) | Absent key or key with a valid value | Explicit `null` or undefined, wrong kind |
 
-Optional-plus-nullable was rejected in prior direction; require an admission diagnostic for that combination. Also exercise unknown and duplicate keys, invalid enum/tag values, malformed variant payloads, and an invalid nested value with a useful field path. Assert literal encoding and successful native decoding against independently stated expectations; round trips alone can hide matching mistakes.
+Three distinct wire states (absent/null/value) on one field remain outside the proposed contract; native ?T has only two states, so require an admission diagnostic for a policy requesting that combination. Also exercise unknown and duplicate keys, invalid enum/tag values, malformed variant payloads, and an invalid nested value with a useful field path. Assert literal encoding and successful native decoding against independently stated expectations; round trips alone can hide matching mistakes.
 
 Explicitly consider productive recursive types and allocator/lifetime behavior. After the first slice, use one finite recursive value to expose representation/specialization issues; distinguish recursive types from cyclic runtime graphs. Record any deferred capability rather than claiming coverage. For allocated decoding, account for borrowed versus owned strings, input-buffer lifetime, successful-result cleanup, and cleanup on partial failure. Do not build an exhaustive serializer before learning from the small comparison.
 
