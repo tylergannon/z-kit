@@ -1,0 +1,143 @@
+{
+  "compiler": "0.17.0",
+  "compiler_origin": "local verified release archive",
+  "compiler_archive_sha256": "b607e9b9234790a008116ae5bdb71c6243b84b9fb42a53a9e70fde41c06c536a",
+  "source_pin": "7647adab80dd088f4de3610fd245915a912eb6ad",
+  "scope": "Configuration type synthesis, discovery and diagnostics; no mapping/codec/backend implementation.",
+  "positive_tests": 13,
+  "module_tests": 1,
+  "source_sha256": {
+    "array_alternative.zig": "1960a9236929f0d256ec6bfcb6116462aea464d6d0804a25b9a950edd2f623bd",
+    "build.zig": "1288fd74275a15af7ac2b3bf62588701387a2363b962b8e3fd6fcff395b5211b",
+    "external.zig": "17a41134565d50485058315d83066126513787b606c9433df49fd670393bf6ca",
+    "module_consumer.zig": "d960a3181f670b6ac02153c1b1871a563122904d73f0a3b62c53d05bbe4060b4",
+    "module_model.zig": "b28857397158f160a5c7df95dfd5d9582e5102aa513f47fe4ed679aa8c6f46ee",
+    "negative_array_duplicate.zig": "3ca977c864b28a30b5bb3fc4aa814ceb1a17cd63dc4326c71a28ebb8ad524812",
+    "negative_array_field.zig": "465ae2a69c86784c198979a5655d5851d2d21d2eca64109ed88da326f69c143e",
+    "negative_inferred_literal.zig": "c71b739aa0933e3ded5138721fd73df85c74fa1f430c89b9a07313509d00ff00",
+    "negative_namespace_collision.zig": "13573e75c0ea4107f0397dae59c2bc7c84807a346e2391e8c2c5dc9d651523c0",
+    "negative_nonoptional.zig": "441b0e8005a070656a73f5a1830165059bbd14c7076cf020564207872189529b",
+    "negative_nonstruct.zig": "320e914b70b6b0f370d14297bff61d2100edd5c2746acde17ae2f52cbc1c94ce",
+    "negative_unknown_field.zig": "7c7f192b2996f21c0180a877d7a45ca1b8fb4bd05d915737e1040690a031ca4c",
+    "negative_unknown_option.zig": "5ffc48691de6df16bf80a26b67a2f47019d35ae81964ea0dfe056513dba3a137",
+    "negative_wrong_owner.zig": "27f8c74d272305e367174c76e4e5df9512605e5c95e06fffa4c6fc9c94998d96",
+    "negative_wrong_value.zig": "07025147736001325fc9558d6ef3edfeaaa9a93480f121549799067ee9c3ad67",
+    "projector.zig": "cf1d8ad1a0452ddd3512f574e1e650d382a0122faeb868ebbd238e5335cced19",
+    "shape_test.zig": "a29a81749146a18868a55593cbd23bba765dc2c29bb6907c8a3045bfe4e65b58",
+    "run.py": "4ddf129d12033613a6cfe067a0da968d3efbdf573813f0c94e7a2af264890d27"
+  },
+  "cases": [
+    {
+      "source": "shape_test.zig",
+      "expected": "success",
+      "exit_code": 0,
+      "expected_fragments": [
+        "All 13 tests passed."
+      ],
+      "passed": true
+    },
+    {
+      "source": "negative_unknown_field.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "no field named 'owenr'"
+      ],
+      "passed": true
+    },
+    {
+      "source": "negative_unknown_option.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "no field named 'requried'"
+      ],
+      "passed": true
+    },
+    {
+      "source": "negative_wrong_value.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "expected type '?bool'"
+      ],
+      "passed": true
+    },
+    {
+      "source": "negative_nonoptional.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "required override requires an optional field"
+      ],
+      "passed": true
+    },
+    {
+      "source": "negative_wrong_owner.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "expected type 'projector.Projection",
+        "found 'projector.Projection"
+      ],
+      "passed": true
+    },
+    {
+      "source": "negative_nonstruct.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "Projection expects a struct type"
+      ],
+      "passed": true
+    },
+    {
+      "source": "negative_array_duplicate.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "duplicate field entry: owner"
+      ],
+      "passed": true
+    },
+    {
+      "source": "negative_array_field.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "has no member named 'owenr'"
+      ],
+      "passed": true
+    },
+    {
+      "source": "negative_inferred_literal.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "expected type 'projector.Projection",
+        "projection__struct_"
+      ],
+      "passed": true
+    },
+    {
+      "source": "negative_namespace_collision.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "duplicate struct member name 'projection'"
+      ],
+      "passed": true
+    },
+    {
+      "source": "build.zig",
+      "expected": "module integration success",
+      "exit_code": 0,
+      "expected_fragments": [
+        "3/3 steps succeeded"
+      ],
+      "execution": "cached",
+      "passed": true
+    }
+  ],
+  "passed": true
+}

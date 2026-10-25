@@ -4,9 +4,11 @@ Type Projector is a planned Zig library for projecting Zig types into schemas, c
 
 It will evolve independently of Go Polytype. Architecture, public APIs, and implementation milestones are still being planned.
 
-This repository currently contains project documentation only. There is no implemented library, install procedure, or usage API yet.
+This repository currently contains project documentation and isolated research experiments. There is no implemented library, install procedure, or usage API yet.
 
 Start with the [Zig → JavaScript build brief](ephemeral/plans/mapping-contract.md): the mapping, native optional defaults, configuration example, and first implementation steps for both TypeScript and JavaScript/JSDoc. Supporting research and the larger example plan are optional references, not extra first-delivery gates.
+
+The [typed configuration experiment](ephemeral/projection-shape-lab/README.md) demonstrates nested anonymous records, imported types and recursion with a pinned compiler. The [brief delta review](ephemeral/plans/mapping-delta-review.md) identifies a few decisions to resolve before the affected implementation slices.
 
 The [JSON codec mechanism experiment](ephemeral/plans/codec-experiments.md) is deferred until the mapping and literal acceptance cases can hold both approaches to the same semantics.
 
