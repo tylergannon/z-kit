@@ -46,7 +46,7 @@ const Envelope = struct {
     nickname: ?[]const u8,
     owner: ?[]const u8,
     labels: []const Status,
-    samples: [2]i16,
+    samples: []const i16,
     event: Event,
 
     pub const projection = .{
@@ -65,6 +65,10 @@ const Envelope = struct {
 ```
 
 An otherwise equivalent `PointerEnvelope` changes only the native event field to `PointerEvent` and supplies the same type-owned configuration. Both models are selected through the eventual public interface. Native fields remain idiomatic Zig data; the inline namespace constant configures wire/projection behavior without adding per-instance fields. **All configuration names above are illustrative and uncompiled, not a finalized API.** Unknown description/rename keys and a misspelled/missing required configuration constant must reject. Labels are tag-name enum strings, not bytes or numeric backing tags.
+
+Samples uses an ordinary variable-length slice so this first exchange does not require fixed-array or schema-dialect proof. The contract retains fixed arrays; when supported, a separate focused `[2]i16` case must accept exactly two elements and reject other lengths. Deferring schema constraints does not relax native decoding. Array bounds remain a planned supported schema capability; the [modern general dialect](mapping-contract.md#planned-schema-capability-and-post-release-general-dialect) is post-initial-release work. Neither backend is implemented here.
+
+Future schema acceptance for unsigned count/id must assert `type: "integer"` and explicit `minimum: 0`, and reject a negative value; any profile unable to carry that mandatory bound must report/refuse it. This adds no numeric-design work or backend to checkpoint B.
 
 Both nickname and owner are native `?[]const u8`. Nickname uses the native optional default (omittable); owner has `.required = true`, meaning required key presence, not forced non-null payload. The same native two-state type therefore has different configured wire domains. Null nickname omits its key; null owner emits an own key containing null. An own property containing undefined is a different JS value and is rejected for both fields. Accessing the omitted nickname may return undefined in JS/TS; that is not an explicit-undefined encoding. No Presence or Nullable wrapper is needed, and the example does not request three-state absent/null/value preservation.
 
@@ -165,7 +169,7 @@ The planned commands/step names are interface goals, not commands that currently
 | Wrong status or kind literal | invalid enum/tag at `/status`, `/event/kind` | runtime + both foreign consumers |
 | kind created with reason but missing id | selected-payload missing/unknown property; no acceptance through another branch | runtime + both consumers |
 | Extra top-level/payload property | closed-record error identifying offending key; TS fresh-literal diagnostic only approximates runtime closure | runtime + fresh foreign literal |
-| labels element wrong; samples wrong length | `/labels/0` wrong enum; `/samples` exact length 2 | runtime; TS cannot enforce this fixed length |
+| labels element wrong; samples element fractional/out of range | `/labels/0` wrong enum; `/samples/0` must be an i16 integer | runtime; TS number cannot enforce the native integer constraint |
 | Count -1, 1.5, 4294967296 | native u32 constraint, before native cast | runtime; `number` annotation cannot reject them |
 | Unsafe i64/u64 boundary probe | ±9007199254740991 valid when native range allows; ±9007199254740992 rejected on encode/decode | focused numeric test, no broad model extension |
 | f32 exactness probe | native 0.1 widens to 0.10000000149011612; JS 0.1 rejected for f32; finite exact values pass | focused numeric test |

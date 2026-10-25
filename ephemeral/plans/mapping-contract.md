@@ -63,9 +63,13 @@ Recursively, lists/arrays contain `Value`, not native optional elements or union
 
 Every slice whose element type is u8 (including aliases) must explicitly choose `text` or `numeric_list`; neither constness nor a type alias selects semantics. `numeric_list` means dense numbers in 0…255, not base64 or `Uint8Array`. Text mode accepts only `u8` elements. This deliberately differs from Go's blanket byte-slice refusal and avoids confusing Zig strings with binary transport. String literals assigned to text fields use ordinary Zig coercion; arbitrary sentinel/many-item pointer roots are not inferred to be strings. Enum slices retain their registered enum mapping even when their tag type is u8; an enum is not implicitly a byte. No binary mode is admitted yet.
 
+Zig terminology: `[N]T` is a fixed-length array; `[_]T` infers that still-compile-time-fixed length from an initializer. A `[]T`/`[]const T` slice is a pointer plus runtime length, not a growable container. ArrayList provides growable storage and exposes its elements through an items slice. Use slices for ordinary variable-length API collections, keeping backing-storage ownership explicit; do not admit ArrayList's capacity/implementation fields through reflection. [Pinned collection sources, Z9](mapping-evidence.md). Preserve a fixed array's exact N in the semantic mapping even when a printer cannot express it; every supported native fixed-array decoder must reject a different length, independently of deferred schema work.
+
 Named pointer/collection roots are allowed where this grammar permits them; bare union roots and native optional roots are refused initially. Anonymous records under pointers/collections or at roots are refused for the initial contract, matching the peer typed-codec restriction rather than designing unstable external identities. A later extension needs a named acceptance case, not a permissive fallback. Zig aliases share type identity; alias names do not create independent wire contracts. A type-owned configuration supplies one shared mapping across its uses; no printer-local override is allowed. A future third-party/multiple-mapping facility would need explicit identity and conflict rules.
 
 ## Numeric policy: values, not just declarations
+
+**Chosen mandatory schema rule:** every unsigned native Zig integer projects with `type: "integer"` and explicit `minimum: 0`. A profile unable to express that constraint must report/refuse the capability; it cannot silently drop unsignedness. Schema acceptance must check the emitted keywords and reject a negative value. This settles only the unsigned lower bound; precision and upper-bound proposals below retain their existing status.
 
 **Proposed: no silent integer rounding.** Each integer value must be within both its native range and `[-9007199254740991, 9007199254740991]`. Check in native integer arithmetic before conversion when encoding; on decode check finite, integral, safe, then native range before casting. Reject even exactly representable integers outside that safe interval, including `9007199254740992`, to keep a uniform domain whose neighbors are representable.
 
@@ -190,6 +194,14 @@ unsupported_composition: Envelope.labels: required ?[]const Status is outside th
 ```
 
 Descriptions and both declaration outputs must fail together for invalid shared metadata. Validate/render all requested artifacts before publication. Later filesystem failure may still leave earlier completed writes; report it as failure plus actual mutations, not generation success. Preserve equal output bytes/mtimes, repair missing or damaged generated output, and protect application-owned files. Semantic fingerprints may later skip projection, not necessarily reflection/lowering; include dependencies, descriptions, target policy, mapping version and backend/options. No custom native compilation cache is proposed.
+
+## Planned schema capability and post-release general dialect
+
+The planned OpenAI-compatible profile includes the currently documented standard-model minItems/maxItems bounds; preserve native fixed-array exact length and encode it as equal lower/upper bounds when that profile is supported. Future schema acceptance must validate N and refuse wrong lengths; an incompatible fine-tuned profile must fail/report the constraint rather than drop it. This does not implement a backend or make schema proof a gate for the first primitive/record checkpoint. Native fixed-array decoders independently must enforce exact length whenever supported.
+
+A second explicit target for a selected modern general JSON Schema dialect remains **post-initial-release** work; select its dialect then. Preserve richer semantic information for that target without adding a broad constraint framework or general serializer now. The user's historical context is that Go Polytype was intentionally constrained for OpenAI; historical restrictions are not universal current API facts.
+
+The [current OpenAI compatibility reference](../../docs/openai-json-schema.md), checked 2026-10-25, separates strict schema support, non-strict guarantees, model caveats and evidence limits. The future OpenAI profile must validate capabilities and fail/report any loss; it must not silently replace Type Projector's agreed missing-key semantics with null. Resolve that compatibility decision when designing the profile, not in this reference. Neither target is implemented by this documentation. [Evidence O1](mapping-evidence.md).
 
 ## Chosen direction, remaining review, and delivery order
 
