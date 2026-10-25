@@ -1,8 +1,8 @@
 # JSON codec architecture experiments
 
-Status: **deferred, unexecuted**. The [mapping proposal](mapping-contract.md) is now the primary next task, including both TypeScript and JavaScript with JSDoc. Resolve the shared value/admission semantics before comparing codec implementation mechanisms. This document preserves the earlier architecture discussion and comparison; it accepts no exact API, representation, performance target, or implementation milestone. Keep the separate Type Projector repository as the workspace for now; merging it elsewhere remains possible later.
+Status: **mechanism comparison deferred, unexecuted**. The [build brief](mapping-contract.md) defines the shared mapping and first declaration/devalue slices. This comparison was deferred while wire/presence semantics were unsettled; those semantics are now selected. Comparing generic specialization against emitted Zig source is not a technical prerequisite for implementing native JSON codecs. This experiment does not itself select JSON's delivery priority or require implementing both approaches.
 
-Terminology: the current preferred proposal uses ordinary native Zig optionals `?T` plus a type-owned comptime constant carrying per-field required overrides: ?T defaults omittable; required ?T emits null for native null. There is no separate Nullable or Presence wrapper. The same two native states map either to required key with value/null, or to omitted key/non-null value; own undefined is rejected. Exact metadata spelling remains open. The comparison below must use these current semantics when eventually executed.
+Terminology: ordinary native Zig optionals `?T` plus a typed, shallow `Projection(@This())` constant carry per-field required overrides: ?T defaults omittable; required ?T emits null for native null. There is no separate Nullable or Presence wrapper. The same two native states map either to required key with value/null, or to omitted key/non-null value; own undefined is rejected. The comparison must use these selected semantics.
 
 ## Direction and the question to resolve
 
@@ -45,9 +45,9 @@ For each approach, observe a cold build, unchanged rebuild, native/wire shape ed
 
 ## Fingerprint and library boundary
 
-The fingerprint produced with the normalized model supports semantic/foreign-projection reuse. A hit need not skip reflection, traversal, or lowering. Future projection identity must cover reachable dependencies, descriptions, backend version, and output options. Recursive identity and normalization need explicit treatment; a historical fingerprint experiment is not a canonical format. Do not invent a custom native compilation cache prematurely.
+The initial [generation/cache design](generation-lifecycle.md) covers semantic fingerprints, native associations, canonical recursive identity, dependencies/descriptions, target and backend options. A hit need not skip reflection, traversal or lowering; publication must still inspect destination state. A historical fingerprint experiment is not a canonical format, and a custom retained compiler cache is not required.
 
-The shared model earns its place when schemas, codecs, and foreign declarations agree on wire policy. Framework operation identity, routes, forms/uploads, transported classes, and deferred values stay with the SKGo successor. No separate grammar repository/lifecycle or broad plugin framework is decided.
+The shared internal model earns its place when codecs and foreign declarations agree on wire policy. Framework operation identity, routes, forms/uploads, transported classes, and deferred values stay with the SKGo successor. Add language backends in this project; no separate grammar repository, public custom-backend API or plugin framework is required.
 
 ## Local evidence and limits
 

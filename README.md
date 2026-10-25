@@ -10,6 +10,8 @@ Start with the [Zig → JavaScript build brief](ephemeral/plans/mapping-contract
 
 The [typed configuration experiment](ephemeral/projection-shape-lab/README.md) demonstrates nested anonymous records, imported types and recursion with a pinned compiler. The [brief delta review](ephemeral/plans/mapping-delta-review.md) records the decisions folded into the brief from the larger proposal.
 
+[Generation design](ephemeral/plans/generation-lifecycle.md) covers ownership, publication and cache decisions for the first generator. [Language projections](ephemeral/plans/language-projections.md) separates JavaScript-style wire keys from idiomatic Swift/Kotlin declarations; Kotlin data classes are deferred.
+
 The [JSON codec mechanism experiment](ephemeral/plans/codec-experiments.md) is deferred until the mapping and literal acceptance cases can hold both approaches to the same semantics.
 
 See the [OpenAI JSON Schema compatibility reference](docs/openai-json-schema.md) for current documented strict/non-strict behavior, supported idioms and Type Projector profile boundaries (checked 2026-10-25).

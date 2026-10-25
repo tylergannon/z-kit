@@ -1,6 +1,6 @@
 # Zig → JavaScript mapping build brief
 
-Build Type Projector for Zig 0.17.0: native types become JavaScript values, with TypeScript and checked-JavaScript/JSDoc declarations generated from **one mapping**. Go Polytype parity and Swift follow later. Struct configuration is compiler-verified; the mapper remains unimplemented.
+Build Type Projector for Zig 0.17.0: native types become JavaScript values, with TypeScript and checked-JavaScript/JSDoc generated from **one mapping**. Add Swift structs and, later, Kotlin data classes here; no public backend/plugin API is required. Struct configuration is compiler-verified; the mapper remains unimplemented.
 
 ## Mapping
 
@@ -27,7 +27,7 @@ A byte-slice override requests numeric bytes instead of text. Use an ArrayList's
 
 ## Deterministic naming
 
-Use lowerCamelCase field keys and default enum/tag labels; UpperCamelCase type identifiers. Split underscores, lower/digit→upper transitions, and acronym→word boundaries. Lowercase ASCII letters; capitalize subsequent ASCII initials: `display_name`→`displayName`, `HTTPStatus`→`httpStatus`. Preserve non-ASCII characters; diagnose unrepresentable names. No per-field or per-language name overrides. Escape language keywords without changing wire keys. Reject empty names and emitted-name collisions; expose the name map. Name anonymous declarations from their first root/field path in declaration order.
+Canonical JSON keys use JavaScript lowerCamelCase: `display_name`→`displayName`, `HTTPStatus`→`httpStatus`. Split underscores, lower/digit→upper and acronym→word boundaries; normalize ASCII case, preserving non-ASCII characters. Default enum/tag labels follow this rule. JSON↔JS needs ordinary parsing/stringifying, no field-renaming layer. TS/JSDoc use these keys. Swift/Kotlin use their own type/property conventions and keyword escaping; generated serialization bindings preserve canonical keys. No authored name overrides. Diagnose empty/unrepresentable names and collisions; expose name maps. Derive anonymous names from first root/field paths.
 
 ## Native fields and configuration
 
@@ -69,16 +69,24 @@ Project runtime fields regardless of auto/extern/packed layout; initially reject
 
 Decode checks kinds, required/unknown keys, dense arrays and lengths; refuse special runtime values and duplicate wire keys. Reject maps, functions, errors, type/opaque values and unsupported pointers with a useful path. Wider numbers and binary transports can follow. Document ownership, borrowed lifetimes and cleanup; release partial allocations. The concrete ownership API remains open.
 
+## Generation and reuse
+
+Settle this with the first generator: explicit tracked build steps, separate generation/publication, and an internal mapping retaining native associations. Fingerprints cover reachable shapes/descriptions, target, naming, generator/backend versions and options; use deterministic graph identities, not addresses. Reuse Zig's caches; a cache hit still checks destination state. Never publish only during build configuration.
+
+Track owned paths and hashes. Refuse unowned collisions or edited outputs; remove only unchanged owned stale files. Preserve equal bytes/mtimes. Check-only changes no outputs/ownership state. Stage publication, replace files atomically and make partial failure recoverable; automatic damaged-file repair is not required.
+
 ## First build and proof
 
-1. Build one public ./example through the package interface. Project scalars/a record into TS and JSDoc; compile valid/invalid consumers and check intended errors.
+1. Build one public ./example through the package interface. Project scalars/a record into TS and JSDoc; compile valid/invalid consumers. Check ownership/stale cleanup, unchanged rebuilds and cache invalidation. Emit ordinary modules without barrels.
 2. Extend the same example with enums, unions, optionals and pointers. Independently check JS values, absence/null, ranges/lengths and allocation cleanup.
 3. Demonstrate Zig→canonical-JS→Zig devalue exchange using the shared Go/Zig runtime, major 5 pinned to 5.9.4. JSON/devalue encode the same mapped values; reuse that runtime.
 
-Full parity, malformed-wire corpora and cache/publication behavior are not first-delivery gates.
+Full parity and broad malformed-wire corpora are not first-delivery gates.
 
 ## Schema and later work
 
 Every unsigned integer's schema **must** emit `type: "integer"` and explicit `minimum: 0`. Preserve fixed-array length using minItems/maxItems in the planned standard OpenAI profile. Refuse/report unrepresentable constraints, including omission/null conflicts. A modern general-schema dialect remains post-initial-release work.
 
-Optional references: [verified configuration/comptime proof](../projection-shape-lab/README.md), [example](example-acceptance.md), [parity research](feature-parity.md), [sources](mapping-evidence.md), [OpenAI compatibility](../../docs/openai-json-schema.md). These add no acceptance gates.
+Defer schema generation/validation/providers, manual schema builders, numeric enums and time adapters. JSON codec mechanism comparison remains a separate deferred experiment, not a technical prerequisite for native JSON codecs.
+
+References: [generation design](generation-lifecycle.md), [language projections](language-projections.md), [verified configuration/comptime proof](../projection-shape-lab/README.md), [example](example-acceptance.md), [parity research](feature-parity.md), [sources](mapping-evidence.md), [OpenAI compatibility](../../docs/openai-json-schema.md). These add no acceptance gates.
