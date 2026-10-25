@@ -5,3 +5,5 @@ Type Projector is a planned Zig library for projecting Zig types into schemas, c
 It will evolve independently of Go Polytype. Architecture, public APIs, and implementation milestones are still being planned.
 
 This repository currently contains project documentation only. There is no implemented library, install procedure, or usage API yet.
+
+Start with the [JSON codec experiment plan](ephemeral/plans/codec-experiments.md).
