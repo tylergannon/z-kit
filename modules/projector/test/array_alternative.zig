@@ -1,6 +1,6 @@
 //! A working alternative for comparison, not the recommended spelling.
 const std = @import("std");
-const projector = @import("projector.zig");
+const projector = @import("projector");
 
 pub fn Projection(comptime T: type) type {
     return struct {

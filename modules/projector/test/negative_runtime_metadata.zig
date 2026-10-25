@@ -1,4 +1,4 @@
-const projector = @import("projector.zig");
+const projector = @import("projector");
 var runtime_required: bool = false;
 const Sample = struct {
     owner: ?[]const u8,

@@ -45,7 +45,7 @@ For each approach, observe a cold build, unchanged rebuild, native/wire shape ed
 
 ## Fingerprint and library boundary
 
-The initial [generation/cache design](generation-lifecycle.md) covers semantic fingerprints, native associations, canonical recursive identity, dependencies/descriptions, target and backend options. A hit need not skip reflection, traversal or lowering; publication must still inspect destination state. A historical fingerprint experiment is not a canonical format, and a custom retained compiler cache is not required.
+The initial [generation/cache design](../../../../ephemeral/plans/generation-lifecycle.md) covers semantic fingerprints, native associations, canonical recursive identity, dependencies/descriptions, target and backend options. A hit need not skip reflection, traversal or lowering; publication must still inspect destination state. A historical fingerprint experiment is not a canonical format, and a custom retained compiler cache is not required.
 
 The shared internal model earns its place when codecs and foreign declarations agree on wire policy. Framework operation identity, routes, forms/uploads, transported classes, and deferred values stay with the SKGo successor. Add language backends in this project; no separate grammar repository, public custom-backend API or plugin framework is required.
 

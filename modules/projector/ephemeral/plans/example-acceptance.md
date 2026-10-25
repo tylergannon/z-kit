@@ -1,6 +1,6 @@
 # One public example: proposed acceptance
 
-Status: design only. This is an optional worked fixture and later test catalog; the [build brief](mapping-contract.md) is the implementation entrypoint. Start with checkpoint A, then choose representative cases for the features added in B. This file does not make every listed test or future capability a first-delivery gate. One public ./example serves adopter documentation and integration acceptance.
+Status: design only. This is an optional worked fixture and later test catalog; the [build brief](mapping-contract.md) is the implementation entrypoint. Start with checkpoint A, then choose representative cases for the features added in B. This file does not make every listed test or future capability a first-delivery gate. One public repository-root `./example` serves z-kit adopter documentation and integration acceptance; projector checkpoints are component work within that app, not a separate product.
 
 ## Checkpoint A: primitives and a basic struct
 

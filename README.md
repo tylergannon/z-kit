@@ -1,17 +1,23 @@
-# Zig Type Projector
+# z-kit
 
-This checkout contains type-mapping research and verified Zig experiments for the planned Zig version of SKGo, provisionally called **z-kit**.
+A Zig backend for SvelteKit, building on SKGo’s application model.
 
-The product goal is a usable z-kit application. The [bring-up inventory and placement comparison](ephemeral/plans/z-kit-bringup.md) recommends an internal projector module and one app-wide generator; repository placement is still a recommendation, and no repository has been moved or renamed.
+The [accepted build baseline](ephemeral/plans/z-kit-bringup.md) defines the features and milestones. The first product checkpoint is a browser app with a Zig server load, typed query and command, cookies/locals, SSR hydration, navigation and a working rebuild loop. Production rendering and packaging have a separate acceptance gate.
 
-This repository currently contains project documentation and isolated research experiments. There is no implemented library, install procedure, or usage API yet.
+The [internal projector module](modules/projector/README.md) owns data configuration, mapping and codecs. z-kit will own one application-wide generator for routing, bindings and publication. The shared devalue runtime remains a separate dependency.
 
-The [Zig → JavaScript build brief](ephemeral/plans/mapping-contract.md) defines the mapping component, native optional defaults, configuration shape, and TypeScript/JavaScript outputs. Its standalone example is component proof; z-kit bring-up requires the framework integration described above.
+Current code proves typed projection configuration and its use at comptime; the framework, full mapper and codecs are not implemented yet. The [generation lifecycle](ephemeral/plans/generation-lifecycle.md) records the selected publication and cache rules.
 
-The [typed configuration experiment](ephemeral/projection-shape-lab/README.md) demonstrates nested anonymous records, imported types and recursion with a pinned compiler. The [brief delta review](ephemeral/plans/mapping-delta-review.md) records the decisions folded into the brief from the larger proposal.
+Use **Zig 0.17.0**:
 
-[Generation design](ephemeral/plans/generation-lifecycle.md) covers ownership, publication and cache decisions for the first generator. [Language projections](ephemeral/plans/language-projections.md) separates JavaScript-style wire keys from idiomatic Swift/Kotlin declarations; Kotlin data classes are deferred.
+```sh
+zig build test
+```
 
-The [JSON codec mechanism experiment](ephemeral/plans/codec-experiments.md) is deferred until the mapping and literal acceptance cases can hold both approaches to the same semantics.
+This runs 14 configuration/module tests and a compile-only comptime proof. For the full experiment, including 11 expected compiler refusals, set `ZIG017_EXE` to that compiler and run:
 
-See the [OpenAI JSON Schema compatibility reference](docs/openai-json-schema.md) for current documented strict/non-strict behavior, supported idioms and Type Projector profile boundaries (checked 2026-10-25).
+```sh
+python3 modules/projector/ephemeral/projection-shape-lab/run.py
+```
+
+Initial development/deployment targets, HTTP/std.Io composition, handler discovery and the production JS engine remain the next design decisions in the baseline.

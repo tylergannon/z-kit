@@ -1,4 +1,4 @@
-const projector = @import("projector.zig");
+const projector = @import("projector");
 test {
     _ = projector.Projection(u32);
 }

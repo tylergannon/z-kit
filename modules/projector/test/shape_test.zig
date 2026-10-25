@@ -1,5 +1,5 @@
 const std = @import("std");
-const projector = @import("projector.zig");
+const projector = @import("projector");
 const external = @import("external.zig");
 
 const Profile = struct {

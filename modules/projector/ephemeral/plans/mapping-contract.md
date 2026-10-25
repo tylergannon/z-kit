@@ -89,4 +89,4 @@ Every unsigned integer's schema **must** emit `type: "integer"` and explicit `mi
 
 Defer schema generation/validation/providers, manual schema builders, numeric enums and time adapters. JSON codec mechanism comparison remains a separate deferred experiment, not a technical prerequisite for native JSON codecs.
 
-References: [generation design](generation-lifecycle.md), [language projections](language-projections.md), [verified configuration/comptime proof](../projection-shape-lab/README.md), [example](example-acceptance.md), [parity research](feature-parity.md), [sources](mapping-evidence.md), [OpenAI compatibility](../../docs/openai-json-schema.md). These add no acceptance gates.
+References: [generation design](../../../../ephemeral/plans/generation-lifecycle.md), [language projections](language-projections.md), [verified configuration/comptime proof](../projection-shape-lab/README.md), [example](example-acceptance.md), [parity research](feature-parity.md), [sources](mapping-evidence.md), [OpenAI compatibility](../../docs/openai-json-schema.md). These add no acceptance gates.

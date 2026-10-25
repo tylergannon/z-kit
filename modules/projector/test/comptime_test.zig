@@ -1,6 +1,6 @@
 //! These assertions execute during compilation; no test executable is needed.
 const std = @import("std");
-const projector = @import("projector.zig");
+const projector = @import("projector");
 const external = @import("external.zig");
 
 const Profile = struct {

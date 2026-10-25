@@ -1,4 +1,4 @@
-//! Configuration-shape experiment, not the Type Projector implementation.
+//! z-kit projector configuration core. Mapping, codecs and backends are not yet implemented.
 const std = @import("std");
 
 pub const FieldOptions = struct {

@@ -1,6 +1,6 @@
 # Initial generation, publication and cache design
 
-These decisions elaborate the [build brief](mapping-contract.md), not a separate implementation request. Publication and cache correctness belong to the first generator slice; a broad retained-worker or performance project does not. No behavior described here has been implemented or tested in Type Projector.
+These decisions elaborate the [build brief](../../modules/projector/ephemeral/plans/mapping-contract.md), not a separate implementation request. Publication and cache correctness belong to the first generator slice; a broad retained-worker or performance project does not. No behavior described here has been implemented or tested in z-kit.
 
 ## Phase boundaries
 

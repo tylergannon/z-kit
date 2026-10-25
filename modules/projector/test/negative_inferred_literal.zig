@@ -1,4 +1,4 @@
-const projector = @import("projector.zig");
+const projector = @import("projector");
 const Sample = struct {
     title: []const u8,
     owner: ?[]const u8,

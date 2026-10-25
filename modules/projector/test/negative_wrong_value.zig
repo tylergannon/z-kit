@@ -1,8 +1,8 @@
-const projector = @import("projector.zig");
+const projector = @import("projector");
 const Sample = struct {
     owner: ?[]const u8,
     pub const projection: projector.Projection(@This()) = .{
-        .fields = .{ .owner = .{ .requried = true } },
+        .fields = .{ .owner = .{ .required = "yes" } },
     };
 };
 test {

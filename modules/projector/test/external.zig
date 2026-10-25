@@ -1,4 +1,4 @@
-const projector = @import("projector.zig");
+const projector = @import("projector");
 
 pub const Address = struct {
     street_name: []const u8,

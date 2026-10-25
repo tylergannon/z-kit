@@ -8,26 +8,27 @@
   "module_tests": 1,
   "explicit_comptime_compilations": 1,
   "source_sha256": {
-    "array_alternative.zig": "1960a9236929f0d256ec6bfcb6116462aea464d6d0804a25b9a950edd2f623bd",
-    "build.zig": "1288fd74275a15af7ac2b3bf62588701387a2363b962b8e3fd6fcff395b5211b",
-    "comptime_test.zig": "45954e1899397339420f9d1064e50e0266d0b34a27aa99fc9a8fbe0bdf5a078e",
-    "external.zig": "17a41134565d50485058315d83066126513787b606c9433df49fd670393bf6ca",
-    "module_consumer.zig": "27343a9daeb4b99c4632420135e08b1345cc9920703daac4deecacbaee874a6f",
-    "module_model.zig": "b28857397158f160a5c7df95dfd5d9582e5102aa513f47fe4ed679aa8c6f46ee",
-    "negative_array_duplicate.zig": "3ca977c864b28a30b5bb3fc4aa814ceb1a17cd63dc4326c71a28ebb8ad524812",
-    "negative_array_field.zig": "465ae2a69c86784c198979a5655d5851d2d21d2eca64109ed88da326f69c143e",
-    "negative_inferred_literal.zig": "c71b739aa0933e3ded5138721fd73df85c74fa1f430c89b9a07313509d00ff00",
-    "negative_namespace_collision.zig": "13573e75c0ea4107f0397dae59c2bc7c84807a346e2391e8c2c5dc9d651523c0",
-    "negative_nonoptional.zig": "441b0e8005a070656a73f5a1830165059bbd14c7076cf020564207872189529b",
-    "negative_nonstruct.zig": "320e914b70b6b0f370d14297bff61d2100edd5c2746acde17ae2f52cbc1c94ce",
-    "negative_runtime_metadata.zig": "1d75a42e6154b474b305ab83d2338046d193d782b9abc3e8af0400352a793f43",
-    "negative_unknown_field.zig": "7c7f192b2996f21c0180a877d7a45ca1b8fb4bd05d915737e1040690a031ca4c",
-    "negative_unknown_option.zig": "5ffc48691de6df16bf80a26b67a2f47019d35ae81964ea0dfe056513dba3a137",
-    "negative_wrong_owner.zig": "27f8c74d272305e367174c76e4e5df9512605e5c95e06fffa4c6fc9c94998d96",
-    "negative_wrong_value.zig": "07025147736001325fc9558d6ef3edfeaaa9a93480f121549799067ee9c3ad67",
-    "projector.zig": "cf1d8ad1a0452ddd3512f574e1e650d382a0122faeb868ebbd238e5335cced19",
-    "shape_test.zig": "a29a81749146a18868a55593cbd23bba765dc2c29bb6907c8a3045bfe4e65b58",
-    "run.py": "a7ff6c48e8e1d2607ac282f638ced8b79d64dbc307cbc45f100099e2fe78eab0"
+    "modules/projector/src/projector.zig": "6356b36911e6b27657c6e82eeaea21b06a641909758d77596cddfe5686a4e228",
+    "modules/projector/test/array_alternative.zig": "dd8b6b03b2b4e0a7f41aadcdd5923ebebfe77be1f9e3e9d4e6855e658e29507a",
+    "modules/projector/test/comptime_test.zig": "bcf6ad6a9eddc859c877797ade160baf0adee91ffbe18cdcdb8916831b306030",
+    "modules/projector/test/external.zig": "c89f501c40bbebc94b918f28055426496bc2b070ff4c235e88ecb7b2efaf1b1d",
+    "modules/projector/test/module_consumer.zig": "27343a9daeb4b99c4632420135e08b1345cc9920703daac4deecacbaee874a6f",
+    "modules/projector/test/module_model.zig": "b28857397158f160a5c7df95dfd5d9582e5102aa513f47fe4ed679aa8c6f46ee",
+    "modules/projector/test/negative_array_duplicate.zig": "3ca977c864b28a30b5bb3fc4aa814ceb1a17cd63dc4326c71a28ebb8ad524812",
+    "modules/projector/test/negative_array_field.zig": "465ae2a69c86784c198979a5655d5851d2d21d2eca64109ed88da326f69c143e",
+    "modules/projector/test/negative_inferred_literal.zig": "124fcac046f8888dc3d9bfc68093e553ec2dcb5cb0ae11ce4d8102223dde1f24",
+    "modules/projector/test/negative_namespace_collision.zig": "72f789ee9f3a689b8cf7bfdd11745d4aa89ebef72b21c47af1836739fc4ba590",
+    "modules/projector/test/negative_nonoptional.zig": "31415a890e116d075cc9bd3bda33fb081a58c351f764f28e92e823c16b15a78b",
+    "modules/projector/test/negative_nonstruct.zig": "4814b122deb52a25b0a516283e9e14cc149b7e95e34061ded95a25fee6f15aac",
+    "modules/projector/test/negative_runtime_metadata.zig": "41e62b602cc2a1a51c601b5ec450bced809fd50161b13049d7f8e6025cacefb0",
+    "modules/projector/test/negative_unknown_field.zig": "b515e35340a55d2294870325d0a7c2ec182c7f3e0cfd5d395bf811cb7a029936",
+    "modules/projector/test/negative_unknown_option.zig": "43dc39b4758bbb5f2bf53f287d8c46f64c13d8521602bcae2d4cf7421ec5771d",
+    "modules/projector/test/negative_wrong_owner.zig": "445e1dd63726798f56d0a6ee29a1effeca1ae6497991d892775466768480f6e9",
+    "modules/projector/test/negative_wrong_value.zig": "34406062f107bdab34364987f379bfb4fda1c823a4b5f5e70c7c344bbbfb4c14",
+    "modules/projector/test/shape_test.zig": "8121be9ad13a0254e71e7eaccf94382a8ff49639e3c1006057b9adca24cbca35",
+    "build.zig": "f93e6ffa70cfe0d7e75185b95c3e53aab87441ece5c518cdb88487f9061862af",
+    "build.zig.zon": "e102d1a4d5a8beac1caeac465966f8da128e5e838a85b615d58149a3085ddf57",
+    "modules/projector/ephemeral/projection-shape-lab/run.py": "c8dd43687ca4700b577e6b2c3837c23edb1476d44b7f3e44d0038a6f9c8cf674"
   },
   "cases": [
     {
@@ -149,13 +150,13 @@
       "passed": true
     },
     {
-      "source": "build.zig",
+      "source": "../../../../build.zig",
       "expected": "module integration success",
       "exit_code": 0,
       "expected_fragments": [
-        "3/3 steps succeeded"
+        "6/6 steps succeeded"
       ],
-      "execution": "cached",
+      "execution": "see module-build.stdout and module-build.stderr for per-step cache status",
       "passed": true
     }
   ],

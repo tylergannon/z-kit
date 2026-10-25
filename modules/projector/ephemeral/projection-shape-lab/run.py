@@ -7,6 +7,9 @@ from pathlib import Path
 import subprocess
 
 ROOT = Path(__file__).resolve().parent
+MODULE = ROOT.parent.parent
+REPO = MODULE.parent.parent
+TESTS = MODULE / "test"
 LOCAL = ROOT / ".local"
 COMPILER = Path(os.environ.get("ZIG017_EXE", LOCAL / "zig-aarch64-macos-0.17.0/zig")).resolve()
 ARCHIVE = LOCAL / "zig-aarch64-macos-0.17.0.tar.xz"
@@ -37,10 +40,11 @@ cases = [
 ]
 results = []
 for filename, positive, expected in cases:
-    command = [str(COMPILER), "test", filename, "--cache-dir", str(LOCAL / "local-cache")]
+    command = [str(COMPILER), "test", "--cache-dir", str(LOCAL / "local-cache")]
     if not positive or filename == "comptime_test.zig":
         command += ["-fno-emit-bin"]
-    process = subprocess.run(command, cwd=ROOT, env=env, text=True, capture_output=True)
+    command += ["--dep", "projector", "-Mroot=" + filename, "-Mprojector=" + str(MODULE / "src/projector.zig")]
+    process = subprocess.run(command, cwd=TESTS, env=env, text=True, capture_output=True)
     (LOGS / (filename + ".stdout")).write_text(process.stdout)
     (LOGS / (filename + ".stderr")).write_text(process.stderr)
     output = process.stdout + process.stderr
@@ -54,22 +58,22 @@ for filename, positive, expected in cases:
 
 build_command = [str(COMPILER), "build", "test", "--summary", "all",
                  "--cache-dir", str(LOCAL / "build-cache"), "--prefix", str(LOCAL / "install")]
-build = subprocess.run(build_command, cwd=ROOT, env=env, text=True, capture_output=True)
+build = subprocess.run(build_command, cwd=REPO, env=env, text=True, capture_output=True)
 (LOGS / "module-build.stdout").write_text(build.stdout)
 (LOGS / "module-build.stderr").write_text(build.stderr)
-build_passed = build.returncode == 0 and "3/3 steps succeeded" in build.stdout + build.stderr
-results.append({"source": "build.zig", "expected": "module integration success",
-                "exit_code": build.returncode, "expected_fragments": ["3/3 steps succeeded"],
-                "execution": "cached" if "run test cached" in build.stdout + build.stderr else "ran",
+build_passed = build.returncode == 0 and "6/6 steps succeeded" in build.stdout + build.stderr
+results.append({"source": "../../../../build.zig", "expected": "module integration success",
+                "exit_code": build.returncode, "expected_fragments": ["6/6 steps succeeded"],
+                "execution": "see module-build.stdout and module-build.stderr for per-step cache status",
                 "passed": build_passed})
 print(f"{'PASS' if build_passed else 'FAIL'} module build")
 if not build_passed:
     print(build.stdout + build.stderr)
 
 local_compiler = COMPILER == (LOCAL / "zig-aarch64-macos-0.17.0/zig").resolve()
-source_hashes = {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
-                 for p in sorted(ROOT.glob("*.zig"))}
-source_hashes["run.py"] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+sources = sorted((MODULE / "src").glob("*.zig")) + sorted(TESTS.glob("*.zig"))
+sources += [REPO / "build.zig", REPO / "build.zig.zon", Path(__file__)]
+source_hashes = {str(p.relative_to(REPO)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sources}
 summary = {"compiler": version,
            "compiler_origin": "local verified release archive" if local_compiler else "externally supplied executable; version checked",
            "compiler_archive_sha256": archive_hash if local_compiler else None,
