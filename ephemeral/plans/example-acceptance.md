@@ -1,6 +1,6 @@
 # One public example: proposed acceptance
 
-Status: **design only**, 2026-10-25. Updated preferred direction: native ?T defaults omittable, with a type-owned per-field required override; no dedicated missing-field wrapper. No `example/` sources, library, generated files, dependency lockfile or passing tests exist yet. The primary [mapping proposal](mapping-contract.md) controls semantics; [feature parity IDs](feature-parity.md) connect these cases to peer source. This describes one growing consumer project at exactly `./example`, used for both adopter documentation and integration acceptance. Focused admission/printer tests stay beside future library code; invalid fixtures may live under that example's test inputs without becoming separate projects.
+Status: design only. This is an optional worked fixture and later test catalog; the [build brief](mapping-contract.md) is the implementation entrypoint. Start with checkpoint A, then choose representative cases for the features added in B. This file does not make every listed test or future capability a first-delivery gate. One public ./example serves adopter documentation and integration acceptance.
 
 ## Checkpoint A: primitives and a basic struct
 
@@ -21,13 +21,9 @@ const Status = enum {
 };
 const Created = struct {
     id: u32,
-    pub const projection = .{};
 };
 const Deleted = struct {
     reason: []const u8,
-    pub const projection = .{ .fields = .{
-        .reason = .{ .bytes = .utf8_text },
-    } };
 };
 const Event = union(enum) {
     created: Created, deleted: Deleted,
@@ -54,19 +50,17 @@ const Envelope = struct {
         .fields = .{
             .display_name = .{
                 .name = "display-name",
-                .bytes = .utf8_text,
                 .description = "Name shown to the recipient.",
             },
-            .nickname = .{ .bytes = .utf8_text },
-            .owner = .{ .bytes = .utf8_text, .required = true },
+            .owner = .{ .required = true },
         },
     };
 };
 ```
 
-An otherwise equivalent `PointerEnvelope` changes only the native event field to `PointerEvent` and supplies the same type-owned configuration. Both models are selected through the eventual public interface. Native fields remain idiomatic Zig data; the inline namespace constant configures wire/projection behavior without adding per-instance fields. **All configuration names above are illustrative and uncompiled, not a finalized API.** Unknown description/rename keys and a misspelled/missing required configuration constant must reject. Labels are tag-name enum strings, not bytes or numeric backing tags.
+An otherwise equivalent `PointerEnvelope` changes only the native event field to `PointerEvent` and supplies the same type-owned configuration. Both models are selected through the eventual public interface. Native fields remain idiomatic Zig data; the inline namespace constant configures wire/projection behavior without adding per-instance fields. **All configuration names above are illustrative and uncompiled, not a finalized API.** Unknown description/rename keys reject; configuration is optional when defaults suffice. Byte slices default to UTF-8 text. Labels are tag-name enum strings, not bytes or numeric backing tags.
 
-Samples uses an ordinary variable-length slice so this first exchange does not require fixed-array or schema-dialect proof. The contract retains fixed arrays; when supported, a separate focused `[2]i16` case must accept exactly two elements and reject other lengths. Deferring schema constraints does not relax native decoding. Array bounds remain a planned supported schema capability; the [modern general dialect](mapping-contract.md#planned-schema-capability-and-post-release-general-dialect) is post-initial-release work. Neither backend is implemented here.
+Samples uses an ordinary variable-length slice so this first exchange does not require fixed-array or schema-dialect proof. The contract retains fixed arrays; when supported, a separate focused `[2]i16` case must accept exactly two elements and reject other lengths. Deferring schema constraints does not relax native decoding. Array bounds remain a planned supported schema capability; the [modern general dialect](mapping-contract.md#schema-and-later-work) is post-initial-release work. Neither backend is implemented here.
 
 Future schema acceptance for unsigned count/id must assert `type: "integer"` and explicit `minimum: 0`, and reject a negative value; any profile unable to carry that mandatory bound must report/refuse it. This adds no numeric-design work or backend to checkpoint B.
 
@@ -150,38 +144,39 @@ PointerEnvelope may have a separate emitted alias, but must have the same struct
 
 Pin Zig 0.17.0, a concrete shared devalue-runtime source revision/content hash, canonical JS `devalue` exactly 5.9.4, Node, and an exact TS checker with its lockfile when implementing. The cached runtime's commit is prior art, not a published dependency selected by this proposal. Record actual tool versions, command results and skips. Do not use `latest`, a directory named v6, or moving Svelte/Kit main manifests as a reproducible protocol pin. Svelte/Kit major-5 selection is existing discussion context; the cached exact sources substantiate 5.9.4's behavior.
 
-The example should expose a readable generate step and an acceptance step. Its own realistic `build.zig`/manifest use the library's public package module, initially through a local path dependency to the repository root. No private source imports, copied internal helpers, second integration project, web server, or SKGo dependency. A host-built generator shares the model module and runs through an explicit tracked build Run step, producing TS and JSDoc into distinct output directories. Test executables need actual run edges, not only compilation. Host/target-dependent metadata must be explicit and compared; the simple fixture uses fixed-width numbers. The native codec mechanism remains undecided.
+The example should expose a readable generate step and an acceptance step. Its own realistic `build.zig`/manifest use the library's public package module, initially through a local path dependency to the repository root. No private source imports, copied internal helpers, second integration project, web server, or SKGo dependency. A host-built generator shares the model module and runs through an explicit tracked build Run step, producing TS and JSDoc into distinct output directories. Test executables need actual run edges, not only compilation. Preserve application-target semantics; this fixture uses fixed-width numbers. The native codec mechanism remains undecided.
 
 1. Zig encodes both native representations through the typed adapter and shared runtime; canonical JS 5.9.4 parses each document. JS asserts the literal expected value and own-key/type facts above.
 2. JS independently constructs a second value: same required basics, `nickname: "Countess"`, `owner: "Grace"`, `labels: []`, `samples: [32767, -32768]`, `event: { kind: "deleted", reason: "duplicate" }`. JS stringifies it with 5.9.4; Zig decodes separately into Envelope and PointerEnvelope and asserts every native field, active union tag and payload. Do not generate this producer from the Zig output.
-3. Both typed decoders also consume the first JS expected object, checking absence/null. Destroy raw bytes and the parsed graph before reading the owned typed result; prove its strings and pointer payloads remain valid, then release it exactly once. Exercise allocation failure after a nested allocation and invalid nested data after earlier successful allocation; assert cleanup with a checking allocator. Do not use process exit 0 alone as leak proof.
-4. Compile real positive TS and checked-JS ESM consumers separately using strict checking, `exactOptionalPropertyTypes`, and JS `allowJs`/`checkJs`. Prove omitted nickname, required owner null, both event tags and discriminator narrowing. Compile each negative consumer and assert the intended diagnostic location/category; no blanket “any compiler failure counts” or unused suppression comments. Import runtime JS module to confirm typedefs are not runtime values. Parse/lint both printer outputs as an additional syntax gate.
+3. Both typed decoders also consume the first JS expected object, checking absence/null. Exercise the chosen API's documented lifetimes: owned results must survive input destruction; borrowed results must keep their owner alive. Check cleanup on success and partial failure where allocation occurs.
+4. Compile real positive TS and checked-JS ESM consumers separately using strict checking, `exactOptionalPropertyTypes`, and JS `allowJs`/`checkJs`. Prove omitted nickname, required owner null, both event tags and discriminator narrowing. Compile each negative consumer and check that failures identify the intended type error; exact wording is not a contract. Import runtime JS module to confirm typedefs are not runtime values. Use the compiler checks as the consumer proof.
 
 The planned commands/step names are interface goals, not commands that currently exist. Their implementation should make the ordinary adopter path the acceptance path. Record absent tools as **not qualified**, rather than skipping a required output and reporting acceptance passed.
 
-## Negative cases and limits
+## Candidate tests as features land
 
-| Case | Required observation | Layer |
+| Candidate case | Expected result for that feature | Layer |
 | --- | --- | --- |
 | Missing display-name; owner absent | missing required key at `/display-name`, `/owner` | runtime + TS/JSDoc consumers |
 | display-name number; nickname null; owner undefined | expected text/non-null omittable value/required optional value at exact path | runtime + consumer checks where expressible |
 | Explicit nickname undefined | own undefined rejected; distinguish hasOwn from reading an omitted key; checker behavior tested explicitly in each output | runtime + TS/JSDoc |
+| Tag-only union variant | object containing only the discriminator; no named empty payload needed | runtime + both foreign consumers |
 | Wrong status or kind literal | invalid enum/tag at `/status`, `/event/kind` | runtime + both foreign consumers |
 | kind created with reason but missing id | selected-payload missing/unknown property; no acceptance through another branch | runtime + both consumers |
 | Extra top-level/payload property | closed-record error identifying offending key; TS fresh-literal diagnostic only approximates runtime closure | runtime + fresh foreign literal |
 | labels element wrong; samples element fractional/out of range | `/labels/0` wrong enum; `/samples/0` must be an i16 integer | runtime; TS number cannot enforce the native integer constraint |
 | Count -1, 1.5, 4294967296 | native u32 constraint, before native cast | runtime; `number` annotation cannot reject them |
 | Unsafe i64/u64 boundary probe | ±9007199254740991 valid when native range allows; ±9007199254740992 rejected on encode/decode | focused numeric test, no broad model extension |
-| f32 exactness probe | native 0.1 widens to 0.10000000149011612; JS 0.1 rejected for f32; finite exact values pass | focused numeric test |
-| NaN, infinity, -0, BigInt, sparse array, Date | nonfinite/wrong kind/hole rejected; -0 normalizes to +0 | runtime; devalue parser can represent these |
+| Float conversion | JS 0.1 converts normally to f16/f32; nonfinite input and conversion overflow reject | focused numeric test |
+| NaN, infinity, BigInt, sparse array, Date | nonfinite/wrong kind/hole rejected | runtime; devalue parser can represent these |
 | Invalid UTF-8; unpaired JS surrogate | reject invalid native text / unsupported received string, never replacement silently | typed text + runtime boundary |
 | Duplicate input property, unknown tag, malformed devalue reference | reject at parser/typed boundary with useful path/format error; verify parser preserves enough evidence | raw-format and typed tests |
 | Metadata typo, unsafe numeric enum, discriminator collision, untagged/scalar-payload union, combined absent/null/value acceptance | deterministic admission failure before either file is published | focused negative/compile fixtures |
 | Punctuated key and malicious description text | valid type-checkable declarations, escaped comment delimiters/controls; no source injection | both printers/consumers |
 | Partial output failure | failure reported even if a preceding file was written | publication test, after basic generator exists |
 
-Checkpoint B is complete only when both foreign consumers and canonical JS exchange actually execute with no required skips, pointer/inline semantics agree independently, strict failures occur for the right reason, and ownership cleanup is demonstrated. Golden strings and matching round trips alone do not meet it. A smaller A-only delivery must be labeled A-only.
+For B, demonstrate both declaration consumers, the small canonical-JS exchange, representative failures and allocation cleanup for the implemented shapes. Independently expected values matter more than matching round trips. The wider test catalog and future roadmap do not gate an A-only delivery.
 
 ## Grow this same example
 
-After B, add one named Node with a text label and `[]const Node` children; test a finite tree in Zig, JS, TS and JSDoc. Add a pointer-backed optional parent/next case, a finite mutual-reference case and a recursive union payload case. Test runtime cycle refusal separately; no need to fabricate undefined/dangling native pointers. Extend through the parity matrix in the same example as features land. Eventually demonstrate native schema/JSON validation, JSON codecs, publication/no-change/repair, public custom backend access and Swift compiler consumers there. Swift is not an existing peer backend or first-slice acceptance. Framework forms/routes and remote-operation policies stay outside this example/library boundary.
+After B, add one named Node with a text label and `[]const Node` children; test a finite tree in Zig, JS, TS and JSDoc. Add a pointer-backed optional parent/next case, a finite mutual-reference case and a recursive union payload case. Test runtime cycle refusal separately; no need to fabricate undefined/dangling native pointers. Use the parity research to select later work in this same example. Eventually demonstrate native schema/JSON validation, JSON codecs, publication/no-change/repair, public custom backend access and Swift compiler consumers there. Swift is not an existing peer backend or first-slice acceptance. Framework forms/routes and remote-operation policies stay outside this example/library boundary.
