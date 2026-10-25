@@ -13,3 +13,5 @@ decision: Only the plan, its README link, and this worklog are in scope. Commit 
 proof: Reviewed the complete plan against the requested comparison and checked the README link and cited cache paths/line bounds. `git diff --check` passed. Experiments remain unexecuted; no code tests were introduced or run for this docs-only change.
 
 branch_state: Local checkpoint on `codex/codec-experiment-plan`; no push or PR. The saved checkout was clean on `main` at `b5e3c2e`, so delivery uses a fast-forward after checking it remains unchanged. Integration outcome is verified at closeout.
+
+proof: Saved checkout fast-forwarded to plan commit `fc27b60`; its README link resolves and `git status --short --branch` reports clean `main`, ahead of `origin/main` by one local commit. This verification checkpoint is also local-only; no push or PR was performed. Temporary task worktree can be removed after fast-forwarding this checkpoint.
