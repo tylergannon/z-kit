@@ -1,6 +1,8 @@
-# Initial generation, publication and cache design
+# Deferred generation, publication and cache design
 
-These decisions elaborate the [build brief](../../modules/projector/ephemeral/plans/mapping-contract.md), not a separate implementation request. Publication and cache correctness belong to the first generator slice; a broad retained-worker or performance project does not. No behavior described here has been implemented or tested in z-kit.
+Status: **deferred reference design**. The user's subsequent [feature and proof direction](first-application-spec.md#how-features-are-demonstrated) supersedes the earlier first-generator assignment. Start with the selected application feature and ordinary tracked build steps/caches. The ownership manifests, custom fingerprints, check-only and recovery machinery described below are not active requirements or acceptance gates. They would require a separately selected feature with a concrete developer benefit. No behavior described here has been implemented or tested in z-kit.
+
+The following sections preserve the earlier prospective design for reference; they do not authorize its implementation.
 
 ## Phase boundaries
 
@@ -24,7 +26,7 @@ Preflight the artifact set and ownership conflicts before mutation. Compare byte
 
 Atomic replacement is per file, not a whole-set transaction. Make partial publication resumable: retain the planned old/new hashes and staged bytes until the ownership manifest is committed. Recovery can recognize either planned version and finish; unexpected bytes remain a conflict. Check-only reports pending publication instead of resuming it. Serialize publishers for the same output root. Report the paths actually changed on failure. This avoids treating our own interrupted publication as an external edit on the next run; exact manifest/staging representation is an implementation detail.
 
-The first example should demonstrate normal generation, an unchanged rebuild, input invalidation, missing output, owned stale removal, unowned/edited conflicts, check-only drift and an interrupted/retried publication. These are witnesses for the brief's generation rules, not a demand for an exhaustive filesystem corpus or a timing target.
+The earlier first-example witness set (stale removal, conflicts, check-only and interrupted-publication recovery) is deferred with this design. Current proof is the selected feature working in the built example application.
 
 ## Evidence and limits
 

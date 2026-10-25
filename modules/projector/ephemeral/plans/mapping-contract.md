@@ -71,13 +71,15 @@ Decode checks kinds, required/unknown keys, dense arrays and lengths; refuse spe
 
 ## Generation and reuse
 
-Settle this with the first generator: explicit tracked build steps, separate generation/publication, and an internal mapping retaining native associations. Fingerprints cover reachable shapes/descriptions, target, naming, generator/backend versions and options; use deterministic graph identities, not addresses. Reuse Zig's caches; a cache hit still checks destination state. Never publish only during build configuration.
+Use explicit tracked build steps and an internal mapping retaining native associations. Reuse Zig's ordinary caches. Never emit files only as a build-configuration side effect. Implement the generator support needed by the selected application feature in the [feature specification](../../../../ephemeral/plans/first-application-spec.md).
 
-Track owned paths and hashes. Refuse unowned collisions or edited outputs; remove only unchanged owned stale files. Preserve equal bytes/mtimes. Check-only changes no outputs/ownership state. Stage publication, replace files atomically and make partial failure recoverable; automatic damaged-file repair is not required.
+The earlier ownership/hash, stale-removal, check-only and publication-recovery requirements are deferred under the user's subsequent feature/proof direction. The [generation design](../../../../ephemeral/plans/generation-lifecycle.md) preserves them as reference material; they are not first-generator gates.
 
 ## First build and proof
 
-1. Build one public ./example through the package interface. Project scalars/a record into TS and JSDoc; compile valid/invalid consumers. Check ownership/stale cleanup, unchanged rebuilds and cache invalidation. Emit ordinary modules without barrels.
+The application feature specification governs construction order. These component examples are available when their mapping features are selected:
+
+1. Build the public ./example through the package interface. Project the selected data into its frontend binding; use focused valid/invalid consumers as hygiene where useful. Emit ordinary modules without barrels.
 2. Extend the same example with enums, unions, optionals and pointers. Independently check JS values, absence/null, ranges/lengths and allocation cleanup.
 3. Demonstrate Zig→canonical-JS→Zig devalue exchange using the shared Go/Zig runtime, major 5 pinned to 5.9.4. JSON/devalue encode the same mapped values; reuse that runtime.
 
