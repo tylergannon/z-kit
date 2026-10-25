@@ -6,4 +6,6 @@ It will evolve independently of Go Polytype. Architecture, public APIs, and impl
 
 This repository currently contains project documentation only. There is no implemented library, install procedure, or usage API yet.
 
-Start with the [JSON codec experiment plan](ephemeral/plans/codec-experiments.md).
+Start with the [Zig → JavaScript mapping proposal](ephemeral/plans/mapping-contract.md): one closed admission contract for TypeScript and JavaScript with JSDoc, a [source-backed feature/test parity map](ephemeral/plans/feature-parity.md), and [acceptance through one public example](ephemeral/plans/example-acceptance.md). These are proposals; no implementation or acceptance tests have run here.
+
+The [JSON codec mechanism experiment](ephemeral/plans/codec-experiments.md) is deferred until the mapping and literal acceptance cases can hold both approaches to the same semantics.

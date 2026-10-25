@@ -1,6 +1,8 @@
 # JSON codec architecture experiments
 
-Status: planned, unexecuted. This records the architecture discussion and the next comparison; it accepts no exact API, representation, performance target, or implementation milestone. Keep the separate Type Projector repository as the workspace for now; merging it elsewhere remains possible later.
+Status: **deferred, unexecuted**. The [mapping proposal](mapping-contract.md) is now the primary next task, including both TypeScript and JavaScript with JSDoc. Resolve the shared value/admission semantics before comparing codec implementation mechanisms. This document preserves the earlier architecture discussion and comparison; it accepts no exact API, representation, performance target, or implementation milestone. Keep the separate Type Projector repository as the workspace for now; merging it elsewhere remains possible later.
+
+Terminology: below, historical “nullable” means a native Zig optional `?T` with a required wire key and possible null value. No separate Nullable wrapper/type is proposed. Historical “optional” field omission means the distinct absent/present state, whose public spelling remains open. The current mapping proposal uses Zig's own optional terminology.
 
 ## Direction and the question to resolve
 
