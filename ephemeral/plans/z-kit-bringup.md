@@ -1,0 +1,72 @@
+# z-kit bring-up: product scope and projector placement
+
+The product goal is **a usable Zig backend for ordinary SvelteKit applications**. `z-kit` is a working name. The projector is supporting machinery; completing a standalone declaration generator is not, by itself, bringing z-kit online.
+
+This is a source-backed feature inventory and architecture recommendation, not a full-parity sprint commitment or authorization to move repositories. The [mapping brief](mapping-contract.md), verified configuration experiment and generation plans remain useful component designs.
+
+## Recommendation: one product, internally modular
+
+Build the projector as a lightweight source module inside z-kit, with one app-wide generation pipeline. Keep its reflection/mapping/codecs independent of routing, HTTP, Vite and the renderer. An app can use native mapping/schema helpers without constructing a web server. Preserve the verified `Projection(T)` authoring shape; its eventual import path is not fixed here.
+
+| Placement | What becomes easier | Cost / condition |
+| --- | --- | --- |
+| Internal z-kit module — recommended | Handler signatures, route events, wire roots, JS/TS bindings and publication evolve in one checkout/release. One owner sees the whole application graph. | Requires deliberate internal dependency direction; avoid a monolithic generator/runtime tangle. Extract later if a real independent consumer needs it. |
+| Separate projector repository | Independent release/use outside z-kit; a small source dependency can still specialize over app types. | Cross-repo API/version coordination and paired changes remain. Prefer this if an actual compile/build experiment shows the boundary simplifies integration, or an independent customer justifies it. |
+
+This is a coordination/ownership simplification, not a demonstrated compiler-speed improvement. Zig source modules and comptime specialization work in either placement. Moving files into one repository does not merge the separate semantic contexts of a host generator and target application. No separate public grammar/plugin SDK is required. Keep the shared Go/Zig **devalue runtime** as its existing independent protocol dependency; embedding the projector does not mean copying that runtime.
+
+## Feature inventory
+
+**First online** means a browser can use a real SvelteKit app backed by Zig. **Deployable** adds production hosting. **Customer readiness** expands to actual SKGo application behavior; it is not an assertion that every row must fit Sprint 1.
+
+| Area | Capability needed | Milestone / original source |
+| --- | --- | --- |
+| Project and build | An adopter-facing Zig source package, frontend dependency/adapter setup, explicit generation/build/dev commands, fresh-checkout bootstrap and readable diagnostics. | First online; [project structure](/Users/tyler/src/skgo/project-structure.md), [build order](/Users/tyler/src/skgo/building-your-app.md) |
+| Kit contract | One selected Kit version; adapter/runtime identity checks; Kit-owned route/module discovery and remote IDs. Keep components and universal loads ordinary SvelteKit. | First online; [adapter identity](/Users/tyler/src/skgo/internal/gen/adapter.go:12), [Kit metadata](/Users/tyler/src/skgo/internal/gen/load_params.go:37) |
+| Routing | Static/dynamic routes, groups/layout ancestry, parameters, matcher rejection/fallback and endpoint dispatch; generated concrete route/event types and links. Add optional/rest/encoding edge coverage as supported. | Basic route first; wider routing before customer readiness; [routing](/Users/tyler/src/skgo/routing.md), [typed params](/Users/tyler/src/skgo/internal/gen/load_params.go) |
+| Request runtime | HTTP status/headers/body, locals, cookies, hooks/middleware, redirects/errors, request isolation, cancellation and allocator ownership. Include origin/CSRF policy before mutations. | First online; [event](/Users/tyler/src/skgo/event.go), [request events](/Users/tyler/src/skgo/request_event.go), [hooks](/Users/tyler/src/skgo/hooks.md) |
+| Data projection | Signature-derived input/result roots; bounded native types, descriptions, naming, optional/presence semantics, typed codecs and JS/TS declarations from one mapping. | First online; [current composition](/Users/tyler/src/skgo/internal/gen/types.go:20), [codec roots](/Users/tyler/src/skgo/internal/gen/codecs.go:20) |
+| Client bindings | Real remote modules and load/action/endpoint stubs that Kit compiles; correct runtime exports, hashed identities and matching native registrations. Types alone are insufficient. | First online; [remote stubs](/Users/tyler/src/skgo/internal/gen/emit.go:23), [generator](/Users/tyler/src/skgo/internal/gen/gen.go:1) |
+| Server loads | Page and layout loads, parent data, URL/param dependencies, invalidation and typed page data; server-only code remains native. | One page load first; full load semantics before customer readiness; [loads](/Users/tyler/src/skgo/load.md) |
+| Remote operations | Query and command first; then batch queries, refresh/requested updates, forms, prerender operations and live-query streaming. Honor request context and error/redirect contracts. | Basic remotes first; expanded kinds before relevant customer paths; [remotes](/Users/tyler/src/skgo/remote-functions.md), [operation model](/Users/tyler/src/skgo/templateapi/generator.go:75) |
+| Forms and actions | Native/no-JS submissions, enhanced forms, field issues, redirects, keyed forms, multipart uploads and file lifetimes. | A basic mutation first; full form/upload behavior before dependent app paths; [actions](/Users/tyler/src/skgo/form-actions.md), [form types](/Users/tyler/src/skgo/remote_form.go) |
+| SSR and hydration | Development renders with Vite/Kit; production executes the actual Kit server bundle through a qualified embedded JS engine. Preserve HTML/head/status, hydration data and client navigation. | Dev rendering first; embedded production SSR is a deployable gate, not proved by the JSC smoke probe; [composition](/Users/tyler/src/skgo/development-server.md), [production host](/Users/tyler/src/skgo/document.go) |
+| Fetch and streaming | Request-aware same-origin dispatch, outbound HTTPS, credentials/cookie effects, fresh nested locals, response streaming, hydration fetch replay and abort cleanup. Deferred load values and live streams need framework adapters beyond the projector's acyclic data subset. | Qualify the seam early; complete supported paths before deployment/customer readiness; [fetch bridge](/Users/tyler/src/skgo/document_fetch.go:30), [deferred loads](/Users/tyler/src/skgo/deferred.go) |
+| Development loop | One owner for stable address/proxy, Vite HMR, generation, Zig rebuild/restart, readiness, build errors, revision coherence and child cleanup. Native restarts are acceptable; no Go-style hot-install requirement. | First online; [existing development owner](/Users/tyler/src/skgo/development-server.md), [native composition](/Users/tyler/src/skgo/native_development.go) |
+| Generation lifecycle | Owned outputs, unchanged-byte stability, stale cleanup, check-only, cache identity/invalidation, coherent native/frontend artifacts and recoverable publication. | First generator, through the same owner; [current design](generation-lifecycle.md) |
+| Production packaging | Frontend build → adapter artifacts → embedded assets/server bundle → native application; static caching/content types, public origin, env/config and graceful shutdown. Qualify the selected deployment platforms. | Deployable; [build](/Users/tyler/src/skgo/building-your-app.md), [static handler](/Users/tyler/src/skgo/static.go), [deployment](/Users/tyler/src/skgo/deploying.md) |
+| Prerender/page options | Kit-owned crawling/artifacts, native build-time loads/remotes/endpoints, entries, SSR/CSR/prerender choices, environment and CSP handling; helper process must not require final frontend artifacts. | Before pages using these features; [prerender](/Users/tyler/src/skgo/prerendering.md), [helper](/Users/tyler/src/skgo/prerender_service.go:21), [page options](/Users/tyler/src/skgo/page-options.md) |
+| Operational correctness | Public/private/static/dynamic env behavior, CSP, origin/base/app paths, runtime/build compatibility, useful errors/logging and request tracing hooks. | Basic configuration/errors first; qualify remaining policies before customer deployment; [env](/Users/tyler/src/skgo/environment-variables.md), [CSP](/Users/tyler/src/skgo/content-security-policy.md), [observability](/Users/tyler/src/skgo/observability.md) |
+| Custom transports | App-defined reducer/reviver hooks and corresponding client/native types; do not widen every ordinary data type into opaque values. | Customer readiness where used; [transport](/Users/tyler/src/skgo/transport.md), [generator handling](/Users/tyler/src/skgo/internal/gen/transport.go) |
+| Non-web native data APIs | Native JSON codecs, schemas and schema-backed validation usable for workflow/LLM/storage models, independently of route registration. | Deferred for first web bring-up; required before claiming full Gimbal adoption; [Gimbal schemas](/Users/tyler/src/gimbal/schema.go), [recursive workflow JSON](/Users/tyler/src/gimbal/workflow/schema.go) |
+| Other consumers/tools | Swift/Kotlin declarations, native-shell and CLI integrations, application MCP or developer tooling where actually needed. Preserve extension possibilities without reproducing every SKGo plugin API. | Later/customer-driven; Kotlin remains deferred; [languages](language-projections.md), [existing plugins](/Users/tyler/src/skgo/plugins) |
+
+## One pipeline and the bootstrap constraint
+
+The design must break dependencies in this order:
+
+1. Obtain Kit route/matcher/module metadata; choose application target and native route declarations.
+2. Generate the route/event types that native handlers import, plus an import registry for known handler modules. Do not require compiling handlers against files that only their own later reflection would create.
+3. Compile/run the host generator over those handlers; reflect signatures, collect one shared wire-root graph, and emit bindings, stubs, native registration information and identity metadata together.
+4. Build Kit/Vite with those bindings. A separate native prerender helper can answer build-time operations without importing final embedded frontend assets.
+5. Compile the target application using the completed frontend artifacts and native codec specializations. Development uses Vite rendering with the same native application semantics.
+
+This is the key integration work to prove before a large standalone-projector sprint. Internal placement makes its ownership simpler but does not automatically solve the cycle. Explicit registries/import generation are viable Zig mechanisms; global reflection over arbitrary undiscovered application declarations is not assumed. Normal source imports/comptime remain the starting point; no compiler fork or type-introspection server is required.
+
+## First application proof and early decisions
+
+Before dispatching implementation, select the initial development/deployment targets, native HTTP/std.Io composition, handler declaration/discovery shape and production engine/packaging path. These are unresolved choices; a source-module placement recommendation does not settle them. App-specific databases, authentication providers and workflow engines remain application code, supported by the framework's request, cookie, data and lifecycle APIs.
+
+Recommend the first product checkpoint be **one z-kit app in a browser**: a matched route with a server load, a typed query and command, a cookie/locals effect, SSR hydration and client navigation. A native shape edit must regenerate compatible bindings; a body edit must reach the browser after rebuild; invalid code must show a useful error and recover. Reuse this one app for publication/cache witnesses rather than building a second acceptance framework.
+
+Call that *development-online* until production is separately demonstrated. Before spending heavily on broad code generation, qualify one real Kit bundle with the proposed production engine: async render, native fetch callback, headers/first body bytes before producer EOF, and abort/cleanup. Selecting JavaScriptCore, QuickJS or a packaging strategy without that proof would leave the biggest risk untouched. Development need not link the production engine.
+
+Then make the same example deployable as a native application with embedded frontend output. Expand forms, layouts, live streams, prerender and custom transports according to actual customer paths. Generic JSON codecs need not wait on an A/B code-emission experiment, but schema/provider/enum/time features remain deferred until their customer milestone; this inventory does not silently reverse those decisions.
+
+## Source boundary
+
+Inspected local SKGo commit **`618f467b93d5371ebdccfb7f6b59b24814a454f6`**, clean: README, adapter peer dependency and example all target **Kit 3.1.0**; `go.mod` pins Polytype **v1.10.0**. Current framework source, not cached Kit-3.0 prose, controls this comparison. No SKGo tests or application builds ran.
+
+Gimbal is a concrete verified customer: commit **`697c4cefa3593cbb53498ad75837277554946c34`** pins SKGo **v0.35.1** and Polytype **v1.10.0**. Its native schemas/validation, [live query](/Users/tyler/src/gimbal/web/src/lib/runs.remote.go), [authentication cookies/nullable results](/Users/tyler/src/gimbal/web/src/routes/auth.remote.go) and [custom transported snapshot](/Users/tyler/src/gimbal/web/src/hooks.go) expose requirements a plain projector example misses. This is a targeted source sample, not a complete Gimbal migration audit; unrelated untracked `.gimbal/` state was untouched.
+
+The read-only Zig cache supplies the pinned 0.17 source SDK/build/ownership constraints and original [direction](/Users/tyler/zig-token-cache/branch/snapshot/ephemeral/zig-analysis/DIRECTION.md), [SSR seam](/Users/tyler/zig-token-cache/branch/snapshot/ephemeral/zig-analysis/ssr-seam/README.md) and [route-import proof](/Users/tyler/zig-token-cache/branch/archive/ephemeral/zig-analysis/import-probe/main.zig). Older 0.18 build-performance experiments and the synchronous JSC probe are not a current z-kit implementation or production-rendering proof. Existing verified projector configuration work is retained; no code/repository was moved, renamed or deleted.

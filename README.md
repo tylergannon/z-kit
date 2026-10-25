@@ -1,12 +1,12 @@
 # Zig Type Projector
 
-Type Projector is a planned Zig library for projecting Zig types into schemas, codecs, and foreign-language declarations.
+This checkout contains type-mapping research and verified Zig experiments for the planned Zig version of SKGo, provisionally called **z-kit**.
 
-It will evolve independently of Go Polytype. Architecture, public APIs, and implementation milestones are still being planned.
+The product goal is a usable z-kit application. The [bring-up inventory and placement comparison](ephemeral/plans/z-kit-bringup.md) recommends an internal projector module and one app-wide generator; repository placement is still a recommendation, and no repository has been moved or renamed.
 
 This repository currently contains project documentation and isolated research experiments. There is no implemented library, install procedure, or usage API yet.
 
-Start with the [Zig → JavaScript build brief](ephemeral/plans/mapping-contract.md): the mapping, native optional defaults, configuration example, and first implementation steps for both TypeScript and JavaScript/JSDoc. Supporting research and the larger example plan are optional references, not extra first-delivery gates.
+The [Zig → JavaScript build brief](ephemeral/plans/mapping-contract.md) defines the mapping component, native optional defaults, configuration shape, and TypeScript/JavaScript outputs. Its standalone example is component proof; z-kit bring-up requires the framework integration described above.
 
 The [typed configuration experiment](ephemeral/projection-shape-lab/README.md) demonstrates nested anonymous records, imported types and recursion with a pinned compiler. The [brief delta review](ephemeral/plans/mapping-delta-review.md) records the decisions folded into the brief from the larger proposal.
 
