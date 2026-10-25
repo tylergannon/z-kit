@@ -8,7 +8,7 @@ Terminology: the current preferred proposal uses ordinary native Zig optionals `
 
 Investigate a small library that takes native Zig type reflection plus explicit metadata, validates and lowers a deliberately restricted shared wire model, and computes a dependency-inclusive semantic fingerprint with that normalized model. Native JSON codecs and runtime-accessible JSON Schema belong in the library's direction. Foreign-language declarations are projected in an explicit generator phase: compilation can compute metadata; filesystem output occurs when the compiled build program or generator runs. The exact public interfaces remain open.
 
-A portable wire model can retain names and shapes while losing the native type and field associations needed to read or construct Zig values. Find the smallest information that must survive lowering: native `T`, field access/construction, renamed wire fields, presence policy, and enum/union associations. A codec can receive `T` alongside admitted metadata, or a typed descriptor can retain these associations at comptime. Zig type values cannot simply become runtime IR data. Calling this representation a descriptor does not remove its role as an IR. Avoid rebuilding independent wire policy in each consumer.
+A portable wire model can retain names and shapes while losing the native type and field associations needed to read or construct Zig values. Find the smallest information that must survive lowering: native `T`, field access/construction, deterministically inflected wire fields, presence policy, and enum/union associations. A codec can receive `T` alongside admitted metadata, or a typed descriptor can retain these associations at comptime. Zig type values cannot simply become runtime IR data. Calling this representation a descriptor does not remove its role as an IR. Avoid rebuilding independent wire policy in each consumer.
 
 ## Compare two primary approaches
 
@@ -23,7 +23,7 @@ For B, keep the generator's host configuration separate from the application's t
 
 ## One small fixture set for both
 
-Use the same representative native types, metadata, literal expected JSON, and invalid-input cases. Begin with a nested record containing a renamed/described field, a collection, an enum, and a tagged union. Freeze the trial's wire names, tags, numeric policy, and ordering/format expectations before comparing; these are fixture choices, not a public API decision.
+Use the same representative native types, metadata, literal expected JSON, and invalid-input cases. Begin with a nested record containing an inflected/described field, a collection, an enum, and a tagged union. Freeze the trial's wire names, tags, numeric policy, and ordering/format expectations before comparing; these are fixture choices, not a public API decision.
 
 | Field policy | Valid JSON cases | Rejection cases |
 | --- | --- | --- |

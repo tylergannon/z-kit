@@ -8,7 +8,7 @@ This repository currently contains project documentation and isolated research e
 
 Start with the [Zig → JavaScript build brief](ephemeral/plans/mapping-contract.md): the mapping, native optional defaults, configuration example, and first implementation steps for both TypeScript and JavaScript/JSDoc. Supporting research and the larger example plan are optional references, not extra first-delivery gates.
 
-The [typed configuration experiment](ephemeral/projection-shape-lab/README.md) demonstrates nested anonymous records, imported types and recursion with a pinned compiler. The [brief delta review](ephemeral/plans/mapping-delta-review.md) identifies a few decisions to resolve before the affected implementation slices.
+The [typed configuration experiment](ephemeral/projection-shape-lab/README.md) demonstrates nested anonymous records, imported types and recursion with a pinned compiler. The [brief delta review](ephemeral/plans/mapping-delta-review.md) records the decisions folded into the brief from the larger proposal.
 
 The [JSON codec mechanism experiment](ephemeral/plans/codec-experiments.md) is deferred until the mapping and literal acceptance cases can hold both approaches to the same semantics.
 

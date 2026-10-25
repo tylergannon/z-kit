@@ -1,8 +1,8 @@
 # Typed projection configuration experiment
 
-**Recommendation:** use `pub const projection: projector.Projection(@This()) = ...`. Generate only the immediate configuration fields. Each child struct owns its own configuration, including anonymous structs written inside arrays or slices. Do not recursively mirror the entire native type graph into the parent's configuration type.
+**Selected in the build brief:** use `pub const projection: projector.Projection(@This()) = ...`. Generate only the immediate configuration fields. Each child struct owns its own configuration, including anonymous structs written inside arrays or slices. Do not recursively mirror the entire native type graph into the parent's configuration type.
 
-This is an isolated experiment, not a library implementation or a finalized API. The main build brief is unchanged.
+This is an isolated experiment, not the library implementation. The [build brief](../plans/mapping-contract.md) adopts this verified struct-configuration shape; the experiment does not implement its remaining mapping policies.
 
 ## What the author writes
 
@@ -62,7 +62,7 @@ The compact machine-readable outcome is [results.json](results.json). The runner
 - Prefer the named configuration record to the array: less syntax, native named-field checking and no duplicate-entry scan. The array is a working alternative, not a requirement imposed by Zig.
 - Keep the explicit type annotation. A previously inferred `projection = .{ ... }` value has its own anonymous type and does **not** automatically convert to this generated type. Supporting that spelling would require additional normalization.
 - Discovery uses the exact public declaration name. A private or misspelled declaration is undiscovered, and Zig's lazy analysis means its annotation alone does not guarantee a diagnostic. Do not claim metadata declaration typos are checked. The pinned `@hasDecl` documentation warns about this class of fallback.
-- A data field and namespace declaration cannot both be named `projection`. The spelling is still an API choice; this experiment demonstrates the collision rather than guessing it away.
+- A data field and namespace declaration cannot both be named `projection`. The brief now selects this spelling with the demonstrated collision.
 - For types whose source the caller cannot edit, defaults work and the parent can describe its own field. Child-field metadata overrides would need a separate explicit mechanism; none is designed here.
 - Metadata adds no instance field; the fixture also checks equal native sizes. This does not promise every metadata byte disappears from every compiled binary.
 - The helper currently configures structs. Union/enum options, naming inflection, foreign declarations, codecs, complete admission rules, allocator behavior and performance are outside this proof.

@@ -45,11 +45,10 @@ const Envelope = struct {
     samples: []const i16,
     event: Event,
 
-    pub const projection = .{
+    pub const projection: projector.Projection(@This()) = .{
         .description = "A queued delivery.",
         .fields = .{
             .display_name = .{
-                .name = "display-name",
                 .description = "Name shown to the recipient.",
             },
             .owner = .{ .required = true },
@@ -58,7 +57,7 @@ const Envelope = struct {
 };
 ```
 
-An otherwise equivalent `PointerEnvelope` changes only the native event field to `PointerEvent` and supplies the same type-owned configuration. Both models are selected through the eventual public interface. Native fields remain idiomatic Zig data; the inline namespace constant configures wire/projection behavior without adding per-instance fields. **All configuration names above are illustrative and uncompiled, not a finalized API.** Unknown description/rename keys reject; configuration is optional when defaults suffice. Byte slices default to UTF-8 text. Labels are tag-name enum strings, not bytes or numeric backing tags.
+An otherwise equivalent `PointerEnvelope` changes only the native event field to `PointerEvent` and supplies the same type-owned configuration. Both models are selected through the eventual public interface. Native fields remain idiomatic Zig data; the inline namespace constant configures wire/projection behavior without adding per-instance fields. **The struct configuration shape is compiler-verified; enum/union options and this complete exchange remain illustrative and uncompiled.** Unknown configuration field/option keys reject; configuration is optional when defaults suffice. Byte slices default to UTF-8 text. Fields and default enum/tag labels follow the brief's deterministic naming; labels are strings, not bytes or numeric backing tags.
 
 Samples uses an ordinary variable-length slice so this first exchange does not require fixed-array or schema-dialect proof. The contract retains fixed arrays; when supported, a separate focused `[2]i16` case must accept exactly two elements and reject other lengths. Deferring schema constraints does not relax native decoding. Array bounds remain a planned supported schema capability; the [modern general dialect](mapping-contract.md#schema-and-later-work) is post-initial-release work. Neither backend is implemented here.
 
@@ -84,7 +83,7 @@ The pointer-backed producer uses `.created` pointing at an initialized Created w
 
 ```js
 {
-  "display-name": "Ada",
+  "displayName": "Ada",
   count: 7,
   active: true,
   status: "ready",
@@ -109,7 +108,7 @@ export type Event =
 /** A queued delivery. */
 export type Envelope = {
   /** Name shown to the recipient. */
-  "display-name": string;
+  "displayName": string;
   "count": number;
   "active": boolean;
   "status": Status;
@@ -130,8 +129,8 @@ Expected JSDoc semantics, using an inline quoted-key form to illustrate the comm
 /** @typedef {(Created & { kind: "created" }) | (Deleted & { kind: "deleted" })} Event */
 /**
  * A queued delivery.
- * display-name: Name shown to the recipient.
- * @typedef {{ "display-name": string, count: number, active: boolean,
+ * displayName: Name shown to the recipient.
+ * @typedef {{ "displayName": string, count: number, active: boolean,
  * status: Status, nickname?: string, owner: string | null,
  * labels: Array<Status>, samples: Array<number>, event: Event }} Envelope
  */
@@ -157,8 +156,8 @@ The planned commands/step names are interface goals, not commands that currently
 
 | Candidate case | Expected result for that feature | Layer |
 | --- | --- | --- |
-| Missing display-name; owner absent | missing required key at `/display-name`, `/owner` | runtime + TS/JSDoc consumers |
-| display-name number; nickname null; owner undefined | expected text/non-null omittable value/required optional value at exact path | runtime + consumer checks where expressible |
+| Missing displayName; owner absent | missing required key at `/displayName`, `/owner` | runtime + TS/JSDoc consumers |
+| displayName number; nickname null; owner undefined | expected text/non-null omittable value/required optional value at exact path | runtime + consumer checks where expressible |
 | Explicit nickname undefined | own undefined rejected; distinguish hasOwn from reading an omitted key; checker behavior tested explicitly in each output | runtime + TS/JSDoc |
 | Tag-only union variant | object containing only the discriminator; no named empty payload needed | runtime + both foreign consumers |
 | Wrong status or kind literal | invalid enum/tag at `/status`, `/event/kind` | runtime + both foreign consumers |
@@ -171,8 +170,8 @@ The planned commands/step names are interface goals, not commands that currently
 | NaN, infinity, BigInt, sparse array, Date | nonfinite/wrong kind/hole rejected | runtime; devalue parser can represent these |
 | Invalid UTF-8; unpaired JS surrogate | reject invalid native text / unsupported received string, never replacement silently | typed text + runtime boundary |
 | Duplicate input property, unknown tag, malformed devalue reference | reject at parser/typed boundary with useful path/format error; verify parser preserves enough evidence | raw-format and typed tests |
-| Metadata typo, unsafe numeric enum, discriminator collision, untagged/scalar-payload union, combined absent/null/value acceptance | deterministic admission failure before either file is published | focused negative/compile fixtures |
-| Punctuated key and malicious description text | valid type-checkable declarations, escaped comment delimiters/controls; no source injection | both printers/consumers |
+| Configuration field/option typo, unsafe numeric enum, discriminator collision, untagged/scalar-payload union, combined absent/null/value acceptance | deterministic admission failure before either file is published | focused negative/compile fixtures |
+| Native names and malicious description text | deterministic inflection, collision/representability checks and escaped comment delimiters/controls | both printers/consumers |
 | Partial output failure | failure reported even if a preceding file was written | publication test, after basic generator exists |
 
 For B, demonstrate both declaration consumers, the small canonical-JS exchange, representative failures and allocation cleanup for the implemented shapes. Independently expected values matter more than matching round trips. The wider test catalog and future roadmap do not gate an A-only delivery.
