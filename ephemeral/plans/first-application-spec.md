@@ -1,16 +1,14 @@
-# z-kit: first application and development loop
+# z-kit: develop the application one useful feature at a time
 
-Status: **discussion draft**, October 25, 2026. This records the product map and proposes a first construction slice from the current conversation. It is not an implementation instruction or a claim that the requirements and architecture are settled. Open decisions below must be resolved at the relevant boundary before implementation proceeds through it.
-
-This uses the nlspec skills' standard of explicit intent, behavioral claims and contracts. It is a toolchain-specific working specification, not a formal nlspec with an adopted cell decomposition or code budgets.
+Status: **discussion draft**, October 25, 2026. The first feature and the preferred direction after it come from the user's current instructions. Further features will be selected progressively for their usefulness and value to the whole application.
 
 ## What we are building
 
-z-kit is the Zig successor to SKGo: a framework for building ordinary SvelteKit applications with native server-side application logic written in Zig. Application authors write Svelte components and native functions. z-kit connects those functions to Kit's application model and builds the resulting application into a native executable.
+z-kit is the Zig successor to SKGo: a framework for building ordinary SvelteKit applications with native server-side application logic written in Zig. Application authors write Svelte components and native functions. z-kit connects those functions to Kit's application model and eventually builds the application into a native executable.
 
-SvelteKit supplies frontend compilation, component rendering, browser navigation and the frontend's remote-function machinery. z-kit supplies the native side of the application, generated integration, an adapter for SvelteKit, and the tools that build and develop the combined application. Routing metadata comes from Kit; native dispatch must agree with it. The precise division of runtime work is a design question to make explicit as the slice takes shape.
+Start with a real SvelteKit application running behind a Zig development server. Extend that same application as we add remote functions, page loads and backend reloads. Each increment must give the developer useful application behavior and demonstrate it through the running application.
 
-The first slice should make a very small application work through that entire path, including a basic development server. It will help us develop the architecture through actual construction. Completing a projector or generator alone does not meet that goal.
+Use **Zig 0.17.0**, the Zig build system, and the actual SvelteKit/Vite toolchain. The specification describes features and the behavior that demonstrates them; supporting technical requirements belong under the feature they enable.
 
 ## Map of the SKGo terrain
 
@@ -28,88 +26,108 @@ This is a map of responsibilities and capabilities to consider for z-kit, not a 
 | Developer utilities | Project creation, add-ons, dependency/toolchain updates, incremental builds, checks, diagnostic guidance, environment tools and developer MCP. |
 | Additional consumers | Generated CLI/MCP clients, Swift/native application integration and related extension tooling. |
 
-The [broader bring-up baseline](z-kit-bringup.md) retains the existing feature inventory and milestone definitions. This smaller slice does not by itself satisfy that document's development-online, deployable or customer-ready milestones. In particular, the earlier browser checkpoint's query-plus-command, cookies/locals and navigation coverage must not silently become requirements of this smaller exercise.
+The [broader bring-up baseline](z-kit-bringup.md) retains the product's feature inventory and development-online, deployable and customer-ready milestones. Those milestones describe larger outcomes. The first development-server feature below is the first construction increment.
 
-## First application
+## First feature: trivial development server
 
-The requested application has one simple page and one native remote function. A page server load is a proposed addition: the user said “maybe one load,” so it remains a scope decision rather than a settled requirement.
+The developer starts the example application, opens the Zig server's network address in a browser, and uses a working SvelteKit page. Vite serves the application over a Unix domain socket. The Zig server owns the public network listener and proxies browser traffic to that socket.
 
-Proposed fixture: a read-only query accepts text and returns a small native record that the page displays. This exercises argument handling, a real projected result type and the call back into Zig. The page offers a way to make a browser-originated call, so initial rendering cannot conceal a broken client call path. If the load is selected, it returns a small piece of initial page data that is visible in server-rendered HTML and available after hydration. Fixture names and UI styling are implementation details; operation kind and admitted input/result shapes must be recorded before coding their integration.
+The same application is the foundation for later features. Native remotes, page loads, backend rebuilds and an embedded production renderer become useful additions to an already running application.
 
-The application uses ordinary SvelteKit source and configuration, generated integration, and Zig application code. It has a documented build entry point and development entry point. Their final command spelling and the native declaration syntax are still open.
+### Observable behavior
 
-In development, the developer visits one stable address owned by the z-kit development host. Vite performs development rendering and frontend HMR. Native calls execute in the Zig application. Changes to native function bodies and admitted data shapes reach that browser through watching, generation where needed, rebuild and replacement.
+- Starting the development application starts Vite with the SvelteKit application on a Unix domain socket and starts the Zig server on its documented network address.
+- Opening that network address loads the real SvelteKit page, its assets and client JavaScript. The page hydrates and its client-side interactions work through the Zig proxy.
+- Editing a Svelte component updates the open browser through Vite's normal frontend hot reload, using the same Zig address.
+- Startup reports a usable address only once the application can answer. A failed startup explains the failure. Stopping the development session releases its listener, its owned Vite process and its socket so the application can be started again.
 
-The application build produces a Zig executable containing the frontend build artifacts. Running it serves the page and executes its native operation without a Vite or Node server. Server rendering executes in the native application's selected embedded JS engine; the engine and its packaging are unresolved. “One executable” does not yet promise static linkage or the absence of system-library dependencies.
+### Supporting technical requirements
 
-## Toolchains and construction path
+The traffic path is **browser → Zig network listener → HTTP over Unix domain socket → Vite/SvelteKit**. Vite's application listener uses the socket; the browser reaches the application through Zig.
 
-Use **Zig 0.17.0** and the ordinary Zig build system. Use SvelteKit's actual build and Vite integration, with a z-kit adapter written for that environment. Pin the supported Kit/frontend combination before depending on its internal contracts; current inspected SKGo targets Kit 3.1.0, which is evidence for a candidate baseline, not a compatibility proof for z-kit.
+The proxy carries HTTP methods, request paths and queries, bodies, response status and headers without changing application meaning. It supports the WebSocket upgrade and ongoing connection used by Vite HMR. URLs and HMR configuration refer the browser back to the Zig address.
 
-The build has these dependencies:
+Vite remains responsible for development rendering, module serving and frontend change detection. The Zig development host owns the public listener and the lifecycle of the Vite child. Socket paths, readiness, failure reporting and cleanup have one owner. Choose the first supported host platform and the Zig HTTP/std.Io composition before implementing this feature. The exact command spelling and private process communication are implementation choices unless they affect the developer-facing behavior described here.
 
-1. Obtain Kit's route/module metadata and identify the selected native handler modules.
-2. Produce any route/event declarations required to compile those modules.
-3. Compile and run a host generator over native declarations. Derive types, bindings, native registration and shared operation metadata together.
-4. Run the normal frontend build with the z-kit adapter consuming the generated integration.
-5. Compile the native application with the completed frontend artifacts and matching native registrations/codecs.
+Use only the Vite integration needed for this feature. Native operation discovery, generated bindings and production adapter output acquire requirements when their corresponding features are selected.
 
-Development reuses the same application declarations and generation meaning, while substituting Vite rendering for the embedded production renderer. Rendering mode is an explicit composition choice, independent of optimization mode.
+## Preferred next feature: call a Zig remote function from the application
 
-This ordering must work from a clean example checkout. Reflecting a handler cannot require a declaration that only that same reflection could generate. The generator must not import the final application entry point if that entry point embeds frontend output that does not exist yet. Source imports, explicit discovery and tracked build steps are the starting mechanisms; generating files only as a build-configuration side effect is insufficient.
+The developer writes a native function, imports its generated binding in the SvelteKit page and calls it from the browser. The page displays a result produced by Zig. This is the next useful connection to establish after the development server works.
 
-## Responsibilities and contracts
+### Observable behavior
 
-These are proposed responsibility boundaries, not a prescribed file tree or one process/package per row.
+- A browser interaction calls the native function through its generated frontend binding and displays the expected result in the same running application.
+- The frontend binding describes the function's actual input and result types. Valid callers type-check; invalid callers receive useful type errors.
+- Editing the selected native input/result shape and explicitly rebuilding/regenerating produces matching frontend and native behavior. Automatic backend rebuild is a later feature.
 
-| Responsibility | Contract with the rest of the system |
-| --- | --- |
-| Application generation | Consume selected native declarations, Kit metadata and target settings. Produce a coherent set of frontend declarations/modules, native registration and identity metadata. Unsupported signatures fail with source-oriented diagnostics. A Kit-visible operation must identify the same native function and wire types on both sides. |
-| Data projection | Derive the bounded wire mapping and codecs needed by the selected operation. Keep native associations required for reading/constructing values. Reuse the internal projector configuration and [mapping contract](../../modules/projector/ephemeral/plans/mapping-contract.md); implement only the admitted shapes selected for this slice. Routing, HTTP, Vite and renderer dependencies stay outside the projector. |
-| z-kit adapter and Vite integration | Consume generated operation metadata and Kit's discovered modules/routes. In a build, produce assets, rendering code and metadata the native runtime can consume. In development, connect Kit's rendering and native callbacks and expose readiness/configuration to the development host. Reject incompatible or mismatched artifacts with an actionable diagnostic. Exact private formats remain to be designed. |
-| Native application runtime | Execute the registered Zig operation, decode inputs and encode outputs according to the shared mapping, serve the built application, and expose the native callbacks required by the selected page/renderer. Failures must reach the caller through the selected Kit contract. Application code has the same meaning in development and compiled execution. |
-| Development host | Own the public listener and the lifetimes of Vite, watching/generation and the native application. Route browser traffic to the appropriate participant, preserve Vite HMR, build replacements after edits, and publish only compatible ready participants. Report errors and recover after correction without requiring the developer to restart the whole session. |
+### Supporting technical requirements
 
-There is one application-wide generation/publication owner. The existing [generation lifecycle](generation-lifecycle.md) governs owned outputs, unchanged bytes, fingerprints, conflict detection, check-only and recoverable publication; this draft does not replace those rules with a second pipeline.
+Select the first remote kind and bounded input/result shapes when this feature is specified for implementation. A read-only query accepting text and returning a small record is a possible fixture, not a settled API.
 
-Wire exchange must follow Kit's protocol and the existing mapping brief's devalue major-5 profile, pinned to 5.9.4. Reuse the shared Go/Zig devalue runtime as an independent dependency; the internal projector supplies the native typed mapping/codecs. Qualify the selected subset against real Kit traffic rather than inventing a parallel remote protocol.
+Native declarations are the source for frontend bindings and native registrations. Define how declarations are authored and discovered, and generate any prerequisites before compiling handlers that import them. One application-wide generation owner produces compatible frontend modules, native registration and shared operation metadata. The z-kit adapter/Vite integration must give Kit real modules and connect Kit's operation identities to native dispatch.
 
-Generated artifacts and native/frontend participants must describe compatible application revisions. A failed or superseded build cannot be announced as the active application. Compilation failure preserves the previous working native application when one exists; initial failure leaves application readiness false. Exact request waiting/failure policy during replacement is still open.
+Unsupported signatures and incompatible generated/frontend/native combinations must be diagnosed before they can be used as working calls.
 
-Every cross-runtime value or callback needs an explicit lifetime. Request-owned buffers remain valid until their consumers finish; retained renderer/build state owns its storage. Cancellation and shutdown finish or cancel dependent work before freeing it. The HTTP/I/O composition and concrete ownership API must settle these contracts before asynchronous work crosses them.
+The internal projector supplies only the admitted mapping and typed codec support needed here, following the existing [mapping contract](../../modules/projector/ephemeral/plans/mapping-contract.md). It remains independent of routing, HTTP, Vite and rendering. Wire exchange follows Kit's protocol and the brief's devalue major-5 profile pinned to 5.9.4; reuse the shared Go/Zig devalue runtime as an independent dependency.
 
-## Observable completion claims
+Generation follows the existing [generation lifecycle](generation-lifecycle.md): owned outputs, unchanged-byte stability, safe stale removal, edited/authored conflicts, check-only and recoverable publication. Verify these properties while demonstrating that the developer can reliably regenerate and use the remote function. They support that feature rather than becoming separate feature names.
 
-These are proposed acceptance claims for the slice, not reports of passing tests. Local claims exercise a responsibility's contract; integration claims require the real example and actual toolchains.
+Pin the Kit/frontend versions used by this integration and define input/result ownership and failure behavior before implementing the bridge.
 
-| Claim | Evidence required |
-| --- | --- |
-| **G1 — Generated connection (local: generation/projection)** | From the selected native signature, produce the actual frontend binding/type and native registration/codec. A typed consumer accepts a valid call and rejects an invalid one. Literal wire fixtures establish the selected input/result mapping. |
-| **G2 — Artifact agreement (local: adapter/runtime contract)** | Matching generated and frontend metadata is accepted. An intentionally mismatched operation or build identity is rejected with a useful explanation. |
-| **G3 — Publication correctness (local: generation)** | The same example witnesses unchanged-byte stability, input invalidation, missing output, unchanged owned stale removal, authored/edited conflicts, check-only drift and interrupted/retried publication under the existing lifecycle design. |
-| **G4 — Real compiled application (integration)** | Build the example from a clean checkout with documented prerequisites. Run its executable without Vite/Node running. A browser receives server-rendered page content, hydrates successfully and invokes the native remote through the generated binding. Record literal expected native results. |
-| **G5 — Real development session (integration)** | The same app runs at the development host's stable address using Vite rendering and the Zig operation. A frontend edit arrives through HMR; a native body edit changes the result; a shape edit regenerates compatible integration and reaches the browser. |
-| **G6 — Failure and recovery (integration)** | Introduce invalid native source, observe a source-oriented diagnostic, and verify the failed build does not replace a working application. Correct it and observe the new result in the open browser. Verify an obsolete build cannot publish over a later admitted revision. Browser presentation of diagnostics is an open detail. |
-| **G7 — Resource lifetime (local and integration)** | Local lifetime/failure checks exercise the chosen ownership contract. Repeated calls and rebuild/replacement do not retain retired native hosts or request resources. Stopping the development session terminates owned children and releases its listener/watch resources. |
-| **L1 — Page load, if selected (integration)** | The native page-load value appears in server-rendered HTML and the hydrated page, in both development and compiled execution. Kit invokes the registered native load through the generated integration. |
+## Preferred following feature: load page data in Zig
 
-Preserve the root configuration tests and their separate compile-only proof. Those checks do not substitute for running this application. Record the exact revision, toolchain versions, platform and observable outputs with the eventual proof.
+The developer writes a native page load and uses its data in the SvelteKit page. The page receives actual Zig-produced data during development rendering and retains the expected data when the browser hydrates.
 
-## Decisions to resolve together
+### Observable behavior
 
-These are known design questions, not permission to let an implementer silently choose incompatible public behavior.
+- Visiting the page produces server-rendered HTML containing the expected native load result.
+- The hydrated page receives the same load data and its frontend code can use the generated data type.
+- Changing the load's result and explicitly rebuilding/regenerating changes the displayed page data without hand-maintaining a parallel frontend declaration.
 
-| Decision | Why it matters / when it must be resolved |
-| --- | --- |
-| Initial development and execution platforms | Sets the HTTP/I/O, watcher, JS engine and distribution constraints. Resolve before platform-specific integration. |
-| Small app contract | Select the remote kind and bounded input/result shapes; decide whether the single page load joins the slice. Resolve before authoring its API and acceptance fixtures. |
-| Native authoring and discovery | How an application declares/exports an operation, which source modules are found, and how generated prerequisites are imported. Resolve before the first generator integration. |
-| Kit/frontend pin and adapter surface | Select the supported versions and the contracts the z-kit adapter relies on. Resolve before generating modules against Kit. |
-| HTTP/std.Io and ownership composition | Specify request/response lifetime, cancellation and engine callback ownership. Resolve before implementing the runtime bridge. |
-| Embedded engine and packaging | Select using a real Kit rendering qualification. The existing baseline calls for async rendering, native fetch callbacks, first bytes before producer EOF, and abort/cleanup qualification before broad generation investment. The historical synchronous JSC probe does not meet this gate. |
-| Development replacement behavior | Set readiness, in-flight request handling, diagnostic presentation and refresh behavior across generation and native restarts. Resolve before the development host publishes replacements. |
+### Supporting technical requirements
 
-Construction order should follow those decisions and concrete integration evidence. This document does not assign a sprint, select an engine, or authorize framework implementation. Only specified behavior belongs to the eventual slice; the broad SKGo map is reference context.
+Generate the Kit-facing server-load module and matching native registration from the selected native declaration. Use Kit's route/module metadata to associate the load with its page. Pass request-owned data and results across the Vite/native boundary with explicit lifetimes and cleanup.
+
+Specify the first load's application-facing signature and request facilities when selecting this feature for implementation. The feature establishes page loads in the existing example; its requirements should follow that concrete behavior.
+
+## Preferred subsequent feature: refresh the app after native code changes
+
+The developer edits Zig application code and sees the new behavior in the open application without manually rebuilding or restarting the development session.
+
+### Observable behavior
+
+- A native function-body edit reaches the browser after an automatic rebuild and backend replacement, at the same public address.
+- A supported native shape edit regenerates compatible bindings, rebuilds the backend and refreshes the affected browser data.
+- Invalid native source produces a source-oriented diagnostic while preserving the previous working backend when one exists. Correcting the source makes the new behavior available without restarting the whole development session.
+
+### Supporting technical requirements
+
+Extend the existing development host to coordinate watching, generation, compilation, readiness and backend replacement. An obsolete build cannot replace a newer accepted application. Preserve Vite's frontend HMR connection across native replacements. Agree on the handling of in-flight requests, startup failure and browser refresh before implementing the replacement boundary. Stopping the session terminates the processes and watches it owns.
+
+A rebuild-and-restart implementation can establish this behavior. In-process native code replacement or a retained compiler service needs its own demonstrated value before it becomes a requirement. A compiler success event is insufficient to announce application readiness; compatible generated/frontend artifacts and a running backend must agree.
+
+## Later product feature: run the built application as a Zig executable
+
+The developer builds the same application and runs the resulting Zig executable to serve its pages and execute native application logic without a Vite or Node server.
+
+### Observable behavior
+
+The built executable serves the application's assets and server-rendered page, the browser hydrates, and the remote and page load work for whichever application features have been selected by then. Demonstrate this with the real frontend build embedded in the executable and literal expected native results.
+
+### Supporting technical requirements
+
+The production z-kit adapter produces frontend assets, rendering code and metadata for the native application. The Zig build graph generates integration, runs the frontend build and compiles the executable with compatible artifacts, without a cycle in which the generator needs final embedded frontend output.
+
+Select the initial execution platform, embedded JS engine and packaging when this feature is taken up. Engine qualification must exercise actual Kit rendering and the relevant async/native callback behavior; preserve the broader baseline's fetch streaming and abort/cleanup requirements. The historical synchronous JSC probe does not establish this behavior. One executable does not yet promise static linkage or the absence of system-library dependencies.
+
+## Choosing the next feature
+
+Build the trivial development server first. The current preferred progression is remote functions, then page loads, then automatic native backend reloads. After each working feature, choose the next addition by its usefulness and value to the whole application. This is a direction for progressive decisions, not a fixed implementation schedule for every feature in the SKGo map.
+
+Specify each selected feature's developer-visible behavior and put the necessary generated integration, adapter, codec, lifetime and build details underneath it. Use feature names when discussing work and evidence.
+
+Resolve design questions when they become prerequisites for the selected feature. Production engine selection and full generation/publication behavior do not block the initial Vite proxy. Preserve the current configuration tests and compile-only proof as relevant regression checks; demonstrate new application features through the running example and actual toolchains.
 
 ## Evidence and provenance
 

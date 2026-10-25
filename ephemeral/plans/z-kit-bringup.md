@@ -55,7 +55,9 @@ This is the key integration work to prove before a large standalone-projector sp
 
 ## First application proof and early decisions
 
-Before dispatching implementation, select the initial development/deployment targets, native HTTP/std.Io composition, handler declaration/discovery shape and production engine/packaging path. These are unresolved choices; the selected source-module placement does not settle them. App-specific databases, authentication providers and workflow engines remain application code, supported by the framework's request, cookie, data and lifecycle APIs.
+The [feature specification](first-application-spec.md) records the user's subsequent construction direction: first run a real SvelteKit app with Vite listening on a Unix domain socket and a Zig network listener proxying to it. Then progressively select useful features, with remote functions, page loads and backend reloads as the current preferred progression. The product checkpoint below is a larger outcome, not the first feature to build.
+
+Resolve the initial development target and native HTTP/std.Io composition before implementing the trivial development server. Resolve handler declaration/discovery before native operation integration, and the production target/engine/packaging path when taking up the compiled application. These are unresolved choices; the selected source-module placement does not settle them. App-specific databases, authentication providers and workflow engines remain application code, supported by the framework's request, cookie, data and lifecycle APIs.
 
 The first product checkpoint is **one z-kit app in a browser**: a matched route with a server load, a typed query and command, a cookie/locals effect, SSR hydration and client navigation. A native shape edit must regenerate compatible bindings; a body edit must reach the browser after rebuild; invalid code must show a useful error and recover. Reuse this one app for publication/cache witnesses rather than building a second acceptance framework.
 
