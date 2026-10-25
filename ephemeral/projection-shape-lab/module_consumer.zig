@@ -19,6 +19,16 @@ const Batch = struct {
     };
 };
 
+comptime {
+    const imported = projector.config(models.Account);
+    const text = std.fmt.comptimePrint("{s}: contact required={}", .{
+        imported.description.?, projector.isRequired(models.Account, "contact"),
+    });
+    if (!std.mem.eql(u8, text, "An account from the models module.: contact required=true")) {
+        @compileError("imported module configuration must be fully usable at comptime");
+    }
+}
+
 test "consumer and imported model share the same generated configuration identity" {
     try std.testing.expect(@TypeOf(models.Account.projection) == projector.Projection(models.Account));
     try std.testing.expectEqualStrings("An account from the models module.", (comptime projector.config(models.Account)).description.?);

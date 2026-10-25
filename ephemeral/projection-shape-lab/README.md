@@ -42,9 +42,12 @@ It does not ask for each child's configuration while constructing the parent's c
 
 The [fixtures](shape_test.zig) exercise actual values and generated types. The [module consumer](module_consumer.zig) also checks an imported model through a real Zig build graph with a shared projector module.
 
+The [explicit comptime proof](comptime_test.zig) compiles with `-fno-emit-bin`: its top-level `comptime` assertions read the completed self-owned configuration, derive another struct type and an array length from it, and construct text. The configuration initializer itself also reflects its enclosing native struct. Anonymous children, imported types and a recursive record participate in these assertions. No executable is produced for this proof. A runtime-dependent metadata initializer is separately required to fail compilation.
+
 | Case | Result established |
 | --- | --- |
 | Exact `Projection(@This())` declaration | Resolves inside its own struct; configured and omitted option defaults are available. |
+| Forced compile-time consumption | Completed metadata drives new types, array lengths and text entirely at comptime; importing modules also consume it in a top-level comptime block. |
 | Anonymous array/slice elements, nested records, multidimensional arrays | Each local `@This()` identifies its own struct; child metadata is recovered correctly. |
 | Imported/reused types, aliases and unconfigured dependencies | Configuration identity is preserved; repeated types are visited once; absent metadata uses defaults. |
 | Self and mutual recursion; unions with inline/pointer payloads | Configuration synthesis stays shallow; type discovery terminates. |

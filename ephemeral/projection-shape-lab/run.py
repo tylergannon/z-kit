@@ -22,6 +22,7 @@ if archive_hash is not None:
 
 cases = [
     ("shape_test.zig", True, ["All 13 tests passed."]),
+    ("comptime_test.zig", True, []),
     ("negative_unknown_field.zig", False, ["no field named 'owenr'"]),
     ("negative_unknown_option.zig", False, ["no field named 'requried'"]),
     ("negative_wrong_value.zig", False, ["expected type '?bool'"]),
@@ -32,18 +33,20 @@ cases = [
     ("negative_array_field.zig", False, ["has no member named 'owenr'"]),
     ("negative_inferred_literal.zig", False, ["expected type 'projector.Projection", "projection__struct_"]),
     ("negative_namespace_collision.zig", False, ["duplicate struct member name 'projection'"]),
+    ("negative_runtime_metadata.zig", False, ["unable to evaluate comptime expression", "initializer of container-level variable must be comptime-known"]),
 ]
 results = []
 for filename, positive, expected in cases:
     command = [str(COMPILER), "test", filename, "--cache-dir", str(LOCAL / "local-cache")]
-    if not positive:
+    if not positive or filename == "comptime_test.zig":
         command += ["-fno-emit-bin"]
     process = subprocess.run(command, cwd=ROOT, env=env, text=True, capture_output=True)
     (LOGS / (filename + ".stdout")).write_text(process.stdout)
     (LOGS / (filename + ".stderr")).write_text(process.stderr)
     output = process.stdout + process.stderr
     passed = (process.returncode == 0) == positive and all(s in output for s in expected)
-    results.append({"source": filename, "expected": "success" if positive else "compile error",
+    expected_result = "compile-time assertions without executable" if filename == "comptime_test.zig" else "success" if positive else "compile error"
+    results.append({"source": filename, "expected": expected_result,
                     "exit_code": process.returncode, "expected_fragments": expected, "passed": passed})
     print(f"{'PASS' if passed else 'FAIL'} {filename}")
     if not passed:
@@ -72,7 +75,7 @@ summary = {"compiler": version,
            "compiler_archive_sha256": archive_hash if local_compiler else None,
            "source_pin": "7647adab80dd088f4de3610fd245915a912eb6ad",
            "scope": "Configuration type synthesis, discovery and diagnostics; no mapping/codec/backend implementation.",
-           "positive_tests": 13, "module_tests": 1,
+           "positive_tests": 13, "module_tests": 1, "explicit_comptime_compilations": 1,
            "source_sha256": source_hashes,
            "cases": results, "passed": all(r["passed"] for r in results)}
 (ROOT / "results.json").write_text(json.dumps(summary, indent=2) + "\n")
