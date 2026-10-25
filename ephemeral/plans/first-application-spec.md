@@ -49,6 +49,8 @@ The proxy carries HTTP methods, request paths and queries, bodies, response stat
 
 Vite remains responsible for development rendering, module serving and frontend change detection. The Zig development host owns the public listener and the lifecycle of the Vite child. Socket paths, readiness, failure reporting and cleanup have one owner. Choose the first supported host platform and the Zig HTTP/std.Io composition before implementing this feature. The exact command spelling and private process communication are implementation choices unless they affect the developer-facing behavior described here.
 
+The development host is tooling, independent of application-native handlers. This feature introduces no native application backend. z-kit owns the Vite launcher/integration that binds the socket; record the selected Kit/Vite versions in the example's dependencies and lockfile.
+
 Use only the Vite integration needed for this feature. Native operation discovery, generated bindings and production adapter output acquire requirements when their corresponding features are selected.
 
 ## Preferred next feature: call a Zig remote function from the application
@@ -67,11 +69,13 @@ Select the first remote kind and bounded input/result shapes when this feature i
 
 Native declarations are the source for frontend bindings and native registrations. Define how declarations are authored and discovered, and generate any prerequisites before compiling handlers that import them. One application-wide generation owner produces compatible frontend modules, native registration and shared operation metadata. The z-kit adapter/Vite integration must give Kit real modules and connect Kit's operation identities to native dispatch.
 
-Unsupported signatures and incompatible generated/frontend/native combinations must be diagnosed before they can be used as working calls.
+Introduce application-native code in a backend process separate from the development host. The host sends browser remote requests to that backend; Vite's server-side calls reach the same native implementation. At this stage the developer explicitly regenerates, rebuilds and restarts the backend while the host and Vite remain running. Automatic rebuilding and replacement arrive with the later reload feature. Choose the private backend transport when implementing remotes.
+
+Diagnose unsupported signatures. Build and run the generated binding and native implementation together to demonstrate agreement; a separate revision-coherence system is not required.
 
 The internal projector supplies only the admitted mapping and typed codec support needed here, following the existing [mapping contract](../../modules/projector/ephemeral/plans/mapping-contract.md). It remains independent of routing, HTTP, Vite and rendering. Wire exchange follows Kit's protocol and the brief's devalue major-5 profile pinned to 5.9.4; reuse the shared Go/Zig devalue runtime as an independent dependency.
 
-Generation follows the existing [generation lifecycle](generation-lifecycle.md): owned outputs, unchanged-byte stability, safe stale removal, edited/authored conflicts, check-only and recoverable publication. Verify these properties while demonstrating that the developer can reliably regenerate and use the remote function. They support that feature rather than becoming separate feature names.
+Use ordinary tracked build steps and Zig's caches to generate the selected operation's integration. Demonstrate that regeneration makes the edited operation work in the example. The earlier [generation lifecycle design](generation-lifecycle.md) is deferred reference material; ownership manifests, check-only, custom fingerprints and resumable publication are not requirements of this feature.
 
 Pin the Kit/frontend versions used by this integration and define input/result ownership and failure behavior before implementing the bridge.
 
@@ -121,6 +125,8 @@ The production z-kit adapter produces frontend assets, rendering code and metada
 
 Select the initial execution platform, embedded JS engine and packaging when this feature is taken up. Engine qualification must exercise actual Kit rendering and the relevant async/native callback behavior; preserve the broader baseline's fetch streaming and abort/cleanup requirements. The historical synchronous JSC probe does not establish this behavior. One executable does not yet promise static linkage or the absence of system-library dependencies.
 
+This feature's placement here does not fix its position after every preferred development feature. Select it when it provides the most value; its engine work is not a prerequisite for the trivial server, first remote or first page load.
+
 ## Choosing the next feature
 
 Build the trivial development server first. The current preferred progression is remote functions, then page loads, then automatic native backend reloads. After each working feature, choose the next addition by its usefulness and value to the whole application. This is a direction for progressive decisions, not a fixed implementation schedule for every feature in the SKGo map.
@@ -129,9 +135,15 @@ Specify each selected feature's developer-visible behavior and put the necessary
 
 Resolve design questions when they become prerequisites for the selected feature. Production engine selection and full generation/publication behavior do not block the initial Vite proxy. Preserve the current configuration tests and compile-only proof as relevant regression checks; demonstrate new application features through the running example and actual toolchains.
 
+## How features are demonstrated
+
+Unit tests are good engineering hygiene. Proof comes from building the example application and demonstrating that it manifests the expected feature claims. Extend that example as features are selected, and retain enough concrete output for a reviewer to inspect the demonstration.
+
+Review and implementation must preserve the selected feature scope. They must not introduce correctness machinery, elaborate proof infrastructure or heavyweight testing. Supporting technical requirements serve the actual features; they do not authorize additional systems or acceptance projects.
+
 ## Evidence and provenance
 
-Current z-kit base: `3c2dd52`. Implemented code is the configuration experiment under `modules/projector`; its mapper, codecs and framework are not materialized. Existing plans are design material, not runtime proof.
+Implemented-source baseline before these specification changes: `3c2dd52`. Implemented code is the configuration experiment under `modules/projector`; its mapper, codecs and framework are not materialized. Existing plans are design material, not runtime proof.
 
 Inspected SKGo base: `618f467b93d5371ebdccfb7f6b59b24814a454f6`. Source entry points: [application structure](/Users/tyler/src/skgo/project-structure.md), [generator](/Users/tyler/src/skgo/internal/gen/gen.go), [generated Kit stubs](/Users/tyler/src/skgo/internal/gen/emit.go), [adapter](/Users/tyler/src/skgo/internal/adapter/skgo-adapter.js), [development session](/Users/tyler/src/skgo/internal/devserver/session.go), [public proxy](/Users/tyler/src/skgo/internal/devserver/router.go), [Vite lifecycle](/Users/tyler/src/skgo/internal/devserver/frontend.go), [native composition](/Users/tyler/src/skgo/example/server.go) and [developer commands](/Users/tyler/src/skgo/internal/commands/commands.go). No new SKGo execution proof was collected.
 

@@ -1,0 +1,1 @@
+/adversarial-review Re-review the entire current work against the same authoritative sources. Inspect the current specification, its references and available evidence. Write the complete review to ephemeral/reviews/20261025-first-application-round-02.md. Do not edit any other files.
