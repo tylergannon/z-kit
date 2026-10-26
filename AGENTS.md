@@ -4,7 +4,7 @@
 
 **z-kit** is a Zig backend for ordinary SvelteKit applications, building on SKGo's application model. Use the **current Zig development build** and the actual SvelteKit/Vite toolchains.
 
-Start with [the feature specification](ephemeral/plans/first-application-spec.md). The first feature is a real SvelteKit app running in Vite on a Unix domain socket, reached through a Zig network listener/proxy. Extend that same app progressively. Remote functions, page loads and backend reloads are the current preferred progression; choose each next feature for its usefulness and value to the whole application.
+Start with [the feature specification](ephemeral/plans/first-application-spec.md). The initial foundation includes `zkit new` wrapping the upstream SvelteKit generator with empty/examples choices, plus a real app running in Vite on a Unix domain socket behind a Zig network listener/proxy. The working repository example is a valid development-server checkpoint; fresh application creation remains required before native remotes. Extend the shared examples progressively. Remote functions, page loads and backend reloads are the current preferred progression; choose each next feature for its usefulness and value to the whole application.
 
 The [bring-up baseline](ephemeral/plans/z-kit-bringup.md) maps broader features and product milestones. Development-online, deployable and customer-ready remain distinct outcomes. The full inventory is reference context; implement only selected, specified features. Resolve design decisions when the selected feature needs them.
 
@@ -40,7 +40,7 @@ The cache is maintained separately and is **read-only** for project work. It con
 
 Describe and discuss features by meaningful names, without coded claim labels. Observable claims describe application/developer behavior; technical requirements belong underneath the features they support.
 
-Unit tests are good hygiene. Proof is building the example application and demonstrating its expected feature claims. Do not introduce correctness machinery, elaborate proof infrastructure or heavyweight testing, or let review expand the selected scope. Planning documents, compiler experiments and test passes do not establish working framework behavior.
+Unit tests are good hygiene. Proof is building and running the repository example and freshly generated applications, demonstrating their expected feature claims. Both empty and examples starters must build and start; each new feature, including remotes and loads, must work in a fresh generated examples app without manual setup repairs. Wrap upstream scaffolding rather than reimplementing it. Do not introduce correctness machinery, elaborate proof infrastructure or heavyweight testing, or let review expand the selected scope. Planning documents, compiler experiments and test passes do not establish working framework behavior.
 
 For Zig code changes, run `zig build test` at the repository root. The full configuration diagnostic runner is documented in [the projector README](modules/projector/README.md). Use focused document/link checks for documentation-only changes.
 
