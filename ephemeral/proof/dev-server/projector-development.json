@@ -1,0 +1,160 @@
+{
+  "compiler": "0.18.0-dev.543+fa4f5b262",
+  "compiler_executable": "/opt/homebrew/Cellar/zig/0.18.0-dev.543+fa4f5b262/bin/zig",
+  "scope": "Configuration type synthesis, discovery and diagnostics; no mapping/codec/backend implementation.",
+  "positive_tests": 13,
+  "module_tests": 1,
+  "explicit_comptime_compilations": 1,
+  "source_sha256": {
+    "modules/projector/src/projector.zig": "6356b36911e6b27657c6e82eeaea21b06a641909758d77596cddfe5686a4e228",
+    "modules/projector/test/array_alternative.zig": "dd8b6b03b2b4e0a7f41aadcdd5923ebebfe77be1f9e3e9d4e6855e658e29507a",
+    "modules/projector/test/comptime_test.zig": "bcf6ad6a9eddc859c877797ade160baf0adee91ffbe18cdcdb8916831b306030",
+    "modules/projector/test/external.zig": "c89f501c40bbebc94b918f28055426496bc2b070ff4c235e88ecb7b2efaf1b1d",
+    "modules/projector/test/module_consumer.zig": "27343a9daeb4b99c4632420135e08b1345cc9920703daac4deecacbaee874a6f",
+    "modules/projector/test/module_model.zig": "b28857397158f160a5c7df95dfd5d9582e5102aa513f47fe4ed679aa8c6f46ee",
+    "modules/projector/test/negative_array_duplicate.zig": "3ca977c864b28a30b5bb3fc4aa814ceb1a17cd63dc4326c71a28ebb8ad524812",
+    "modules/projector/test/negative_array_field.zig": "465ae2a69c86784c198979a5655d5851d2d21d2eca64109ed88da326f69c143e",
+    "modules/projector/test/negative_inferred_literal.zig": "124fcac046f8888dc3d9bfc68093e553ec2dcb5cb0ae11ce4d8102223dde1f24",
+    "modules/projector/test/negative_namespace_collision.zig": "72f789ee9f3a689b8cf7bfdd11745d4aa89ebef72b21c47af1836739fc4ba590",
+    "modules/projector/test/negative_nonoptional.zig": "31415a890e116d075cc9bd3bda33fb081a58c351f764f28e92e823c16b15a78b",
+    "modules/projector/test/negative_nonstruct.zig": "4814b122deb52a25b0a516283e9e14cc149b7e95e34061ded95a25fee6f15aac",
+    "modules/projector/test/negative_runtime_metadata.zig": "41e62b602cc2a1a51c601b5ec450bced809fd50161b13049d7f8e6025cacefb0",
+    "modules/projector/test/negative_unknown_field.zig": "b515e35340a55d2294870325d0a7c2ec182c7f3e0cfd5d395bf811cb7a029936",
+    "modules/projector/test/negative_unknown_option.zig": "43dc39b4758bbb5f2bf53f287d8c46f64c13d8521602bcae2d4cf7421ec5771d",
+    "modules/projector/test/negative_wrong_owner.zig": "445e1dd63726798f56d0a6ee29a1effeca1ae6497991d892775466768480f6e9",
+    "modules/projector/test/negative_wrong_value.zig": "34406062f107bdab34364987f379bfb4fda1c823a4b5f5e70c7c344bbbfb4c14",
+    "modules/projector/test/shape_test.zig": "8121be9ad13a0254e71e7eaccf94382a8ff49639e3c1006057b9adca24cbca35",
+    "build.zig": "4a8423a4c011b8852db50d5228341c1e56dfbad8952123ec0827690f11cfd4a5",
+    "build.zig.zon": "7ac5a461065e9da8f352c36c4dce36933a2b4b27cd0cb7beb83221d429fd406a",
+    "modules/projector/ephemeral/projection-shape-lab/run.py": "a49e73da935c01a5c3243912a84c561ec52bfbaf096d4f7c91cc9d1d386d9526"
+  },
+  "cases": [
+    {
+      "source": "shape_test.zig",
+      "expected": "success",
+      "exit_code": 0,
+      "expected_fragments": [
+        "All 13 tests passed."
+      ],
+      "passed": true
+    },
+    {
+      "source": "comptime_test.zig",
+      "expected": "compile-time assertions without executable",
+      "exit_code": 0,
+      "expected_fragments": [],
+      "passed": true
+    },
+    {
+      "source": "negative_unknown_field.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "no field named 'owenr'"
+      ],
+      "passed": true
+    },
+    {
+      "source": "negative_unknown_option.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "no field named 'requried'"
+      ],
+      "passed": true
+    },
+    {
+      "source": "negative_wrong_value.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "expected type '?bool'"
+      ],
+      "passed": true
+    },
+    {
+      "source": "negative_nonoptional.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "required override requires an optional field"
+      ],
+      "passed": true
+    },
+    {
+      "source": "negative_wrong_owner.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "expected type 'projector.Projection",
+        "found 'projector.Projection"
+      ],
+      "passed": true
+    },
+    {
+      "source": "negative_nonstruct.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "Projection expects a struct type"
+      ],
+      "passed": true
+    },
+    {
+      "source": "negative_array_duplicate.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "duplicate field entry: owner"
+      ],
+      "passed": true
+    },
+    {
+      "source": "negative_array_field.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "has no member named 'owenr'"
+      ],
+      "passed": true
+    },
+    {
+      "source": "negative_inferred_literal.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "expected type 'projector.Projection",
+        "projection__struct_"
+      ],
+      "passed": true
+    },
+    {
+      "source": "negative_namespace_collision.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "duplicate struct member name 'projection'"
+      ],
+      "passed": true
+    },
+    {
+      "source": "negative_runtime_metadata.zig",
+      "expected": "compile error",
+      "exit_code": 1,
+      "expected_fragments": [
+        "unable to evaluate comptime expression",
+        "initializer of container-level variable must be comptime-known"
+      ],
+      "passed": true
+    },
+    {
+      "source": "../../../../build.zig",
+      "expected": "module integration success",
+      "exit_code": 0,
+      "expected_fragments": [],
+      "execution": "see module-build.stdout and module-build.stderr for per-step cache status",
+      "passed": true
+    }
+  ],
+  "passed": true
+}

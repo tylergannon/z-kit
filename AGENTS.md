@@ -2,20 +2,22 @@
 
 ## Product and current direction
 
-**z-kit** is a Zig backend for ordinary SvelteKit applications, building on SKGo's application model. Target **Zig 0.17.0** and use the actual Zig and SvelteKit/Vite toolchains.
+**z-kit** is a Zig backend for ordinary SvelteKit applications, building on SKGo's application model. Use the **current Zig development build** and the actual SvelteKit/Vite toolchains.
 
-Start with [the feature specification](ephemeral/plans/first-application-spec.md). The first feature is a real SvelteKit app running in Vite on a Unix domain socket, reached through a Zig network listener/proxy. Extend that same app progressively. Remote functions, page loads and backend reloads are the current preferred progression; choose each next feature for its usefulness and value to the whole application.
+Start with [the feature specification](ephemeral/plans/first-application-spec.md). The initial foundation includes `zkit new` wrapping the upstream SvelteKit generator with empty/examples choices, plus a real app running in Vite on a Unix domain socket behind a Zig network listener/proxy. The working repository example is a valid development-server checkpoint; fresh application creation remains required before native remotes. Extend the shared examples progressively. Remote functions, page loads and backend reloads are the current preferred progression; choose each next feature for its usefulness and value to the whole application.
 
 The [bring-up baseline](ephemeral/plans/z-kit-bringup.md) maps broader features and product milestones. Development-online, deployable and customer-ready remain distinct outcomes. The full inventory is reference context; implement only selected, specified features. Resolve design decisions when the selected feature needs them.
 
 The projector is an internal source module under `modules/projector`, independent of routing, HTTP, Vite and the renderer. One application-wide generator owns integration. The shared devalue runtime remains a separate dependency. The earlier [generation lifecycle design](ephemeral/plans/generation-lifecycle.md) is deferred reference material, not first-generator scope.
+
+Before implementing `zkit new`, follow the feature spec's SKGo reference-work section: trace the real CLI, VitePlus creation flow and native `sv` add-on. Preserve upstream's prompts and minimal/demo selection, and apply frontend decoration through `sv add`. The rejected `ba23bf2` implementation was reverted; do not reuse its separate starter prompt or forced-minimal/manual-decoration approach.
 
 ## Zig reference cache
 
 - Cache root: `/Users/tyler/zig-token-cache`
 - Semantic index: `/Users/tyler/zig-token-cache/index`
 - Entrypoint: `/Users/tyler/zig-token-cache/index/README.md`
-- Pinned Zig source: `/Users/tyler/zig-token-cache/official/source/zig-0.17.0/`
+- Historical Zig 0.17.0 source: `/Users/tyler/zig-token-cache/official/source/zig-0.17.0/`
 
 All agents doing Zig work must consult this cache throughout the work, especially before architecture/design decisions or questions about idiomatic Zig, APIs, ownership and builds. Follow **entrypoint → relevant route → relevant leaf → cited original source**. Use explicit paths instead of scanning the entire corpus first.
 
@@ -32,7 +34,7 @@ Routes below are relative to the index:
 | Shared devalue runtime and serialization | `routes/wire/README.md` |
 | SKGo contracts and development supervisor | `routes/skgo/README.md` |
 
-Bare citation paths in the index resolve from the **cache root**, not the leaf's directory. Open the cited originals and check their versions and provenance against Zig 0.17.0. Separate accepted decisions from proposals, historical experiments and current implementation. Older 0.18 experiments and unversioned examples are not current API guidance. Current user instructions and selected feature scope control over historical cache proposals.
+Bare citation paths in the index resolve from the **cache root**, not the leaf's directory. Open the cited originals and check their versions and provenance. The cache is a historical 0.17.0 snapshot; verify current APIs against the installed development compiler's source (`zig env` reports its location). Separate accepted decisions from proposals, historical experiments and current implementation. Old experiments and unversioned examples are not current API guidance. Current user instructions and selected feature scope control over historical cache proposals.
 
 The cache is maintained separately and is **read-only** for project work. It contains source and retained evidence, not a runnable compiler distribution. Report missing or inaccessible evidence instead of guessing; keep newly acquired tools and experiment outputs outside the cache.
 
@@ -40,7 +42,7 @@ The cache is maintained separately and is **read-only** for project work. It con
 
 Describe and discuss features by meaningful names, without coded claim labels. Observable claims describe application/developer behavior; technical requirements belong underneath the features they support.
 
-Unit tests are good hygiene. Proof is building the example application and demonstrating its expected feature claims. Do not introduce correctness machinery, elaborate proof infrastructure or heavyweight testing, or let review expand the selected scope. Planning documents, compiler experiments and test passes do not establish working framework behavior.
+Unit tests are good hygiene. Proof is building and running the repository example and freshly generated applications, demonstrating their expected feature claims. Both empty and examples starters must build and start; each new feature, including remotes and loads, must work in a fresh generated examples app without manual setup repairs. Wrap upstream scaffolding rather than reimplementing it. Do not introduce correctness machinery, elaborate proof infrastructure or heavyweight testing, or let review expand the selected scope. Planning documents, compiler experiments and test passes do not establish working framework behavior.
 
 For Zig code changes, run `zig build test` at the repository root. The full configuration diagnostic runner is documented in [the projector README](modules/projector/README.md). Use focused document/link checks for documentation-only changes.
 

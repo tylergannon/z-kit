@@ -1,14 +1,14 @@
 # z-kit: develop the application one useful feature at a time
 
-Status: **discussion draft**, October 25, 2026. The first feature and the preferred direction after it come from the user's current instructions. Further features will be selected progressively for their usefulness and value to the whole application.
+Status: **progressive feature specification**, October 25, 2026. The development-server portion is implemented and [demonstrated on macOS](../proof/dev-server/README.md). The required base application generator, `zkit new`, is not implemented; complete it against that server before proceeding to native remotes. The initial foundation and preferred progression come from the user's current instructions. Further features will be selected progressively for their usefulness and value to the whole application.
 
 ## What we are building
 
 z-kit is the Zig successor to SKGo: a framework for building ordinary SvelteKit applications with native server-side application logic written in Zig. Application authors write Svelte components and native functions. z-kit connects those functions to Kit's application model and eventually builds the application into a native executable.
 
-Start with a real SvelteKit application running behind a Zig development server. Extend that same application as we add remote functions, page loads and backend reloads. Each increment must give the developer useful application behavior and demonstrate it through the running application.
+Start with a developer creating a new application through `zkit new`, choosing an empty starter or one with examples, and running the resulting real SvelteKit application behind a Zig development server. Extend the examples as we add remote functions, page loads and backend reloads. Each increment must give the developer useful application behavior in both the repository example and a freshly generated application.
 
-Use **Zig 0.17.0**, the Zig build system, and the actual SvelteKit/Vite toolchain. The specification describes features and the behavior that demonstrates them; supporting technical requirements belong under the feature they enable.
+Use the **current Zig development build**, the Zig build system, and the actual SvelteKit/Vite toolchain. The specification describes features and the behavior that demonstrates them; supporting technical requirements belong under the feature they enable.
 
 ## Map of the SKGo terrain
 
@@ -26,13 +26,57 @@ This is a map of responsibilities and capabilities to consider for z-kit, not a 
 | Developer utilities | Project creation, add-ons, dependency/toolchain updates, incremental builds, checks, diagnostic guidance, environment tools and developer MCP. |
 | Additional consumers | Generated CLI/MCP clients, Swift/native application integration and related extension tooling. |
 
-The [broader bring-up baseline](z-kit-bringup.md) retains the product's feature inventory and development-online, deployable and customer-ready milestones. Those milestones describe larger outcomes. The first development-server feature below is the first construction increment.
+The [broader bring-up baseline](z-kit-bringup.md) retains the product's feature inventory and development-online, deployable and customer-ready milestones. Those milestones describe larger outcomes. Application creation and the development server below form the initial foundation.
+
+## Required foundation: create a new application
+
+The developer runs `zkit new <directory>` and makes the ordinary upstream SvelteKit creation choices. The upstream `minimal` choice becomes an empty z-kit application; upstream `demo` becomes the z-kit examples application. z-kit wraps and decorates the real upstream workflow used by `skgo new`. Upstream owns the questions, templates, type-checking choices and supported add-ons; z-kit owns its framework-specific integration.
+
+### Observable behavior
+
+- The empty starter creates a minimal runnable z-kit application without feature demonstrations. The examples starter creates a runnable application demonstrating the z-kit features implemented so far.
+- In a terminal, upstream presents its own minimal/demo, language and add-on questions. Options after `--` go to `sv create`, including `--template minimal` and `--template demo`. z-kit must not insert a separate empty/examples question or force a minimal scaffold regardless of the upstream choice. Without a terminal, omitted choices settle to minimal TypeScript with no optional add-ons, as in SKGo; an existing empty destination is accepted, while a nonempty destination is refused.
+- From the generated application's own directory, the developer follows the documented dependency-installation, generation, build and development-start commands and opens a working SvelteKit page through the Zig listener. No manual source repairs or copying of pre-generated artifacts are needed.
+- Both starter choices work when creation is repeated in fresh destinations. Neither relies on the repository example's installed dependencies, generated files, build outputs or working directory.
+- As remote functions, page loads and subsequent features land, the generated examples starter includes working demonstrations of them. The empty starter continues to build and start through the same integration without requiring demo handlers.
+- Upstream creation or z-kit setup failures identify the failing step; an incomplete setup is not reported as a usable application.
+
+### Supporting technical requirements
+
+Delegate frontend creation through VitePlus to the actual upstream SvelteKit generator, preserving supported user selections. Use the qualified VitePlus environment and its managed pnpm throughout creation and installation, as SKGo does; do not substitute an arbitrary pnpm from PATH. Generated applications separate the native Zig project/build at the root from the upstream frontend in `web/`, with development commands run from the application root.
+
+Apply frontend integration through a native `sv` add-on invoked by the real `sv add` command after the developer's upstream add-ons. That add-on is the sole owner of z-kit's frontend decoration and examples conversion; the CLI owns orchestration and Zig-specific project files. Use upstream add-on APIs and transforms rather than a parallel frontend installer that directly rewrites package/config/template files from the CLI. The framework add-on is creation tooling, not an application runtime dependency.
+
+Read back the project upstream actually produced to determine the selected starter and configured tools. For `demo`, replace the upstream JavaScript-server demonstration with z-kit examples while preserving compatible additions to layouts and stylesheets. Verify that the framework add-on actually applied before reporting success; an upstream zero exit code alone is insufficient. Keep supported frontend tools pointed at the Zig public server where their behavior depends on the application's server.
+
+The relevant upstream choices must remain available noninteractively, for example:
+
+```sh
+zkit new myapp -- --template minimal --types ts --no-add-ons
+zkit new myapp -- --template demo --types jsdoc --add tailwindcss=plugins:none
+```
+
+SKGo's top-level `--template` is a separate plugin-recipe facility, not its ordinary minimal/demo selection. Do not repurpose it as a new empty/examples selector. Plugin recipes are not required for this initial foundation.
+
+### Required SKGo reference work before implementation
+
+Inspect the actual reference checkout's [CLI argument handling](/Users/tyler/src/skgo/cmd/skgo/templates.go:151), [creation orchestration and choice detection](/Users/tyler/src/skgo/internal/newapp/newapp.go:142), [qualified frontend environment](/Users/tyler/src/skgo/internal/newapp/environment.go:18), [native sv add-on](/Users/tyler/src/skgo/internal/sv/sv-addon.source.js:1), [add-on contract](/Users/tyler/src/skgo/internal/sv/README.md) and [creation behavior tests](/Users/tyler/src/skgo/internal/newapp/newapp_test.go:484). Trace the full command path through those sources, including what upstream owns and what SKGo adds. Run the reference CLI's help and relevant creation flows when establishing behavioral parity; if execution is blocked, record the blocker and the source evidence rather than claiming a live comparison.
+
+At the inspected reference revision, SKGo delegates creation and installs through VitePlus, lets sv ask its own questions, reads the emitted project to recognize demo/minimal, and has sv apply `@skgo/sv`. It also adds upstream Vitest/Storybook setup, selects compatible package versions, configures/verifies its Kit correction, generates the native side, checks the frontend and builds it before declaring creation complete. Account explicitly for those steps and for any necessary Zig-specific or selected-scope differences. A fresh z-kit page loading successfully does not by itself establish that the CLI follows the reference workflow. SKGo-specific runtime features and patches do not become z-kit requirements merely by appearing in the reference.
+
+### Shared examples, dependency and build requirements
+
+The repository example and generated examples starter use the same maintained example content and framework integration. Keep them aligned as features land. Project scaffolding is distinct from the application-wide generator that later derives bindings and native registrations from application declarations; having that binding generator does not satisfy `zkit new`.
+
+A generated application must declare the framework/tooling dependencies it uses and run independently of the framework checkout's private paths. An explicit local z-kit dependency is acceptable during framework development; implicit sibling-file imports and dependence on the repository example's artifacts are not. Record the upstream and frontend versions used by the generated application in its normal dependency setup and lockfile.
+
+The required build produces the artifacts needed for the currently selected development features. Production rendering and native executable packaging retain their later feature scope. The application generator ships with the initial foundation, before native remote or load features are accepted.
 
 ## First feature: trivial development server
 
 The developer starts the example application, opens the Zig server's network address in a browser, and uses a working SvelteKit page. Vite serves the application over a Unix domain socket. The Zig server owns the public network listener and proxies browser traffic to that socket.
 
-The same application is the foundation for later features. Native remotes, page loads, backend rebuilds and an embedded production renderer become useful additions to an already running application.
+The same example content is the foundation for later features in both the repository example and freshly generated examples applications. Native remotes, page loads, backend rebuilds and an embedded production renderer become useful additions to an already running application.
 
 ### Observable behavior
 
@@ -40,6 +84,7 @@ The same application is the foundation for later features. Native remotes, page 
 - Opening that network address loads the real SvelteKit page, its assets and client JavaScript. The page hydrates and its client-side interactions work through the Zig proxy.
 - Editing a Svelte component updates the open browser through Vite's normal frontend hot reload, using the same Zig address.
 - Startup reports a usable address only once the application can answer. A failed startup explains the failure. Stopping the development session releases its listener, its owned Vite process and its socket so the application can be started again.
+- These behaviors work in fresh applications created through both starter choices. The repository example alone does not complete the initial foundation.
 
 ### Supporting technical requirements
 
@@ -55,13 +100,14 @@ Use only the Vite integration needed for this feature. Native operation discover
 
 ## Preferred next feature: call a Zig remote function from the application
 
-The developer writes a native function, imports its generated binding in the SvelteKit page and calls it from the browser. The page displays a result produced by Zig. This is the next useful connection to establish after the development server works.
+The developer writes a native function, imports its generated binding in the SvelteKit page and calls it from the browser. The page displays a result produced by Zig. This is the next useful connection to establish after application creation and the development server work.
 
 ### Observable behavior
 
 - A browser interaction calls the native function through its generated frontend binding and displays the expected result in the same running application.
 - The frontend binding describes the function's actual input and result types. Valid callers type-check; invalid callers receive useful type errors.
 - Editing the selected native input/result shape and explicitly rebuilding/regenerating produces matching frontend and native behavior. Automatic backend rebuild is a later feature.
+- A fresh `zkit new` application with examples builds and starts with this remote demonstration already wired up. Its browser interaction displays the actual Zig result without manual integration repairs. Demonstrate this alongside the repository example; the empty starter still builds and starts without the demo.
 
 ### Supporting technical requirements
 
@@ -88,6 +134,7 @@ The developer writes a native page load and uses its data in the SvelteKit page.
 - Visiting the page produces server-rendered HTML containing the expected native load result.
 - The hydrated page receives the same load data and its frontend code can use the generated data type.
 - Changing the load's result and explicitly rebuilding/regenerating changes the displayed page data without hand-maintaining a parallel frontend declaration.
+- A fresh `zkit new` application with examples builds and starts with the native page-load demonstration and previously added remote working together. Verify the native result in its server-rendered HTML and hydrated page as well as in the repository example; the empty starter remains runnable.
 
 ### Supporting technical requirements
 
@@ -129,7 +176,7 @@ This feature's placement here does not fix its position after every preferred de
 
 ## Choosing the next feature
 
-Build the trivial development server first. The current preferred progression is remote functions, then page loads, then automatic native backend reloads. After each working feature, choose the next addition by its usefulness and value to the whole application. This is a direction for progressive decisions, not a fixed implementation schedule for every feature in the SKGo map.
+Complete the initial foundation: `zkit new` wrapping upstream SvelteKit creation, both starter choices, and the trivial development server in freshly generated applications. The existing repository-only server demonstration leaves application creation outstanding. The current preferred progression after that foundation is remote functions, then page loads, then automatic native backend reloads. After each working feature, choose the next addition by its usefulness and value to the whole application. This is a direction for progressive decisions, not a fixed implementation schedule for every feature in the SKGo map.
 
 Specify each selected feature's developer-visible behavior and put the necessary generated integration, adapter, codec, lifetime and build details underneath it. Use feature names when discussing work and evidence.
 
@@ -137,7 +184,13 @@ Resolve design questions when they become prerequisites for the selected feature
 
 ## How features are demonstrated
 
-Unit tests are good engineering hygiene. Proof comes from building the example application and demonstrating that it manifests the expected feature claims. Extend that example as features are selected, and retain enough concrete output for a reviewer to inspect the demonstration.
+Unit tests are good engineering hygiene. Proof comes from building and running the repository example and freshly generated applications, then demonstrating the expected feature behavior through the actual development server and browser.
+
+For the initial foundation, invoke `zkit new` against the real upstream generator for each starter choice in a fresh destination, install its declared dependencies, run its documented build/start steps from that destination, and use the page through the Zig listener. Repeating creation in fresh destinations must reproduce the working result without retained application artifacts or manual edits to repair setup.
+
+For each later selected feature, extend the shared examples content, create a fresh examples application, build it and demonstrate the feature there as well as in the repository example. In particular, a remote must display an actual Zig-produced result and a native page load must supply the demonstrated SSR and hydration data. Keep the empty starter runnable as the shared integration evolves. Feature completion includes this generated-application behavior; editing the checked-in example, compiling template files, or reusing an already prepared destination is insufficient.
+
+Retain concise creation/build/start output and browser observations so a reviewer can follow the generated application's result. Use the ordinary application workflow; these requirements do not call for a separate acceptance framework or an exhaustive matrix of upstream add-ons.
 
 Review and implementation must preserve the selected feature scope. They must not introduce correctness machinery, elaborate proof infrastructure or heavyweight testing. Supporting technical requirements serve the actual features; they do not authorize additional systems or acceptance projects.
 
@@ -146,5 +199,7 @@ Review and implementation must preserve the selected feature scope. They must no
 Implemented-source baseline before these specification changes: `3c2dd52`. Implemented code is the configuration experiment under `modules/projector`; its mapper, codecs and framework are not materialized. Existing plans are design material, not runtime proof.
 
 Inspected SKGo base: `618f467b93d5371ebdccfb7f6b59b24814a454f6`. Source entry points: [application structure](/Users/tyler/src/skgo/project-structure.md), [generator](/Users/tyler/src/skgo/internal/gen/gen.go), [generated Kit stubs](/Users/tyler/src/skgo/internal/gen/emit.go), [adapter](/Users/tyler/src/skgo/internal/adapter/skgo-adapter.js), [development session](/Users/tyler/src/skgo/internal/devserver/session.go), [public proxy](/Users/tyler/src/skgo/internal/devserver/router.go), [Vite lifecycle](/Users/tyler/src/skgo/internal/devserver/frontend.go), [native composition](/Users/tyler/src/skgo/example/server.go) and [developer commands](/Users/tyler/src/skgo/internal/commands/commands.go). No new SKGo execution proof was collected.
+
+The application-creation amendment follows the user's explicit requirement to wrap upstream generation from the outset and prove features in new applications. Rechecked the same SKGo base's creation orchestration, setup completion, argument handling, qualified environment and native sv add-on. Ran `go run ./cmd/skgo new -h`; no full reference application creation was executed in this session. The attempted z-kit implementation in `ba23bf2` was rejected and reverted by `346855f`: its custom starter prompt, forced upstream minimal template and direct frontend decoration do not satisfy the reference workflow. It is not accepted prior art for the next implementation.
 
 Consulted the read-only Zig cache's build, SKGo/supervisor, I/O, memory and Polytype routes and relevant leaves. Pinned original sources opened include [build configuration/cache semantics](/Users/tyler/zig-token-cache/official/source/zig-0.17.0/lib/std/Build.zig:75), [host generation and target consumption example](/Users/tyler/zig-token-cache/toolchain/examples/build-sdk/build.zig:1), [embedding generated bytes](/Users/tyler/zig-token-cache/toolchain/examples/build-sdk/root.zig:1), [explicit process I/O/allocators](/Users/tyler/zig-token-cache/official/source/zig-0.17.0/lib/std/process.zig:31) and [task cancellation/completion](/Users/tyler/zig-token-cache/official/source/zig-0.17.0/lib/std/Io.zig:1296). The cache pins Zig 0.17.0 source; these mechanisms do not establish z-kit compatibility or implementation. No compiler or runtime experiment was run for this draft.

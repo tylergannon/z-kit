@@ -1,0 +1,9 @@
+HTTP/1.1 200 OK
+Vary: Origin
+content-length: 2683
+content-type: text/html
+etag: "164q3tz"
+x-sveltekit-page: true
+Date: Mon, 26 Oct 2026 00:13:59 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
