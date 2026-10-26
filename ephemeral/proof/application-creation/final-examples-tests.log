@@ -1,0 +1,9 @@
+$ vp test --run ⊘ cache disabled
+
+ RUN  v5.0.5 /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/apps/final-examples/web
+
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  21:56:34
+   Duration  68ms (transform 57%, import 25%, worker 12%, tests 7%)

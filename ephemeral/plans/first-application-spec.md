@@ -1,8 +1,8 @@
 # z-kit: develop the application one useful feature at a time
 
-Status: **progressive feature specification**, October 25, 2026. The development-server portion is implemented and [demonstrated on macOS](../proof/dev-server/README.md). The required base application generator, `zkit new`, is not implemented; complete it against that server before proceeding to native remotes. The initial foundation and preferred progression come from the user's current instructions. Further features will be selected progressively for their usefulness and value to the whole application.
+Status: **progressive feature specification**, October 25, 2026. The development-server portion is implemented and [demonstrated on macOS](../proof/dev-server/README.md). The base application generator, `zkit new`, and development host are implemented and [demonstrated in fresh empty/examples apps](../proof/application-creation/README.md). Native remotes remain the next feature to specify. The initial foundation and preferred progression come from the user's current instructions. Further features will be selected progressively for their usefulness and value to the whole application.
 
-The [application-creation implementation plan](upstream-application-creation.md) maps the actual SKGo workflow to proposed direct reuse, Zig ports and deferred native features. Its [reference evidence](../proof/new-app/README.md) includes full SKGo creation runs and upstream creation/build on latest VitePlus 1.4.0. These are planning inputs, not a z-kit generator implementation.
+The [application-creation implementation plan](upstream-application-creation.md) maps the actual SKGo workflow to proposed direct reuse, Zig ports and deferred native features. Its [reference evidence](../proof/new-app/README.md) includes full SKGo creation runs and upstream creation/build on latest VitePlus 1.4.0. That record describes the planning inputs; [implementation proof](../proof/application-creation/README.md) records the resulting working foundation.
 
 ## What we are building
 
@@ -178,7 +178,7 @@ This feature's placement here does not fix its position after every preferred de
 
 ## Choosing the next feature
 
-Complete the initial foundation: `zkit new` wrapping upstream SvelteKit creation, both starter choices, and the trivial development server in freshly generated applications. The existing repository-only server demonstration leaves application creation outstanding. The current preferred progression after that foundation is remote functions, then page loads, then automatic native backend reloads. After each working feature, choose the next addition by its usefulness and value to the whole application. This is a direction for progressive decisions, not a fixed implementation schedule for every feature in the SKGo map.
+The initial foundation is now demonstrated: `zkit new` wraps upstream SvelteKit creation and both starter choices build/start through the Zig development host. Preserve these behaviors when adding each next feature. The current preferred progression after that foundation is remote functions, then page loads, then automatic native backend reloads. After each working feature, choose the next addition by its usefulness and value to the whole application. This is a direction for progressive decisions, not a fixed implementation schedule for every feature in the SKGo map.
 
 Specify each selected feature's developer-visible behavior and put the necessary generated integration, adapter, codec, lifetime and build details underneath it. Use feature names when discussing work and evidence.
 

@@ -1,0 +1,11 @@
+{
+  "name": "@zkit/sv",
+  "version": "0.0.0-dev",
+  "description": "Native Svelte CLI add-on for the z-kit development foundation",
+  "type": "module",
+  "license": "MIT",
+  "exports": { ".": "./addon.js", "./package.json": "./package.json" },
+  "files": ["addon.js", "LICENSE"],
+  "peerDependencies": { "sv": "1.1.1" },
+  "devEngines": { "packageManager": { "name": "pnpm", "version": "12.14.0", "onFail": "download" } }
+}

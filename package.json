@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "zig build dev",
-    "check": "cd example && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
+    "check": "cd example && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "build:addon": "node tooling/sv/build.mjs"
   },
   "devDependencies": {
     "@opentelemetry/api": "1.10.0",
@@ -13,6 +14,10 @@
     "svelte": "5.57.2",
     "svelte-check": "4.7.7",
     "typescript": "6.0.2",
-    "vite": "8.3.5"
-  }
+    "vite": "npm:@voidzero-dev/vite-plus-core@1.4.0",
+    "vite-plus": "1.4.0",
+    "esbuild": "0.28.2",
+    "@sveltejs/sv-utils": "1.0.2"
+  },
+  "packageManager": "pnpm@12.14.0"
 }

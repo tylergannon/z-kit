@@ -1,6 +1,6 @@
 # Implement `zkit new` from the working SKGo creation flow
 
-Status: proposed implementation plan, October 25, 2026. This session researched and executed upstream workflows; it did not implement the z-kit generator. The [feature specification](first-application-spec.md#required-foundation-create-a-new-application) controls scope.
+Status: implemented, October 25, 2026; see [fresh-application proof](../proof/application-creation/README.md). The source comparison below records the implementation plan and its reference work. The [feature specification](first-application-spec.md#required-foundation-create-a-new-application) controls scope.
 
 ## The feature we are building
 

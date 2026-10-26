@@ -1,0 +1,332 @@
+[
+  {
+    "level": "debug",
+    "message": "[vite] connecting...",
+    "timestamp": "2026-10-26T03:37:57.532Z",
+    "url": "http://127.0.0.1:5181/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connected.",
+    "timestamp": "2026-10-26T03:37:57.532Z",
+    "url": "http://127.0.0.1:5181/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connecting...",
+    "timestamp": "2026-10-26T03:39:07.977Z",
+    "url": "http://127.0.0.1:5182/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connected.",
+    "timestamp": "2026-10-26T03:39:07.983Z",
+    "url": "http://127.0.0.1:5182/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connecting...",
+    "timestamp": "2026-10-26T03:39:58.184Z",
+    "url": "http://127.0.0.1:5182/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connected.",
+    "timestamp": "2026-10-26T03:39:58.193Z",
+    "url": "http://127.0.0.1:5182/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connecting...",
+    "timestamp": "2026-10-26T03:39:59.403Z",
+    "url": "http://127.0.0.1:5182/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connected.",
+    "timestamp": "2026-10-26T03:39:59.405Z",
+    "url": "http://127.0.0.1:5182/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connecting...",
+    "timestamp": "2026-10-26T03:39:59.939Z",
+    "url": "http://127.0.0.1:5183/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connected.",
+    "timestamp": "2026-10-26T03:39:59.943Z",
+    "url": "http://127.0.0.1:5183/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] hot updated: /src/routes/+page.svelte",
+    "timestamp": "2026-10-26T03:40:14.795Z",
+    "url": "http://127.0.0.1:5183/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] hot updated: /src/routes/layout.css",
+    "timestamp": "2026-10-26T03:40:14.795Z",
+    "url": "http://127.0.0.1:5183/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connecting...",
+    "timestamp": "2026-10-26T03:40:52.132Z",
+    "url": "http://127.0.0.1:5183/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connected.",
+    "timestamp": "2026-10-26T03:40:52.143Z",
+    "url": "http://127.0.0.1:5183/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connecting...",
+    "timestamp": "2026-10-26T03:40:53.423Z",
+    "url": "http://127.0.0.1:5183/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connected.",
+    "timestamp": "2026-10-26T03:40:53.427Z",
+    "url": "http://127.0.0.1:5183/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] hot updated: /src/routes/+page.svelte",
+    "timestamp": "2026-10-26T03:41:20.034Z",
+    "url": "http://127.0.0.1:5183/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] hot updated: /src/routes/layout.css",
+    "timestamp": "2026-10-26T03:41:20.034Z",
+    "url": "http://127.0.0.1:5183/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connecting...",
+    "timestamp": "2026-10-26T03:44:36.576Z",
+    "url": "http://127.0.0.1:5181/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connected.",
+    "timestamp": "2026-10-26T03:44:36.588Z",
+    "url": "http://127.0.0.1:5181/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] hot updated: /src/routes/+page.svelte",
+    "timestamp": "2026-10-26T03:44:41.199Z",
+    "url": "http://127.0.0.1:5181/@vite/client"
+  },
+  {
+    "level": "error",
+    "message": "[vite] Failed to reload /src/routes/+page.svelte. This could be due to syntax errors or importing non-existent modules. (see errors above)",
+    "timestamp": "2026-10-26T03:44:55.820Z",
+    "url": "http://127.0.0.1:5181/@vite/client"
+  },
+  {
+    "level": "log",
+    "message": "[vite] server connection lost. Polling for restart...",
+    "timestamp": "2026-10-26T03:44:55.820Z",
+    "url": "http://127.0.0.1:5181/@vite/client"
+  },
+  {
+    "level": "error",
+    "message": "TypeError: Cannot read properties of undefined (reading 'default')\n    at http://127.0.0.1:5181/src/routes/+page.svelte?t=1792986281183:50:30\n    at http://127.0.0.1:5181/@vite/client:502:58\n    at http://127.0.0.1:5181/@vite/client:653:52\n    at http://127.0.0.1:5181/@vite/client:631:55\n    at Array.forEach (<anonymous>)\n    at HMRClient.queueUpdate (http://127.0.0.1:5181/@vite/client:631:33)\n    at async Promise.all (index 0)\n    at async handleMessage (http://127.0.0.1:5181/@vite/client:1053:4)",
+    "timestamp": "2026-10-26T03:44:55.823Z",
+    "url": "http://127.0.0.1:5181/src/routes/+page.svelte?t=1792986281183"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connecting...",
+    "timestamp": "2026-10-26T03:48:43.190Z",
+    "url": "http://127.0.0.1:5188/@vite/client"
+  },
+  {
+    "level": "error",
+    "message": "[vite] failed to connect to websocket (Error: WebSocket closed without opened.). ",
+    "timestamp": "2026-10-26T03:48:48.025Z",
+    "url": "http://127.0.0.1:5188/@vite/client"
+  },
+  {
+    "level": "error",
+    "message": "Failed to send error to Vite server: Error: WebSocket closed without opened.\n    at WebSocket.<anonymous> (http://127.0.0.1:5188/@vite/client:234:30)",
+    "timestamp": "2026-10-26T03:48:48.025Z",
+    "url": "http://127.0.0.1:5188/@vite/client"
+  },
+  {
+    "level": "error",
+    "message": "Failed to send error to Vite server: Error: WebSocket closed without opened.\n    at WebSocket.<anonymous> (http://127.0.0.1:5188/@vite/client:234:30)",
+    "timestamp": "2026-10-26T03:48:48.025Z",
+    "url": "http://127.0.0.1:5188/@vite/client"
+  },
+  {
+    "level": "error",
+    "message": "Error: WebSocket closed without opened.\n    at WebSocket.<anonymous> (http://127.0.0.1:5188/@vite/client:234:30)",
+    "timestamp": "2026-10-26T03:48:48.025Z",
+    "url": "http://127.0.0.1:5188/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connecting...",
+    "timestamp": "2026-10-26T03:49:20.820Z",
+    "url": "http://127.0.0.1:5189/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connected.",
+    "timestamp": "2026-10-26T03:49:24.024Z",
+    "url": "http://127.0.0.1:5189/@vite/client"
+  },
+  {
+    "level": "log",
+    "message": "[vite] server connection lost. Polling for restart...",
+    "timestamp": "2026-10-26T03:49:26.682Z",
+    "url": "http://127.0.0.1:5189/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connecting...",
+    "timestamp": "2026-10-26T03:49:59.890Z",
+    "url": "http://127.0.0.1:5190/@vite/client"
+  },
+  {
+    "level": "error",
+    "message": "[vite] failed to connect to websocket (Error: WebSocket closed without opened.). ",
+    "timestamp": "2026-10-26T03:50:04.737Z",
+    "url": "http://127.0.0.1:5190/@vite/client"
+  },
+  {
+    "level": "error",
+    "message": "Failed to send error to Vite server: Error: WebSocket closed without opened.\n    at WebSocket.<anonymous> (http://127.0.0.1:5190/@vite/client:234:30)",
+    "timestamp": "2026-10-26T03:50:04.738Z",
+    "url": "http://127.0.0.1:5190/@vite/client"
+  },
+  {
+    "level": "error",
+    "message": "Failed to send error to Vite server: Error: WebSocket closed without opened.\n    at WebSocket.<anonymous> (http://127.0.0.1:5190/@vite/client:234:30)",
+    "timestamp": "2026-10-26T03:50:04.738Z",
+    "url": "http://127.0.0.1:5190/@vite/client"
+  },
+  {
+    "level": "error",
+    "message": "Error: WebSocket closed without opened.\n    at WebSocket.<anonymous> (http://127.0.0.1:5190/@vite/client:234:30)",
+    "timestamp": "2026-10-26T03:50:04.738Z",
+    "url": "http://127.0.0.1:5190/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connecting...",
+    "timestamp": "2026-10-26T03:50:42.262Z",
+    "url": "http://127.0.0.1:5188/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connected.",
+    "timestamp": "2026-10-26T03:50:45.547Z",
+    "url": "http://127.0.0.1:5188/@vite/client"
+  },
+  {
+    "level": "log",
+    "message": "[vite] server connection lost. Polling for restart...",
+    "timestamp": "2026-10-26T03:50:46.466Z",
+    "url": "http://127.0.0.1:5188/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connecting...",
+    "timestamp": "2026-10-26T03:52:46.143Z",
+    "url": "http://127.0.0.1:5182/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connecting...",
+    "timestamp": "2026-10-26T03:52:46.292Z",
+    "url": "http://127.0.0.1:5183/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connected.",
+    "timestamp": "2026-10-26T03:52:48.190Z",
+    "url": "http://127.0.0.1:5183/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connecting...",
+    "timestamp": "2026-10-26T03:55:54.398Z",
+    "url": "http://127.0.0.1:5184/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connected.",
+    "timestamp": "2026-10-26T03:55:54.449Z",
+    "url": "http://127.0.0.1:5184/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connecting...",
+    "timestamp": "2026-10-26T03:55:57.706Z",
+    "url": "http://127.0.0.1:5185/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connected.",
+    "timestamp": "2026-10-26T03:55:57.710Z",
+    "url": "http://127.0.0.1:5185/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connecting...",
+    "timestamp": "2026-10-26T03:56:00.793Z",
+    "url": "http://127.0.0.1:5186/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connected.",
+    "timestamp": "2026-10-26T03:56:00.796Z",
+    "url": "http://127.0.0.1:5186/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] hot updated: /src/routes/+page.svelte",
+    "timestamp": "2026-10-26T03:56:34.461Z",
+    "url": "http://127.0.0.1:5186/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] hot updated: /src/routes/layout.css",
+    "timestamp": "2026-10-26T03:56:34.461Z",
+    "url": "http://127.0.0.1:5186/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connecting...",
+    "timestamp": "2026-10-26T03:56:36.485Z",
+    "url": "http://127.0.0.1:5186/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connected.",
+    "timestamp": "2026-10-26T03:56:36.496Z",
+    "url": "http://127.0.0.1:5186/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connecting...",
+    "timestamp": "2026-10-26T03:56:37.903Z",
+    "url": "http://127.0.0.1:5186/@vite/client"
+  },
+  {
+    "level": "debug",
+    "message": "[vite] connected.",
+    "timestamp": "2026-10-26T03:56:37.906Z",
+    "url": "http://127.0.0.1:5186/@vite/client"
+  }
+]

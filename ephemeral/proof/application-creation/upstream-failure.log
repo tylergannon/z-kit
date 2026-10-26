@@ -1,0 +1,6 @@
+
+zkit: create upstream SvelteKit application
+Injected upstream create failure
+zkit: create upstream SvelteKit application failed (exited with code 42)
+zkit: FrontendCommandFailed
+exit=1

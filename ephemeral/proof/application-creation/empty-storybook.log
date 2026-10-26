@@ -1,0 +1,66 @@
+$ storybook build ⊘ cache disabled
+
+┌  Building storybook v10.6.2
+│
+◇  Cleaning outputDir: storybook-static
+│
+◇  Loading presets
+│
+◇  Building manager..
+│
+●  Building open services..
+│
+●  Building preview..
+9:39:58 PM [vite-plugin-svelte] no Svelte config found at /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/apps/empty-2/web - using default configuration.
+9:39:58 PM [vite-plugin-svelte] no Svelte config found at /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/apps/empty-2/web - using default configuration.
+transforming...
+✓ 576 modules transformed.
+rendering chunks...
+computing gzip size...
+│  Vite storybook-static/iframe.html
+│  18.61 kB │ gzip:   5.26 kB
+│  storybook-static/assets/Header-CzZBVs_w.css                    0.50 kB
+│  │ gzip:   0.29 kB
+│  storybook-static/assets/create-runtime-stories-C9QAnAgh.css    0.51 kB
+│  │ gzip:   0.28 kB
+│  storybook-static/assets/Page-R7v0XIE6.css                      0.91 kB
+│  │ gzip:   0.39 kB
+│  storybook-static/assets/iframe-YXMxxYiI.js                     0.04 kB
+│  │ gzip:   0.06 kB
+│  storybook-static/assets/rolldown-runtime-Dh6celcD.js           0.62 kB
+│  │ gzip:   0.41 kB
+│  storybook-static/assets/Header.stories-BgcWiraE.js             1.09 kB
+│  │ gzip:   0.63 kB
+│  storybook-static/assets/Button.stories-Cqo2gCLn.js             1.62 kB
+│  │ gzip:   0.78 kB
+│  storybook-static/assets/preload-helper-_1ZBrL1G.js             1.64 kB
+│  │ gzip:   0.87 kB
+│  storybook-static/assets/Header-Ds6oB3HD.js                     1.98 kB
+│  │ gzip:   0.98 kB
+│  storybook-static/assets/Page.stories-NH_UMLjb.js               3.33 kB
+│  │ gzip:   1.72 kB
+│  storybook-static/assets/create-runtime-stories-BnI0-v1i.js    12.27 kB
+│  │ gzip:   4.97 kB
+│  storybook-static/vite-inject-mocker-entry.js                  27.75 kB
+│  │ gzip:   9.66 kB
+│  storybook-static/assets/iframe-CA0VIdR8.js                   919.99 kB
+│  │ gzip: 262.47 kB
+
+│  Vite ✓ built in 933ms
+│
+▲  Vite [plugin builtin:vite-reporter]
+│  (!) Some chunks are larger than 500 kB after minification. Consider:
+│  - Using dynamic import() to code-split the application
+│  - Use build.rolldownOptions.output.codeSplitting to improve chunking:
+│  https://rolldown.rs/reference/OutputOptions.codeSplitting
+│  - Adjust chunk size limit for this warning via
+│  build.chunkSizeWarningLimit.
+│
+●  Storybook collects completely anonymous usage telemetry. We use it to
+│  shape Storybook's roadmap and prioritize features. You can learn more,
+│  including how to opt out, at https://storybook.js.org/telemetry
+│
+◇  Output directory:
+│  /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/apps/empty-2/web/storybook-static
+│
+└  Storybook build completed successfully

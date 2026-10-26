@@ -29,11 +29,14 @@ fn session(init: std.process.Init) !void {
     _ = args.next();
     var port: u16 = 5173;
     var app: []const u8 = "example";
+    var launcher: []const u8 = "tooling/vite.mjs";
     while (args.next()) |arg| {
         if (std.mem.eql(u8, arg, "--port")) {
             port = try std.fmt.parseInt(u16, args.next() orelse return error.MissingPort, 10);
         } else if (std.mem.eql(u8, arg, "--app")) {
             app = args.next() orelse return error.MissingApplicationPath;
+        } else if (std.mem.eql(u8, arg, "--vite-launcher")) {
+            launcher = args.next() orelse return error.MissingLauncherPath;
         } else {
             std.debug.print("Usage: zig build dev -- [--port 5173] [--app example]\n", .{});
             return error.UnknownArgument;
@@ -59,18 +62,29 @@ fn session(init: std.process.Init) !void {
     };
     std.posix.sigaction(.INT, &action, null);
     std.posix.sigaction(.TERM, &action, null);
+    std.posix.sigaction(.HUP, &action, null);
 
     var random: [8]u8 = undefined;
     io.random(&random);
     const directory = try std.fmt.allocPrint(allocator, "/tmp/z-kit-{x}", .{std.mem.readInt(u64, &random, .little)});
-    try Io.Dir.createDirAbsolute(io, directory, .fromMode(0o700));
-    defer Io.Dir.deleteDirAbsolute(io, directory) catch {};
     const socket_path = try std.fmt.allocPrint(allocator, "{s}/vite.sock", .{directory});
-    defer Io.Dir.deleteFileAbsolute(io, socket_path) catch {};
+    try Io.Dir.createDirAbsolute(io, directory, .fromMode(0o700));
+    defer {
+        // Cancellation may already be pending when the build runner stops us.
+        // The session owner must finish these bounded filesystem operations.
+        const protection = io.swapCancelProtection(.blocked);
+        defer _ = io.swapCancelProtection(protection);
+        Io.Dir.deleteFileAbsolute(io, socket_path) catch |err| switch (err) {
+            error.FileNotFound => {}, // Node may have closed/unlinked it first.
+            else => std.debug.print("z-kit: removing socket: {s}\n", .{@errorName(err)}),
+        };
+        Io.Dir.deleteDirAbsolute(io, directory) catch |err|
+            std.debug.print("z-kit: removing session directory: {s}\n", .{@errorName(err)});
+    }
     const unix_address = try net.UnixAddress.init(socket_path);
 
     var child = std.process.spawn(io, .{
-        .argv = &.{ "node", "tooling/vite.mjs", app, socket_path, origin },
+        .argv = &.{ "node", launcher, app, socket_path, origin },
         .stdin = .ignore,
         .stdout = .pipe,
     }) catch |err| {

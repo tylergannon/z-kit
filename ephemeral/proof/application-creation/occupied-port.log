@@ -1,0 +1,12 @@
+z-kit: cannot listen on 127.0.0.1:5182: AddressInUse
+z-kit: AddressInUse
+dev
++- run exe z-kit-dev failure
+error: process exited with code 1
+failed command: cd . && ./.zig-cache/o/40eca6d68e3773cade3288090553839f/z-kit-dev --app web --vite-launcher ./../../../tooling/vite.mjs --port 5182
+
+Build Summary: 1/3 steps succeeded (1 failed)
+dev transitive failure
++- run exe z-kit-dev failure
+
+exit=1
