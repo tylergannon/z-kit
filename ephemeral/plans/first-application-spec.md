@@ -2,6 +2,8 @@
 
 Status: **progressive feature specification**, October 25, 2026. The development-server portion is implemented and [demonstrated on macOS](../proof/dev-server/README.md). The required base application generator, `zkit new`, is not implemented; complete it against that server before proceeding to native remotes. The initial foundation and preferred progression come from the user's current instructions. Further features will be selected progressively for their usefulness and value to the whole application.
 
+The [application-creation implementation plan](upstream-application-creation.md) maps the actual SKGo workflow to proposed direct reuse, Zig ports and deferred native features. Its [reference evidence](../proof/new-app/README.md) includes full SKGo creation runs and upstream creation/build on latest VitePlus 1.4.0. These are planning inputs, not a z-kit generator implementation.
+
 ## What we are building
 
 z-kit is the Zig successor to SKGo: a framework for building ordinary SvelteKit applications with native server-side application logic written in Zig. Application authors write Svelte components and native functions. z-kit connects those functions to Kit's application model and eventually builds the application into a native executable.

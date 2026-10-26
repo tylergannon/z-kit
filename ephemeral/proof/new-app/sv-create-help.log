@@ -1,0 +1,78 @@
+
+Usage: sv create [options] [path]
+
+Scaffold a new project (--add to include add-ons)
+
+Arguments:
+  path                              where the project will be created
+
+Options:
+  --template <type>                 template to scaffold (choices: minimal,
+                                    demo, library, addon)
+  --[no-]types <lang>               add type checking (choices: ts, jsdoc)
+  --no-add-ons                      do not prompt to add add-ons
+  --add <addon...>                  add-ons to include (see Add-Ons section
+                                    below)
+  --addon-name <name>               name for the addon package (e.g.
+                                    @<org>/<pkg> or <pkg>)
+  --from-playground <url>           create a project from the svelte playground
+  --no-dir-check                    even if the folder is not empty, no prompt
+                                    will be shown
+  --no-download-check               do not warn about downloads from community
+                                    add-ons
+  --[no-]install <package-manager>  installs dependencies with a specified
+                                    package manager (choices: npm, yarn, pnpm,
+                                    pnpm-rush, bun, deno, nub, aube)
+
+Official Add-Ons:
+  prettier                          (no options)
+  eslint                            (no options)
+  vitest                            usages: unit, component (default: unit,
+                                    component)
+  playwright                        demo: yes, no (default: yes)
+  tailwindcss                       plugins: typography, forms (default: none)
+  enhanced-img                      (no options)
+  sveltekit-adapter                 adapter: auto, node, static, vercel,
+                                    cloudflare, netlify (default: auto)
+                                    cfTarget: workers, pages (default: none)
+  drizzle                           database: postgresql, mysql, sqlite, d1
+                                    (default: sqlite)
+                                    client: postgres.js, neon, mysql2,
+                                    planetscale, node-sqlite, better-sqlite3,
+                                    libsql, turso (default: libsql)
+                                    docker: yes, no (default: none)
+  better-auth                       demo: password, github (default: password)
+  mdsvex                            (no options)
+  paraglide                         languageTags: <user-input> (default: en, es)
+                                    demo: yes, no (default: yes)
+  storybook                         (no options)
+  ai-tools                          ide: claude-code, cursor, gemini, opencode,
+                                    vscode, other (default: none)
+                                    delivery: plugin, tools (default: none)
+                                    tools: mcp, svelte-code-writer,
+                                    svelte-core-bestpractices,
+                                    svelte-file-editor (default: none)
+                                    mcpSetup: local, remote (default: none)
+  experimental                      features: async, remoteFunctions,
+                                    forkPreloads (default: async,
+                                    remoteFunctions)
+
+Community Add-Ons:
+  Find on: https://www.npmjs.com/search?q=keywords:sv-add
+
+Add-On Syntax:
+  <addon>                               add with defaults (may still prompt)
+  <addon>=<opt>:<val>                   set a single option
+  <addon>=<opt1>:<val1>+<opt2>:<val2>   set multiple options
+  <addon>=<opt>:none                    explicitly set no value (for multiselect)
+  To skip prompts, explicitly set ALL options (use defaults shown above).
+
+Non-interactive usage:
+  Provide --template, --types, --add, and --install (or --no-install) to skip prompts entirely.
+  Note: --add and --no-add-ons cannot be used together.
+
+Examples:
+  sv create my-app --template minimal --types ts --add prettier eslint --install pnpm
+  sv create my-app --template minimal --types ts --add prettier vitest="usages:unit" tailwindcss="plugins:none" --install pnpm
+  sv create my-app --template minimal --types ts --add drizzle="database:postgresql+client:postgres.js" --no-install
+Done in 80ms using pnpm v12.14.0

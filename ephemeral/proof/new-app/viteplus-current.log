@@ -1,0 +1,17 @@
+vp v1.4.0
+
+Local vite-plus:
+  vite-plus  Not found
+
+Tools:
+  vite             Not found
+  rolldown         Not found
+  vitest           Not found
+  oxfmt            Not found
+  oxlint           Not found
+  oxlint-tsgolint  Not found
+  tsdown           Not found
+
+Environment:
+  Package manager  pnpm default
+  Node.js          v24.22.1
