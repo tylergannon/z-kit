@@ -1,8 +1,0 @@
-.{
-    .name = .zkit_app,
-    .fingerprint = 0x57ebe49a78413aae,
-    .version = "0.0.0",
-    .minimum_zig_version = "0.18.0-dev.543+fa4f5b262",
-    .dependencies = .{ .zkit = .{ .path = "../../.." } },
-    .paths = .{ ".gitignore", ".npmrc", ".vscode", "README.md", "build.zig", "build.zig.zon", "package.json", "pnpm-lock.yaml", "src", "static", "tsconfig.json", "vite.config.ts" },
-}

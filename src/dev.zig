@@ -68,12 +68,9 @@ fn session(init: std.process.Init) !void {
     const socket_path = try std.fmt.allocPrint(allocator, "{s}/vite.sock", .{directory});
     defer Io.Dir.deleteFileAbsolute(io, socket_path) catch {};
     const unix_address = try net.UnixAddress.init(socket_path);
-    const launcher_path = try std.fmt.allocPrint(allocator, "{s}/vite.mjs", .{directory});
-    try Io.Dir.cwd().writeFile(io, .{ .sub_path = launcher_path, .data = @embedFile("vite_launcher") });
-    defer Io.Dir.deleteFileAbsolute(io, launcher_path) catch {};
 
     var child = std.process.spawn(io, .{
-        .argv = &.{ "node", launcher_path, app, socket_path, origin },
+        .argv = &.{ "node", "tooling/vite.mjs", app, socket_path, origin },
         .stdin = .ignore,
         .stdout = .pipe,
     }) catch |err| {
