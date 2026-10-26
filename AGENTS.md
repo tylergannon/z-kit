@@ -10,6 +10,8 @@ The [bring-up baseline](ephemeral/plans/z-kit-bringup.md) maps broader features 
 
 The projector is an internal source module under `modules/projector`, independent of routing, HTTP, Vite and the renderer. One application-wide generator owns integration. The shared devalue runtime remains a separate dependency. The earlier [generation lifecycle design](ephemeral/plans/generation-lifecycle.md) is deferred reference material, not first-generator scope.
 
+Before implementing `zkit new`, follow the feature spec's SKGo reference-work section: trace the real CLI, VitePlus creation flow and native `sv` add-on. Preserve upstream's prompts and minimal/demo selection, and apply frontend decoration through `sv add`. The rejected `ba23bf2` implementation was reverted; do not reuse its separate starter prompt or forced-minimal/manual-decoration approach.
+
 ## Zig reference cache
 
 - Cache root: `/Users/tyler/zig-token-cache`

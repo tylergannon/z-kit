@@ -30,11 +30,12 @@ The [broader bring-up baseline](z-kit-bringup.md) retains the product's feature 
 
 ## Required foundation: create a new application
 
-The developer runs `zkit new <directory>` and chooses an empty application or an application with examples. z-kit wraps and decorates the real upstream SvelteKit application generator, following the approach of `skgo new`. Upstream owns ordinary SvelteKit scaffolding and its supported frontend choices; z-kit adds its own integration rather than reimplementing that generator.
+The developer runs `zkit new <directory>` and makes the ordinary upstream SvelteKit creation choices. The upstream `minimal` choice becomes an empty z-kit application; upstream `demo` becomes the z-kit examples application. z-kit wraps and decorates the real upstream workflow used by `skgo new`. Upstream owns the questions, templates, type-checking choices and supported add-ons; z-kit owns its framework-specific integration.
 
 ### Observable behavior
 
 - The empty starter creates a minimal runnable z-kit application without feature demonstrations. The examples starter creates a runnable application demonstrating the z-kit features implemented so far.
+- In a terminal, upstream presents its own minimal/demo, language and add-on questions. Options after `--` go to `sv create`, including `--template minimal` and `--template demo`. z-kit must not insert a separate empty/examples question or force a minimal scaffold regardless of the upstream choice. Without a terminal, omitted choices settle to minimal TypeScript with no optional add-ons, as in SKGo; an existing empty destination is accepted, while a nonempty destination is refused.
 - From the generated application's own directory, the developer follows the documented dependency-installation, generation, build and development-start commands and opens a working SvelteKit page through the Zig listener. No manual source repairs or copying of pre-generated artifacts are needed.
 - Both starter choices work when creation is repeated in fresh destinations. Neither relies on the repository example's installed dependencies, generated files, build outputs or working directory.
 - As remote functions, page loads and subsequent features land, the generated examples starter includes working demonstrations of them. The empty starter continues to build and start through the same integration without requiring demo handlers.
@@ -42,9 +43,28 @@ The developer runs `zkit new <directory>` and chooses an empty application or an
 
 ### Supporting technical requirements
 
-Delegate frontend creation to the actual upstream SvelteKit generator and preserve supported user selections. Apply the z-kit additions afterward: Zig package/build configuration, framework dependencies, development-host/Vite integration, documented commands and the selected examples. Copying the repository's hand-assembled frontend as a substitute for invoking upstream creation does not satisfy this contract.
+Delegate frontend creation through VitePlus to the actual upstream SvelteKit generator, preserving supported user selections. Use the qualified VitePlus environment and its managed pnpm throughout creation and installation, as SKGo does; do not substitute an arbitrary pnpm from PATH. Generated applications separate the native Zig project/build at the root from the upstream frontend in `web/`, with development commands run from the application root.
 
-Upstream scaffolding and the z-kit additions have separate ownership. z-kit owns its integration and native examples; it must not maintain a parallel implementation of SvelteKit's project templates or frontend option handling. The empty/examples choice must also be available without an interactive terminal so fresh application creation can be repeated.
+Apply frontend integration through a native `sv` add-on invoked by the real `sv add` command after the developer's upstream add-ons. That add-on is the sole owner of z-kit's frontend decoration and examples conversion; the CLI owns orchestration and Zig-specific project files. Use upstream add-on APIs and transforms rather than a parallel frontend installer that directly rewrites package/config/template files from the CLI. The framework add-on is creation tooling, not an application runtime dependency.
+
+Read back the project upstream actually produced to determine the selected starter and configured tools. For `demo`, replace the upstream JavaScript-server demonstration with z-kit examples while preserving compatible additions to layouts and stylesheets. Verify that the framework add-on actually applied before reporting success; an upstream zero exit code alone is insufficient. Keep supported frontend tools pointed at the Zig public server where their behavior depends on the application's server.
+
+The relevant upstream choices must remain available noninteractively, for example:
+
+```sh
+zkit new myapp -- --template minimal --types ts --no-add-ons
+zkit new myapp -- --template demo --types jsdoc --add tailwindcss=plugins:none
+```
+
+SKGo's top-level `--template` is a separate plugin-recipe facility, not its ordinary minimal/demo selection. Do not repurpose it as a new empty/examples selector. Plugin recipes are not required for this initial foundation.
+
+### Required SKGo reference work before implementation
+
+Inspect the actual reference checkout's [CLI argument handling](/Users/tyler/src/skgo/cmd/skgo/templates.go:151), [creation orchestration and choice detection](/Users/tyler/src/skgo/internal/newapp/newapp.go:142), [qualified frontend environment](/Users/tyler/src/skgo/internal/newapp/environment.go:18), [native sv add-on](/Users/tyler/src/skgo/internal/sv/sv-addon.source.js:1), [add-on contract](/Users/tyler/src/skgo/internal/sv/README.md) and [creation behavior tests](/Users/tyler/src/skgo/internal/newapp/newapp_test.go:484). Trace the full command path through those sources, including what upstream owns and what SKGo adds. Run the reference CLI's help and relevant creation flows when establishing behavioral parity; if execution is blocked, record the blocker and the source evidence rather than claiming a live comparison.
+
+At the inspected reference revision, SKGo delegates creation and installs through VitePlus, lets sv ask its own questions, reads the emitted project to recognize demo/minimal, and has sv apply `@skgo/sv`. It also adds upstream Vitest/Storybook setup, selects compatible package versions, configures/verifies its Kit correction, generates the native side, checks the frontend and builds it before declaring creation complete. Account explicitly for those steps and for any necessary Zig-specific or selected-scope differences. A fresh z-kit page loading successfully does not by itself establish that the CLI follows the reference workflow. SKGo-specific runtime features and patches do not become z-kit requirements merely by appearing in the reference.
+
+### Shared examples, dependency and build requirements
 
 The repository example and generated examples starter use the same maintained example content and framework integration. Keep them aligned as features land. Project scaffolding is distinct from the application-wide generator that later derives bindings and native registrations from application declarations; having that binding generator does not satisfy `zkit new`.
 
@@ -180,6 +200,6 @@ Implemented-source baseline before these specification changes: `3c2dd52`. Imple
 
 Inspected SKGo base: `618f467b93d5371ebdccfb7f6b59b24814a454f6`. Source entry points: [application structure](/Users/tyler/src/skgo/project-structure.md), [generator](/Users/tyler/src/skgo/internal/gen/gen.go), [generated Kit stubs](/Users/tyler/src/skgo/internal/gen/emit.go), [adapter](/Users/tyler/src/skgo/internal/adapter/skgo-adapter.js), [development session](/Users/tyler/src/skgo/internal/devserver/session.go), [public proxy](/Users/tyler/src/skgo/internal/devserver/router.go), [Vite lifecycle](/Users/tyler/src/skgo/internal/devserver/frontend.go), [native composition](/Users/tyler/src/skgo/example/server.go) and [developer commands](/Users/tyler/src/skgo/internal/commands/commands.go). No new SKGo execution proof was collected.
 
-The application-creation amendment follows the user's explicit requirement to wrap upstream generation from the outset and prove features in new applications. Rechecked the same SKGo base's [upstream creation and integration orchestration](/Users/tyler/src/skgo/internal/newapp/newapp.go:142) and [setup completion](/Users/tyler/src/skgo/internal/newapp/newapp.go:265). These are source references for the wrapper approach, not new execution evidence or a requirement to port every SKGo option or workaround.
+The application-creation amendment follows the user's explicit requirement to wrap upstream generation from the outset and prove features in new applications. Rechecked the same SKGo base's creation orchestration, setup completion, argument handling, qualified environment and native sv add-on. Ran `go run ./cmd/skgo new -h`; no full reference application creation was executed in this session. The attempted z-kit implementation in `ba23bf2` was rejected and reverted by `346855f`: its custom starter prompt, forced upstream minimal template and direct frontend decoration do not satisfy the reference workflow. It is not accepted prior art for the next implementation.
 
 Consulted the read-only Zig cache's build, SKGo/supervisor, I/O, memory and Polytype routes and relevant leaves. Pinned original sources opened include [build configuration/cache semantics](/Users/tyler/zig-token-cache/official/source/zig-0.17.0/lib/std/Build.zig:75), [host generation and target consumption example](/Users/tyler/zig-token-cache/toolchain/examples/build-sdk/build.zig:1), [embedding generated bytes](/Users/tyler/zig-token-cache/toolchain/examples/build-sdk/root.zig:1), [explicit process I/O/allocators](/Users/tyler/zig-token-cache/official/source/zig-0.17.0/lib/std/process.zig:31) and [task cancellation/completion](/Users/tyler/zig-token-cache/official/source/zig-0.17.0/lib/std/Io.zig:1296). The cache pins Zig 0.17.0 source; these mechanisms do not establish z-kit compatibility or implementation. No compiler or runtime experiment was run for this draft.
