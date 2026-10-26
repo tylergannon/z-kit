@@ -1,0 +1,8 @@
+Build Summary: 7/7 steps succeeded; 14/14 tests passed
+test success
++- compile exe z-kit-dev debug native success 929ms MaxRSS:257M
++- run test 13 pass (13 total) 137ms MaxRSS:3M
+|  +- compile test debug native success 976ms MaxRSS:266M
++- run test 1 pass (1 total) 152ms MaxRSS:3M
+|  +- compile test debug native success 952ms MaxRSS:260M
++- compile test debug native success 183ms MaxRSS:98M

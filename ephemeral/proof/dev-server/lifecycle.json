@@ -1,0 +1,12 @@
+{
+  "results": [
+    "Real Kit SSR, assets, HEAD, 404, POST/PATCH with 256 KiB binary bodies, encoded target/query, headers, cookie, chunked response passed; early TCP half-close matches direct Vite behavior",
+    "Occupied public port fails without announcing readiness",
+    "SIGTERM releases listener, active session, Vite child and socket directory",
+    "Same public port restarts; SIGINT performs complete cleanup",
+    "Unexpected Vite exit is reported and releases listener/socket",
+    "Invalid application startup fails without announcing readiness",
+    "Unready Vite/application reaches the 30-second deadline without announcing readiness"
+  ],
+  "passed": true
+}

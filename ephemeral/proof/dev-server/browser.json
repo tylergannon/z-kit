@@ -1,0 +1,35 @@
+{
+  "state": "Browser tab: 1, Title: \"z-kit · First application\", URL: \"http://127.0.0.1:5173/\".\n1 AXWebArea z-kit · First application, URL: 127.0.0.1:5173/\n\t2 container\n\t\t3 text Z-KIT / FIRST APPLICATION\n\t\t4 heading A little Zig. A little Svelte., Value: 1\n\t\t\t5 text A little Zig.\n\t\t\t6 text A little Svelte.\n\t\t7 text One running application. Room to grow.\n\t\t8 button Clicks: 1\n\t\t9 text Edit this page and watch it update.\n\nThe focused UI element is 8 button Clicks: 1",
+  "logs": [
+    {
+      "level": "debug",
+      "message": "[vite] connecting...",
+      "timestamp": "2026-10-26T00:13:22.027Z",
+      "url": "http://127.0.0.1:5173/@vite/client"
+    },
+    {
+      "level": "debug",
+      "message": "[vite] connecting...",
+      "timestamp": "2026-10-26T00:13:24.421Z",
+      "url": "http://127.0.0.1:5173/@vite/client"
+    },
+    {
+      "level": "debug",
+      "message": "[vite] connected.",
+      "timestamp": "2026-10-26T00:13:26.805Z",
+      "url": "http://127.0.0.1:5173/@vite/client"
+    },
+    {
+      "level": "debug",
+      "message": "[vite] hot updated: /src/routes/+page.svelte",
+      "timestamp": "2026-10-26T00:13:44.582Z",
+      "url": "http://127.0.0.1:5173/@vite/client"
+    },
+    {
+      "level": "debug",
+      "message": "[vite] hot updated: /src/routes/+page.svelte",
+      "timestamp": "2026-10-26T00:13:59.555Z",
+      "url": "http://127.0.0.1:5173/@vite/client"
+    }
+  ]
+}

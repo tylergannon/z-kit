@@ -1,13 +1,21 @@
 const std = @import("std");
 
-comptime {
-    if (!std.mem.eql(u8, @import("builtin").zig_version_string, "0.17.0"))
-        @compileError("z-kit currently requires Zig 0.17.0");
-}
-
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
+    const dev = b.addExecutable(.{
+        .name = "z-kit-dev",
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("src/dev.zig"),
+            .target = target,
+            .optimize = optimize,
+            .link_libc = true,
+        }),
+    });
+    b.installArtifact(dev);
+    const run = b.addRunArtifact(dev);
+    run.addPassthruArgs();
+    b.step("dev", "Run the example through the Zig development host").dependOn(&run.step);
     // Internal source module: no separate projector package or release.
     const projector = b.createModule(.{
         .root_source_file = b.path("modules/projector/src/projector.zig"),
@@ -21,6 +29,7 @@ pub fn build(b: *std.Build) void {
         .imports = &.{.{ .name = "projector", .module = projector }},
     });
     const tests = b.step("test", "Run projector configuration and module tests; compile comptime proof");
+    tests.dependOn(&dev.step);
     for ([_][]const u8{ "shape_test.zig", "module_consumer.zig", "comptime_test.zig" }) |source| {
         const fixture = b.createModule(.{
             .root_source_file = b.path(b.fmt("modules/projector/test/{s}", .{source})),

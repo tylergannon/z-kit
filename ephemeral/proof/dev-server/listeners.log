@@ -1,0 +1,7 @@
+COMMAND     PID  USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+z-kit-dev 65584 tyler    3u  IPv4 0x413b30c44c563a40      0t0  TCP 127.0.0.1:5173 (LISTEN)
+
+Vite owns no TCP listener. Its Unix sockets:
+COMMAND   PID  USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+node    65585 tyler   14u  unix 0x1cb125a23c7ec1c0      0t0      /tmp/z-kit-3de916f46464fd1c/vite.sock
+node    65585 tyler   27u  unix 0xf9245ec272edd3cb      0t0      /tmp/z-kit-3de916f46464fd1c/vite.sock

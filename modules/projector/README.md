@@ -21,4 +21,4 @@ The [concise mapping brief](ephemeral/plans/mapping-contract.md) locks in ordina
 
 [Compile evidence and reproduction](ephemeral/projection-shape-lab/README.md), [component acceptance catalog](ephemeral/plans/example-acceptance.md), [language projections](ephemeral/plans/language-projections.md) and [OpenAI schema reference](docs/openai-json-schema.md) retain the research supporting this component. Application integration and generation ownership are defined by the [z-kit baseline](../../ephemeral/plans/z-kit-bringup.md) and [generation lifecycle](../../ephemeral/plans/generation-lifecycle.md).
 
-Run `zig build test` from the repository root with Zig 0.17.0. There is no separate projector package, command or release.
+Run `zig build test` from the repository root with the current Zig development build. There is no separate projector package, command or release.

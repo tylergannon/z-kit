@@ -1,6 +1,6 @@
 # z-kit: develop the application one useful feature at a time
 
-Status: **discussion draft**, October 25, 2026. The first feature and the preferred direction after it come from the user's current instructions. Further features will be selected progressively for their usefulness and value to the whole application.
+Status: **progressive feature specification**, October 25, 2026. The first development-server feature is implemented and [demonstrated on macOS](../proof/dev-server/README.md); the later features remain progressive direction. The first feature and the preferred direction after it come from the user's current instructions. Further features will be selected progressively for their usefulness and value to the whole application.
 
 ## What we are building
 
@@ -8,7 +8,7 @@ z-kit is the Zig successor to SKGo: a framework for building ordinary SvelteKit 
 
 Start with a real SvelteKit application running behind a Zig development server. Extend that same application as we add remote functions, page loads and backend reloads. Each increment must give the developer useful application behavior and demonstrate it through the running application.
 
-Use **Zig 0.17.0**, the Zig build system, and the actual SvelteKit/Vite toolchain. The specification describes features and the behavior that demonstrates them; supporting technical requirements belong under the feature they enable.
+Use the **current Zig development build**, the Zig build system, and the actual SvelteKit/Vite toolchain. The specification describes features and the behavior that demonstrates them; supporting technical requirements belong under the feature they enable.
 
 ## Map of the SKGo terrain
 

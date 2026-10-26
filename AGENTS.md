@@ -2,7 +2,7 @@
 
 ## Product and current direction
 
-**z-kit** is a Zig backend for ordinary SvelteKit applications, building on SKGo's application model. Target **Zig 0.17.0** and use the actual Zig and SvelteKit/Vite toolchains.
+**z-kit** is a Zig backend for ordinary SvelteKit applications, building on SKGo's application model. Use the **current Zig development build** and the actual SvelteKit/Vite toolchains.
 
 Start with [the feature specification](ephemeral/plans/first-application-spec.md). The first feature is a real SvelteKit app running in Vite on a Unix domain socket, reached through a Zig network listener/proxy. Extend that same app progressively. Remote functions, page loads and backend reloads are the current preferred progression; choose each next feature for its usefulness and value to the whole application.
 
@@ -15,7 +15,7 @@ The projector is an internal source module under `modules/projector`, independen
 - Cache root: `/Users/tyler/zig-token-cache`
 - Semantic index: `/Users/tyler/zig-token-cache/index`
 - Entrypoint: `/Users/tyler/zig-token-cache/index/README.md`
-- Pinned Zig source: `/Users/tyler/zig-token-cache/official/source/zig-0.17.0/`
+- Historical Zig 0.17.0 source: `/Users/tyler/zig-token-cache/official/source/zig-0.17.0/`
 
 All agents doing Zig work must consult this cache throughout the work, especially before architecture/design decisions or questions about idiomatic Zig, APIs, ownership and builds. Follow **entrypoint → relevant route → relevant leaf → cited original source**. Use explicit paths instead of scanning the entire corpus first.
 
@@ -32,7 +32,7 @@ Routes below are relative to the index:
 | Shared devalue runtime and serialization | `routes/wire/README.md` |
 | SKGo contracts and development supervisor | `routes/skgo/README.md` |
 
-Bare citation paths in the index resolve from the **cache root**, not the leaf's directory. Open the cited originals and check their versions and provenance against Zig 0.17.0. Separate accepted decisions from proposals, historical experiments and current implementation. Older 0.18 experiments and unversioned examples are not current API guidance. Current user instructions and selected feature scope control over historical cache proposals.
+Bare citation paths in the index resolve from the **cache root**, not the leaf's directory. Open the cited originals and check their versions and provenance. The cache is a historical 0.17.0 snapshot; verify current APIs against the installed development compiler's source (`zig env` reports its location). Separate accepted decisions from proposals, historical experiments and current implementation. Old experiments and unversioned examples are not current API guidance. Current user instructions and selected feature scope control over historical cache proposals.
 
 The cache is maintained separately and is **read-only** for project work. It contains source and retained evidence, not a runnable compiler distribution. Report missing or inaccessible evidence instead of guessing; keep newly acquired tools and experiment outputs outside the cache.
 
