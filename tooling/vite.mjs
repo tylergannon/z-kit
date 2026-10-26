@@ -3,12 +3,17 @@
 import { createServer as createHttpServer, get } from 'node:http';
 import { once } from 'node:events';
 import { resolve } from 'node:path';
-import { createServer } from 'vite';
+import { createRequire } from 'node:module';
+import { pathToFileURL } from 'node:url';
 
 console.log = console.error;
 const [app, socketPath, origin] = process.argv.slice(2);
 const root = resolve(app);
 process.chdir(root);
+// Resolve the application's declared Vite dependency, even when this launcher
+// was extracted from the Zig host into its private temporary directory.
+const require = createRequire(resolve(root, 'package.json'));
+const { createServer } = await import(pathToFileURL(require.resolve('vite')).href);
 const address = new URL(origin);
 const http = createHttpServer();
 const vite = await createServer({

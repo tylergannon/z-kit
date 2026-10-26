@@ -1,0 +1,11 @@
+7:13:05 PM [vite] (ssr) connected.
+7:13:05 PM [vite] (ssr) Re-optimizing dependencies because vite config has changed
+200 GET /
+
+z-kit ready at http://127.0.0.1:5185
+Vite socket: /tmp/z-kit-bade6a18ee068d58/vite.sock
+Press Ctrl-C to stop.
+200 GET /
+200 GET /
+
+z-kit: stopping

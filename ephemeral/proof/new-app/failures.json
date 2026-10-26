@@ -1,0 +1,17 @@
+[
+  {
+    "case": "existing-destination",
+    "exit": 1,
+    "passed": true
+  },
+  {
+    "case": "invalid-template",
+    "exit": 1,
+    "passed": true
+  },
+  {
+    "case": "invalid-upstream-option",
+    "exit": 1,
+    "passed": true
+  }
+]

@@ -1,6 +1,6 @@
 # z-kit: develop the application one useful feature at a time
 
-Status: **progressive feature specification**, October 25, 2026. The development-server portion is implemented and [demonstrated on macOS](../proof/dev-server/README.md). The required base application generator, `zkit new`, is not implemented; complete it against that server before proceeding to native remotes. The initial foundation and preferred progression come from the user's current instructions. Further features will be selected progressively for their usefulness and value to the whole application.
+Status: **progressive feature specification**, October 25, 2026. The development server is implemented and [demonstrated on macOS](../proof/dev-server/README.md). The base application generator, `zkit new`, now wraps upstream creation and has [fresh empty/examples application proof](../proof/new-app/README.md), using explicit local framework dependencies during development. Native remotes and the later features remain unimplemented. The initial foundation and preferred progression come from the user's current instructions. Further features will be selected progressively for their usefulness and value to the whole application.
 
 ## What we are building
 
@@ -156,7 +156,7 @@ This feature's placement here does not fix its position after every preferred de
 
 ## Choosing the next feature
 
-Complete the initial foundation: `zkit new` wrapping upstream SvelteKit creation, both starter choices, and the trivial development server in freshly generated applications. The existing repository-only server demonstration leaves application creation outstanding. The current preferred progression after that foundation is remote functions, then page loads, then automatic native backend reloads. After each working feature, choose the next addition by its usefulness and value to the whole application. This is a direction for progressive decisions, not a fixed implementation schedule for every feature in the SKGo map.
+The initial foundation includes `zkit new` wrapping upstream SvelteKit creation, both starter choices, and the trivial development server in freshly generated applications. Repository-only server proof is one valid checkpoint within that foundation; application creation now has its own linked demonstration. The current preferred progression after that foundation is remote functions, then page loads, then automatic native backend reloads. After each working feature, choose the next addition by its usefulness and value to the whole application. This is a direction for progressive decisions, not a fixed implementation schedule for every feature in the SKGo map.
 
 Specify each selected feature's developer-visible behavior and put the necessary generated integration, adapter, codec, lifetime and build details underneath it. Use feature names when discussing work and evidence.
 

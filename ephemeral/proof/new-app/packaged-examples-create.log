@@ -1,0 +1,72 @@
+
+zkit: create the SvelteKit application with sv 1.1.1
+.../mvok5iol-1phx                        | Progress: resolved 0, reused 1, downloaded 0, added 0
+.../mvok5iol-1phx                        | Progress: resolved 2, reused 2, downloaded 0, added 2, done
+
+dependencies:
++ sv 1.1.1
+
+
+HINT: Run "sv --help" to get the full list of commands, add-ons, and examples to one-shot and skip interactive prompts.
+┌  Welcome to the Svelte CLI! (v1.1.1)
+│
+◆  Project created
+│
+│  To skip prompts next time, run:
+●  npx sv@1.1.1 create --template minimal --types ts --no-install /Users/tyler/.codex/worktrees/a096/z-kit/ephemeral/generator-probe/packaged-examples
+│
+◇  What's next? ───────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  📁 Project steps                                                            │
+│                                                                              │
+│    1: cd ../../Users/tyler/.codex/worktrees/a096/z-kit/ephemeral/generator-  │
+│  probe/packaged-examples                                                     │
+│    2: pnpm i                                                                 │
+│    3: pnpm run dev --open                                                    │
+│                                                                              │
+│  To close the dev server, hit Ctrl-C                                         │
+│                                                                              │
+│  Stuck? Visit us at https://svelte.dev/chat                                  │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────╯
+│
+└  You're all set!
+
+Done in 359ms using pnpm v12.15.0
+
+zkit: add Zig build/dev integration
+
+zkit: install application dependencies
+Progress: resolved 0, reused 1, downloaded 0, added 0
+Packages: +55
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 55, reused 55, downloaded 0, added 55, done
+. prepare$ svelte-kit sync || echo ''
+. prepare: Done
+
+devDependencies:
++ @sveltejs/adapter-auto 8.0.0
++ @sveltejs/kit 3.1.0
++ @sveltejs/vite-plugin-svelte 7.3.1
++ svelte 5.57.2
++ svelte-check 4.7.7
++ typescript 6.0.3
++ vite 8.3.5
+
+Done in 1.1s using pnpm v12.15.0
+
+zkit: check the application
+$ svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+Loading svelte-check in workspace: /Users/tyler/.codex/worktrees/a096/z-kit/ephemeral/generator-probe/packaged-examples
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+
+zkit: build the Zig development host
+
+zkit: created the examples application at /Users/tyler/.codex/worktrees/a096/z-kit/ephemeral/generator-probe/packaged-examples
+
+  cd "/Users/tyler/.codex/worktrees/a096/z-kit/ephemeral/generator-probe/packaged-examples"
+  zig build dev
+
+Open http://127.0.0.1:5173 after the server announces readiness.
