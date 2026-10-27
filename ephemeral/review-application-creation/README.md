@@ -65,6 +65,17 @@ leak in the provided E2E workflow, not a rendering or test failure.
 The original proof demonstrates manual/session shutdown successfully, but it
 does not establish complete cleanup after the Playwright-managed session.
 
+Follow-up SKGo comparison: the inspected SKGo add-on rewrites Playwright's
+launcher to `cd .. && just serve`. Its generated Justfile builds and runs the
+standalone Go executable, without the Vite development socket. Z-kit currently
+rewrites the launcher to `cd .. && zig build dev`, which starts Vite and creates
+the temporary socket directory. This explains why the generated z-kit E2E
+workflow exposes this particular cleanup leak while SKGo's generated standalone
+test workflow does not have that Vite socket to leave behind. This comparison is
+source-backed at SKGo `618f467b`, not a rerun of historical SKGo test sessions.
+The leak is minor test-integration housekeeping, not a core application-function
+blocker; the review's spoken suggestion to hold merging for it was too strong.
+
 ## Independently reproduced behavior
 
 All successful apps below were fresh destinations created through real upstream
