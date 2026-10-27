@@ -1,0 +1,16 @@
+4:36:23 PM [vite+] (ssr) connected.
+4:36:23 PM [vite+] (client) Forced re-optimization of dependencies
+200 GET /
+
+z-kit ready at http://127.0.0.1:5271
+Vite socket: /tmp/z-kit-ec720e554a8ed9cc/vite.sock
+Press Ctrl-C to stop.
+200 GET /
+4:37:12 PM [vite+] (client) hmr update /src/routes/+page.svelte
+4:37:12 PM [vite+] (ssr) page reload src/routes/+page.svelte
+4:37:12 PM [vite+] (ssr) program reload
+4:37:25 PM [vite+] (client) hmr update /src/routes/+page.svelte
+4:37:25 PM [vite+] (ssr) page reload src/routes/+page.svelte
+4:37:25 PM [vite+] (ssr) program reload
+
+z-kit: stopping

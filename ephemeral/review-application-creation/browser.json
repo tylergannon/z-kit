@@ -1,0 +1,102 @@
+{
+  "repository": [
+    {
+      "level": "debug",
+      "message": "[vite] connecting...",
+      "timestamp": "2026-10-27T22:36:33.828Z",
+      "url": "http://127.0.0.1:5271/@vite/client"
+    },
+    {
+      "level": "debug",
+      "message": "[vite] connected.",
+      "timestamp": "2026-10-27T22:36:33.828Z",
+      "url": "http://127.0.0.1:5271/@vite/client"
+    },
+    {
+      "level": "debug",
+      "message": "[vite] hot updated: /src/routes/+page.svelte",
+      "timestamp": "2026-10-27T22:37:12.298Z",
+      "url": "http://127.0.0.1:5271/@vite/client"
+    },
+    {
+      "level": "debug",
+      "message": "[vite] hot updated: /src/routes/+page.svelte",
+      "timestamp": "2026-10-27T22:37:25.581Z",
+      "url": "http://127.0.0.1:5271/@vite/client"
+    },
+    {
+      "level": "log",
+      "message": "[vite] server connection lost. Polling for restart...",
+      "timestamp": "2026-10-27T22:37:47.317Z",
+      "url": "http://127.0.0.1:5271/@vite/client"
+    }
+  ],
+  "examples": [
+    {
+      "level": "debug",
+      "message": "[vite] connecting...",
+      "timestamp": "2026-10-27T22:37:07.703Z",
+      "url": "http://127.0.0.1:5273/@vite/client"
+    },
+    {
+      "level": "debug",
+      "message": "[vite] connected.",
+      "timestamp": "2026-10-27T22:37:07.705Z",
+      "url": "http://127.0.0.1:5273/@vite/client"
+    },
+    {
+      "level": "debug",
+      "message": "[vite] connecting...",
+      "timestamp": "2026-10-27T22:37:07.788Z",
+      "url": "http://127.0.0.1:5273/@vite/client"
+    },
+    {
+      "level": "debug",
+      "message": "[vite] connected.",
+      "timestamp": "2026-10-27T22:37:07.794Z",
+      "url": "http://127.0.0.1:5273/@vite/client"
+    },
+    {
+      "level": "debug",
+      "message": "[vite] hot updated: /src/routes/+page.svelte",
+      "timestamp": "2026-10-27T22:37:12.134Z",
+      "url": "http://127.0.0.1:5273/@vite/client"
+    },
+    {
+      "level": "debug",
+      "message": "[vite] hot updated: /src/routes/layout.css",
+      "timestamp": "2026-10-27T22:37:12.134Z",
+      "url": "http://127.0.0.1:5273/@vite/client"
+    },
+    {
+      "level": "debug",
+      "message": "[vite] hot updated: /src/routes/+page.svelte",
+      "timestamp": "2026-10-27T22:37:25.602Z",
+      "url": "http://127.0.0.1:5273/@vite/client"
+    },
+    {
+      "level": "debug",
+      "message": "[vite] hot updated: /src/routes/layout.css",
+      "timestamp": "2026-10-27T22:37:25.602Z",
+      "url": "http://127.0.0.1:5273/@vite/client"
+    },
+    {
+      "level": "debug",
+      "message": "[vite] connecting...",
+      "timestamp": "2026-10-27T22:37:25.631Z",
+      "url": "http://127.0.0.1:5273/@vite/client"
+    },
+    {
+      "level": "debug",
+      "message": "[vite] connected.",
+      "timestamp": "2026-10-27T22:37:25.640Z",
+      "url": "http://127.0.0.1:5273/@vite/client"
+    },
+    {
+      "level": "log",
+      "message": "[vite] server connection lost. Polling for restart...",
+      "timestamp": "2026-10-27T22:37:47.297Z",
+      "url": "http://127.0.0.1:5273/@vite/client"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+Interactive sv template prompt observed; sent Ctrl-C.
+[999D[7A[1B[J■  Which template would you like?
+│  SvelteKit minimal
+│
+[?25h└  Operation cancelled.
+
+Done in 8.6s using pnpm v12.14.0
+[K[0Jzkit: upstream creation did not produce a readable web/package.json (canceled or incomplete): FileNotFound
+zkit: UpstreamCreationIncomplete
+
+exit=1
+

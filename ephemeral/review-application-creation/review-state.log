@@ -1,0 +1,8 @@
+Reviewed source head: 673899500f4f1e54d228d2d067ba29c73b51cc45
+Main base: d7f9552a0e26ff7fb91aa5d8265e78ef12f065eb
+Framework implementation diff against reviewed head (expected empty):
+Original source worktree status (expected empty):
+Successful checks recorded from this review tool results: zig build test; zig build install; repository frozen-lockfile install; vp run check; vp run build:addon plus git diff --exit-code -- tooling/sv/addon.js; zig fmt --check build.zig src/*.zig src/templates/build.zig; git diff --check.
+Root Zig test log is empty on success; command completed with exit 0.
+All review-owned z-kit-dev and Vite server processes stopped. Framework node_modules restored. Temporary source edits restored.
+Focused report-link check: all local targets exist.

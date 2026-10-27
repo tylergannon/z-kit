@@ -1,0 +1,19 @@
+[WebServer] (node:55745) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] 4:38:05 PM [vite+] (ssr) connected.
+[WebServer] 200 GET /
+[WebServer] 
+[WebServer] z-kit ready at http://127.0.0.1:5173
+[WebServer] Vite socket: /tmp/z-kit-f65407783eac5364/vite.sock
+[WebServer] Press Ctrl-C to stop.
+[WebServer] 200 GET /
+
+Running 1 test using 1 worker
+
+[WebServer] 200 GET /
+(node:55756) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] 200 GET /demo/playwright
+  ✓  1 src/routes/demo/playwright/page.svelte.e2e.ts:3:1 › has expected h1 (133ms)
+
+  1 passed (1.3s)

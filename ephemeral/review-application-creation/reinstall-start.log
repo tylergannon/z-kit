@@ -1,0 +1,10 @@
+4:38:16 PM [vite+] (ssr) connected.
+4:38:16 PM [vite+] (client) Forced re-optimization of dependencies
+200 GET /
+
+z-kit ready at http://127.0.0.1:5274
+Vite socket: /tmp/z-kit-d8fbeda340a00973/vite.sock
+Press Ctrl-C to stop.
+200 GET /
+
+z-kit: stopping

@@ -1,0 +1,10 @@
+4:39:01 PM [vite+] (ssr) connected.
+200 GET /
+
+z-kit ready at http://127.0.0.1:5272
+Vite socket: /tmp/z-kit-2083cd52cd416670/vite.sock
+Press Ctrl-C to stop.
+200 GET /
+200 GET /
+
+z-kit: stopping

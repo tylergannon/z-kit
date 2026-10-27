@@ -1,0 +1,16 @@
+[
+  {
+    "run": "examples-playwright-test",
+    "passed": true,
+    "socket_remained": true,
+    "directory_remained": true,
+    "socket": "/tmp/z-kit-2f3f613a6551d0b2/vite.sock"
+  },
+  {
+    "run": "examples-playwright-test-repeat",
+    "passed": true,
+    "socket_remained": true,
+    "directory_remained": true,
+    "socket": "/tmp/z-kit-f65407783eac5364/vite.sock"
+  }
+]

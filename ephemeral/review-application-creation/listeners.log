@@ -1,0 +1,7 @@
+lsof: WARNING: can't stat() smbfs file system /Volumes/.timemachine/Amritanandamayi._smb._tcp.local./EF840C41-095B-4BDE-838F-AF4D2E992805/Laptop Backups
+      Output information may be incomplete.
+      assuming "dev=360000f7" from mount table
+COMMAND     PID  USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+z-kit-dev 53121 tyler    3u  IPv4 0xa59cacd3e74ed2fd      0t0  TCP 127.0.0.1:5271 (LISTEN)
+z-kit-dev 53196 tyler    3u  IPv4 0xde764effcc172775      0t0  TCP 127.0.0.1:5272 (LISTEN)
+z-kit-dev 54022 tyler    3u  IPv4 0x4983d1b97d0f2339      0t0  TCP 127.0.0.1:5273 (LISTEN)
