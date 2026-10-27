@@ -60,6 +60,10 @@ zkit new myapp -- --template demo --types jsdoc --add tailwindcss=plugins:none
 
 SKGo's top-level `--template` is a separate plugin-recipe facility, not its ordinary minimal/demo selection. Do not repurpose it as a new empty/examples selector. Plugin recipes are not required for this initial foundation.
 
+### Add-on support boundary
+
+For creation and any future `zkit add`, demonstrate dependable behavior on supported vanilla upstream starters. Customized applications are best effort. Reuse upstream's warning about uncommitted changes and report unsupported source shapes directly; a clean Git state does not establish that an application is vanilla. Coding agents are explicitly forbidden from designing or implementing general-purpose merging or reconciliation of arbitrary projects, customization-history tracking, template-provenance tracking, or machinery to certify vanilla state. These systems must not become prerequisites, implementation scope or acceptance requirements for add-on work. This boundary does not itself authorize implementing the add command.
+
 ### Required SKGo reference work before implementation
 
 Inspect the actual reference checkout's [CLI argument handling](/Users/tyler/src/skgo/cmd/skgo/templates.go:151), [creation orchestration and choice detection](/Users/tyler/src/skgo/internal/newapp/newapp.go:142), [qualified frontend environment](/Users/tyler/src/skgo/internal/newapp/environment.go:18), [native sv add-on](/Users/tyler/src/skgo/internal/sv/sv-addon.source.js:1), [add-on contract](/Users/tyler/src/skgo/internal/sv/README.md) and [creation behavior tests](/Users/tyler/src/skgo/internal/newapp/newapp_test.go:484). Trace the full command path through those sources, including what upstream owns and what SKGo adds. Run the reference CLI's help and relevant creation flows when establishing behavioral parity; if execution is blocked, record the blocker and the source evidence rather than claiming a live comparison.

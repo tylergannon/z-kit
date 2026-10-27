@@ -12,6 +12,8 @@ The projector is an internal source module under `modules/projector`, independen
 
 When changing `zkit new`, follow the feature spec's SKGo reference-work section: trace the real CLI, VitePlus creation flow and native `sv` add-on. Preserve upstream's prompts and minimal/demo selection, and apply frontend decoration through `sv add`. The rejected `ba23bf2` implementation was reverted; do not reuse its separate starter prompt or forced-minimal/manual-decoration approach.
 
+For creation and any future `zkit add`, dependable behavior is scoped to supported vanilla starter shapes; customized applications are best effort. Coding agents must not design or implement general-purpose merging or reconciliation of arbitrary projects, customization-history tracking, template-provenance tracking, or machinery to certify that an application is vanilla. Reuse upstream warnings and report unsupported shapes directly. Do not expand scope to make arbitrary customizations work.
+
 ## Zig reference cache
 
 - Cache root: `/Users/tyler/zig-token-cache`
