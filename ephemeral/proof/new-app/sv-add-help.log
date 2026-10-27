@@ -1,0 +1,69 @@
+
+Usage: sv add [options] [add-on...]
+
+applies specified add-ons into a project
+
+Arguments:
+  add-on                            add-ons to install
+
+Official Add-Ons:
+  prettier                          (no options)
+  eslint                            (no options)
+  vitest                            usages: unit, component (default: unit,
+                                    component)
+  playwright                        demo: yes, no (default: yes)
+  tailwindcss                       plugins: typography, forms (default: none)
+  enhanced-img                      (no options)
+  sveltekit-adapter                 adapter: auto, node, static, vercel,
+                                    cloudflare, netlify (default: auto)
+                                    cfTarget: workers, pages (default: none)
+  drizzle                           database: postgresql, mysql, sqlite, d1
+                                    (default: sqlite)
+                                    client: postgres.js, neon, mysql2,
+                                    planetscale, node-sqlite, better-sqlite3,
+                                    libsql, turso (default: libsql)
+                                    docker: yes, no (default: none)
+  better-auth                       demo: password, github (default: password)
+  mdsvex                            (no options)
+  paraglide                         languageTags: <user-input> (default: en, es)
+                                    demo: yes, no (default: yes)
+  storybook                         (no options)
+  ai-tools                          ide: claude-code, cursor, gemini, opencode,
+                                    vscode, other (default: none)
+                                    delivery: plugin, tools (default: none)
+                                    tools: mcp, svelte-code-writer,
+                                    svelte-core-bestpractices,
+                                    svelte-file-editor (default: none)
+                                    mcpSetup: local, remote (default: none)
+  experimental                      features: async, remoteFunctions,
+                                    forkPreloads (default: async,
+                                    remoteFunctions)
+
+Community Add-Ons:
+  Find on: https://www.npmjs.com/search?q=keywords:sv-add
+
+Add-On Syntax:
+  <addon>                               add with defaults (may still prompt)
+  <addon>=<opt>:<val>                   set a single option
+  <addon>=<opt1>:<val1>+<opt2>:<val2>   set multiple options
+  <addon>=<opt>:none                    explicitly set no value (for multiselect)
+  To skip prompts, explicitly set ALL options (use defaults shown above).
+
+Options:
+  -C, --cwd <path>                  path to working directory (default:
+                                    "/Users/tyler/.codex/worktrees/17d0/z-kit")
+  --no-git-check                    even if some files are dirty, no prompt will
+                                    be shown
+  --no-download-check               do not warn about downloads from community
+                                    add-ons
+  --[no-]install <package-manager>  installs dependencies with a specified
+                                    package manager (choices: npm, yarn, pnpm,
+                                    pnpm-rush, bun, deno, nub, aube)
+
+Examples:
+  sv add prettier eslint
+  sv add vitest="usages:unit" tailwindcss="plugins:none"
+  sv add drizzle="database:postgresql+client:postgres.js+docker:yes"
+  sv add prettier @supacool
+  sv add @supacool/sv@0.1.2
+Done in 100ms using pnpm v12.14.0

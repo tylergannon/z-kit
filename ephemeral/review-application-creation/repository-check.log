@@ -1,0 +1,10 @@
+~/example$ svelte-kit sync ⊘ cache disabled
+
+~/example$ svelte-check --tsconfig ./tsconfig.json ⊘ cache disabled
+Loading svelte-check in workspace: /Users/tyler/.codex/worktrees/review-application-creation/z-kit/example
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+
+---
+vp run: 2/2 successful. (Run `vp run --last-details` for full details)

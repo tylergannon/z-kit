@@ -1,0 +1,11 @@
+■  Which template would you like?
+│  SvelteKit minimal
+│
+└  Operation cancelled.
+
+
+Done in 1m 10.7s using pnpm v12.14.0
+zkit: upstream creation did not produce a readable web/package.json (canceled or incomplete): FileNotFound
+zkit: UpstreamCreationIncomplete
+
+exit=1; no created-application message; temporary root package.json removed

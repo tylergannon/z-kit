@@ -1,0 +1,4 @@
+final-empty, cycle 1: HTTP 200 at port 5182; stopped; socket directory removed; same-port restart admitted
+final-empty, cycle 2: HTTP 200 at port 5182; stopped; socket directory removed; same-port restart admitted
+final-examples, cycle 1: HTTP 200 at port 5186; stopped; socket directory removed; same-port restart admitted
+final-examples, cycle 2: HTTP 200 at port 5186; stopped; socket directory removed; same-port restart admitted

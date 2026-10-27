@@ -1,31 +1,72 @@
 # z-kit
 
-A Zig backend for ordinary SvelteKit applications, building on SKGo’s application model.
+A Zig backend for ordinary SvelteKit applications, building on SKGo's application model.
 
-The first working feature is a macOS development host: **browser → Zig network listener → Unix socket → Vite/SvelteKit**. The example renders, hydrates and receives Vite hot updates through the Zig address.
+Create an empty application or choose SvelteKit's demo to get the z-kit examples.
+The real upstream Svelte CLI owns template, language and add-on choices; z-kit
+adds the Zig build/development host and integrates the frontend through `sv add`.
 
-Use the current Zig development build, Node.js 24 and pnpm. Tested with Zig `0.18.0-dev.543+fa4f5b262`, SvelteKit `3.1.0`, Vite `8.3.5` and Svelte `5.57.2`; frontend dependencies are recorded in the lockfile.
+Use macOS, the current Zig development build, Node.js 24 and VitePlus **1.4.0**.
+Tested with Zig `0.18.0-dev.543+fa4f5b262`, Kit `3.1.0`, Svelte `5.57.2` and
+VitePlus's Vite core `1.4.0`. Creation and installation use its managed pnpm
+`12.14.0`; dependencies and resolved versions live in each app's lockfile.
 
-From the repository root:
+Build the CLI from this checkout:
 
 ```sh
-pnpm install --frozen-lockfile
+zig build install
+./zig-out/bin/zkit new myapp
+cd myapp
 zig build dev
 ```
 
-Open [localhost:5173](http://127.0.0.1:5173), click the counter, then edit [the page](example/src/routes/+page.svelte) to see it update. Ctrl-C stops the session and removes its Vite process and socket. An occupied port fails explicitly. To choose a different port or SvelteKit application:
+Open [localhost:5173](http://127.0.0.1:5173). The path is
+**browser → Zig listener → Unix socket → Vite/SvelteKit**. Ctrl-C stops the
+session and removes its socket. Use `zig build dev -- --port 5180` for another
+port. The host binds loopback and reports readiness after the application renders.
+
+Forward explicit upstream choices after `--`:
 
 ```sh
-zig build dev -- --port 5180 --app example
+./zig-out/bin/zkit new empty-app -- --template minimal --types ts --no-add-ons
+./zig-out/bin/zkit new examples-app -- --template demo --types jsdoc --add tailwindcss=plugins:none
 ```
 
-The host binds loopback only. Vite uses the private socket for HTTP and HMR, and the host announces readiness after the application renders successfully. Startup diagnostics remain visible; an unready application times out after 30 seconds. A Vite crash ends the session with a failure status.
+Creation installs dependencies, checks Svelte/configured frontend tools, builds
+the frontend and Zig host, and sets up upstream Vitest/Storybook. Existing
+unit-only Vitest selections stay unit-only. A nonempty destination is refused;
+without a terminal, omitted choices use minimal TypeScript.
+
+In a generated application's root:
 
 ```sh
+zig build install-web  # fresh clone: install the locked dependencies
+zig build check
+zig build              # frontend and Zig host
+zig build dev
+```
+
+Generated apps declare a local z-kit source dependency in `build.zig.zon`.
+Keep or update that path when moving/cloning an app; `--zkit-path PATH` selects
+an explicit checkout at creation. Published distribution is later work.
+
+For the repository example and framework checks:
+
+```sh
+vp install --frozen-lockfile
+zig build dev
 zig build test
-pnpm check
+vp run check
 ```
 
-These compile the host, run 14 projector configuration/module tests plus the comptime proof, and check the Svelte application. [Application evidence](ephemeral/proof/dev-server/README.md) records browser, transport and lifecycle demonstrations. For the projector’s expected compiler refusals, run `python3 modules/projector/ephemeral/projection-shape-lab/run.py`; it uses `zig` from PATH, or `ZIG_EXE` when supplied.
+The maintained examples page is [here](example/src/routes/+page.svelte).
+After changing it or the installer, run `vp run build:addon` to rebuild the
+tracked [sv add-on bundle](tooling/sv/README.md).
 
-The [feature specification](ephemeral/plans/first-application-spec.md) requires `zkit new` next: wrap upstream SvelteKit creation with empty/examples starters and demonstrate the development server in fresh applications. The existing server is a working checkpoint; the application generator is not implemented yet. Zig remotes, page loads and backend reloads follow, with each feature demonstrated in generated examples as well as the repository example. The [internal projector](modules/projector/README.md) currently implements projection configuration; mapping and codecs remain future work. The [bring-up baseline](ephemeral/plans/z-kit-bringup.md) covers broader milestones; [generation lifecycle](ephemeral/plans/generation-lifecycle.md) is deferred design material.
+[Application-creation evidence](ephemeral/proof/application-creation/README.md)
+records fresh empty/examples builds, browser interaction/HMR, independent
+reinstallation and lifecycle checks. This foundation uses Vite for rendering;
+Zig remotes, loads, native reloads and standalone production serving remain
+future [features](ephemeral/plans/first-application-spec.md). The
+[internal projector](modules/projector/README.md) currently supplies projection
+configuration. For its full diagnostic runner, see that module's README.

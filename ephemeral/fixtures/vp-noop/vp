@@ -1,0 +1,5 @@
+#!/bin/sh
+case " $* " in
+ *" sv@1.1.1 add "*) echo 'Injected successful sv exit without applying integration' >&2; exit 0 ;;
+esac
+exec /Users/tyler/.vite-plus/1.4.0/bin/vp "$@"

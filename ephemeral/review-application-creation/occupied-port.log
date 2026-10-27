@@ -1,0 +1,13 @@
+z-kit: cannot listen on 127.0.0.1:5272: AddressInUse
+z-kit: AddressInUse
+dev
++- run exe z-kit-dev failure
+error: process exited with code 1
+failed command: cd . && ./.zig-cache/o/27b1842572f9d545768c5438ab0a27cf/z-kit-dev --app web --vite-launcher ./../../../tooling/vite.mjs --port 5272
+
+Build Summary: 1/3 steps succeeded (1 failed)
+dev transitive failure
++- run exe z-kit-dev failure
+
+
+exit=1

@@ -1,0 +1,49 @@
+
+zkit: create upstream SvelteKit application
+● pnpm@12.14.0 installing...
+● pnpm@12.14.0 installed
+◇ Generating project…
+● Running: pnpm dlx sv@1.1.1 create web --template minimal --types ts
+  --no-add-ons --no-install
+
+HINT: Run "sv --help" to get the full list of commands, add-ons, and examples to one-shot and skip interactive prompts.
+┌  Welcome to the Svelte CLI! (v1.1.1)
+│
+◆  Project created
+│
+│  To skip prompts next time, run:
+●  npx sv@1.1.1 create --template minimal --types ts --no-install web
+│
+◇  What's next? ───────────────────────────────╮
+│                                              │
+│  📁 Project steps                            │
+│                                              │
+│    1: cd web                                 │
+│    2: pnpm i                                 │
+│    3: pnpm run dev --open                    │
+│                                              │
+│  To close the dev server, hit Ctrl-C         │
+│                                              │
+│  Stuck? Visit us at https://svelte.dev/chat  │
+│                                              │
+├──────────────────────────────────────────────╯
+│
+└  You're all set!
+
+Done in 104ms using pnpm v12.14.0
+◆ Rewrote imports in one file
+●   web/vite.config.ts
+◆ ✔ Wrapped inline Vite plugins with lazyPlugins in web/vite.config.ts
+● Installing dependencies...
+● Dependencies installed
+● Formatting code...
+● Code formatted
+◇ Scaffolded web with Minimal + JavaScript
+• Node 24.22.1  pnpm 12.14.0
+✓ Dependencies installed in 1.3s
+→ Next: cd web && vp run
+
+zkit: apply z-kit through sv add
+Injected successful sv exit without applying integration
+zkit: SvDidNotApplyZkitIntegration
+exit=1

@@ -16,6 +16,7 @@
         "example/tsconfig.json",
         "package.json",
         "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
         "modules/projector/src",
         "modules/projector/test",
     },

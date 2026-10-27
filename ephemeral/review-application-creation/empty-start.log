@@ -1,0 +1,14 @@
+4:36:24 PM [vite+] (ssr) connected.
+4:36:24 PM [vite+] (client) Forced re-optimization of dependencies
+200 GET /
+
+z-kit ready at http://127.0.0.1:5272
+Vite socket: /tmp/z-kit-cf5f1bcbff87ef64/vite.sock
+Press Ctrl-C to stop.
+4:36:33 PM [vite+] (client) page reload storybook-static/index.html
+200 GET /
+304 GET /
+4:36:34 PM [vite+] (client) page reload storybook-static/iframe.html
+304 GET /
+
+z-kit: stopping

@@ -1,0 +1,5 @@
+#!/bin/sh
+case " $* " in
+ *" create "*) echo 'Injected upstream create failure' >&2; exit 42 ;;
+esac
+exec /Users/tyler/.vite-plus/1.4.0/bin/vp "$@"

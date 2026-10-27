@@ -1,0 +1,249 @@
+
+zkit: create upstream SvelteKit application
+● pnpm@12.14.0 installing...
+● pnpm@12.14.0 installed
+◇ Generating project…
+● Running: pnpm dlx sv@1.1.1 create web --template demo --types ts --no-add-ons
+  --no-install
+
+HINT: Run "sv --help" to get the full list of commands, add-ons, and examples to one-shot and skip interactive prompts.
+┌  Welcome to the Svelte CLI! (v1.1.1)
+│
+◆  Project created
+│
+◆  Successfully setup add-ons: enhanced-img
+│
+│  To skip prompts next time, run:
+●  npx sv@1.1.1 create --template demo --types ts --add enhanced-img --no-install web
+│
+◇  What's next? ───────────────────────────────────╮
+│                                                  │
+│  📁 Project steps                                │
+│                                                  │
+│    1: cd web                                     │
+│    2: pnpm i                                     │
+│    3: pnpm run dev --open                        │
+│                                                  │
+│  To close the dev server, hit Ctrl-C             │
+│                                                  │
+│  🧩 Add-on steps                                 │
+│                                                  │
+│    enhanced-img:                                 │
+│      - Imported images now use `<enhanced:img>`  │
+│      - Docs: https://svelte.dev/docs/kit/images  │
+│                                                  │
+│  Stuck? Visit us at https://svelte.dev/chat      │
+│                                                  │
+├──────────────────────────────────────────────────╯
+│
+└  You're all set!
+
+Done in 150ms using pnpm v12.14.0
+◆ Rewrote imports in one file
+●   web/vite.config.ts
+◆ ✔ Wrapped inline Vite plugins with lazyPlugins in web/vite.config.ts
+● Installing dependencies...
+● Dependencies installed
+● Formatting code...
+● Code formatted
+◇ Scaffolded web with Demo + JavaScript
+• Node 24.22.1  pnpm 12.14.0
+✓ Dependencies installed in 1.5s
+→ Next: cd web && vp run
+
+zkit: apply z-kit through sv add
+
+HINT: Run "sv --help" to get the full list of commands, add-ons, and examples to one-shot and skip interactive prompts.
+┌  Welcome to the Svelte CLI! (v1.1.1)
+│
+◇  Resolved community add-on packages
+│
+▲  Svelte maintainers have not reviewed community add-ons for malicious code! Use at your discretion.
+│
+│  @zkit/sv (v0.0.0-dev) (/Users/tyler/Library/Caches/zkit/sv-6e4313fb4b5aa85f/package)
+│
+◇  Downloaded community add-on packages
+│
+◆  Successfully setup add-ons: vitest, zkit
+│
+│  To skip prompts next time, run:
+●  npx sv@1.1.1 add vitest="usages:unit,component" file:/Users/tyler/Library/Caches/zkit/sv-6e4313fb4b5aa85f/package="starter:examples+name:examples-2" --no-download-check --no-git-check --no-install
+│
+└  You're all set!
+
+Done in 162ms using pnpm v12.14.0
+
+zkit: install upstream Storybook
+.../mvopqg31-hu0                         | Progress: resolved 0, reused 1, downloaded 0, added 0
+Packages are cloned from the content-addressable store to the virtual store.
+  Content-addressable store is at: /Users/tyler/Library/pnpm/store/v11
+  Virtual store is at:             ../../../../../../../../Library/Caches/pnpm/dlx/e47e7c0bb390aa45fb6ddacd626d837d/mvopqg31-hu0/node_modules/.pnpm
+.../mvopqg31-hu0                         | Progress: resolved 72, reused 80, downloaded 0, added 72, done
+
+dependencies:
++ create-storybook 10.6.2
+
+✓ Lockfile at ../../../../../../../../Library/Caches/pnpm/dlx/e47e7c0bb390aa45fb6ddacd626d837d/mvopqg31-hu0/pnpm-lock.yaml passes supply-chain policies (verified 23ms ago)
+.../mvopqg31-hu0                         | Progress: resolved 72, reused 80, downloaded 0, added 72, done
+│
+│  This command is running via an AI agent: codex. Proceeding with
+│  agentic installation flow.
+
+┌  Initializing Storybook
+│
+●  Package manager: pnpm
+│
+▲  This version is behind the latest release, which is: 10.6.3!
+│  You likely ran the init command through npx, which can use a locally
+│  cached version.
+
+│  To get the latest, please run: npx storybook@latest init
+│  You may want to CTRL+C to stop, and run with the latest version
+│  instead.
+│
+◇  Framework detected: sveltekit
+│
+▲  All features have been disabled via --no-features flag.
+│
+│  - Configuring main.ts
+│
+│  - Configuring preview.ts
+│
+│  - Adding Storybook command to package.json
+│
+│  - Copying framework templates
+│
+│  Storybook configuration generated
+│
+│  Adding devDependencies:
+│  - storybook@10.6.2
+│  - @storybook/sveltekit@10.6.2
+│  - @storybook/addon-svelte-csf
+│
+│  Dependencies added to package.json
+│
+◇  Storybook was successfully installed in your project!
+│
+│  To run Storybook, run pnpm run storybook. CTRL+C to stop.
+│
+│  Want to learn more about Storybook? https://storybook.js.org/
+│  Having trouble or want to chat? https://discord.gg/storybook/
+│
+└
+
+Done in 2.3s using pnpm v12.14.0
+
+zkit: install frontend dependencies
+Progress: resolved 0, reused 1, downloaded 0, added 0
+✓ Lockfile passes supply-chain policies (verified 4s ago)
+Packages: +89 -16
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------------
+Progress: resolved 89, reused 167, downloaded 0, added 89, done
+. prepare$ svelte-kit sync || echo ''
+. prepare: Done
+
+devDependencies:
+- @fontsource/fira-mono 5.3.0
+- @neoconfetti/svelte 2.2.2
++ @storybook/addon-svelte-csf 5.1.5
++ @storybook/sveltekit 10.6.2
++ @vitest/browser-playwright 5.0.5
++ playwright 1.64.1
++ storybook 10.6.2
++ vitest 5.0.5
++ vitest-browser-svelte 3.1.0
+
+Done in 714ms using pnpm v12.14.0
+
+zkit: install component-test browser
+
+zkit: format and check frontend
+note: You are running `vp check` as a Vite+ built-in command. If you meant to run the check npm script, use `vpr check` instead.
+warn: Lint or type warnings found
+⚠ typescript(no-floating-promises): Promises must be awaited, add void operator to ignore.
+   ╭─[src/lib/vitest-examples/Welcome.svelte.spec.ts:8:5]
+ 7 │   it("renders greetings for host and guest", async () => {
+ 8 │     render(Welcome, { host: "SvelteKit", guest: "Vitest" });
+   ·     ───────────────────────────┬────────────────────────────
+   ·                                ╰── This unhandled promise-like value has type `Promise<RenderResult<SvelteComponent<Record<string, any>, any, any>, never>>`.
+ 9 │
+   ╰────
+  help: The promise must end with a call to .catch, or end with a call to .then with a rejection handler, or be explicitly marked as ignored with the `void` operator.
+
+Found 0 errors and 1 warning in 16 files (800ms, 10 threads)
+pass: Formatting completed for checked files (1.8s)
+
+zkit: check Svelte
+$ svelte-kit sync ⊘ cache disabled
+
+$ svelte-check --tsconfig ./tsconfig.json ⊘ cache disabled
+Loading svelte-check in workspace: /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/apps/examples-2/web
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+
+---
+vp run: 2/2 successful. (Run `vp run --last-details` for full details)
+
+zkit: build application
+
+zkit: build frontend
+note: You are running `vp build` as a Vite+ built-in command. If you meant to run the build npm script, use `vpr build` instead.
+transforming...
+✓ 146 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/server/.vite/manifest.json                         3.78 kB │ gzip:  0.59 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.CRKU1cij.css    0.75 kB │ gzip:  0.39 kB
+.svelte-kit/output/server/entries/pages/_layout.svelte.js             0.25 kB │ gzip:  0.20 kB │ map:   0.29 kB
+.svelte-kit/output/server/env.js                                      0.29 kB │ gzip:  0.18 kB │ map:   0.57 kB
+.svelte-kit/output/server/entries/pages/_page.svelte.js               0.77 kB │ gzip:  0.42 kB │ map:   1.46 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js           1.30 kB │ gzip:  0.50 kB │ map:   2.86 kB
+.svelte-kit/output/server/index.js                                    2.38 kB │ gzip:  0.99 kB │ map:   3.46 kB
+.svelte-kit/output/server/chunks/uneval.js                           19.35 kB │ gzip:  5.35 kB │ map:  40.86 kB
+.svelte-kit/output/server/chunks/server-errors.js                    24.24 kB │ gzip:  4.59 kB │ map:  35.01 kB
+.svelte-kit/output/server/chunks/server.js                           43.86 kB │ gzip: 12.13 kB │ map: 127.05 kB
+.svelte-kit/output/server/remote-entry.js                            55.20 kB │ gzip: 11.91 kB │ map:  90.75 kB
+.svelte-kit/output/server/chunks/internal.js                        109.52 kB │ gzip: 28.79 kB │ map: 238.70 kB
+.svelte-kit/output/server/chunks/instance.js                        130.73 kB │ gzip: 34.78 kB │ map: 260.61 kB
+
+✓ built in 188ms
+Analysing routes
+(node:23607) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Building app
+transforming...
+✓ 173 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                          0.02 kB │ gzip:  0.04 kB
+.svelte-kit/output/client/.vite/manifest.json                        4.60 kB │ gzip:  0.67 kB
+.svelte-kit/output/client/_app/immutable/assets/2.CRKU1cij.css       0.75 kB │ gzip:  0.39 kB
+.svelte-kit/output/client/_app/immutable/entry/payload.DSmR2FwN.js   0.06 kB │ gzip:  0.07 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.DFYazVBN.js         0.14 kB │ gzip:  0.13 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.sC1YdhiZ.js         0.32 kB │ gzip:  0.24 kB
+.svelte-kit/output/client/_app/immutable/entry/start.LjZD3sYu.js     0.52 kB │ gzip:  0.30 kB
+.svelte-kit/output/client/_app/immutable/nodes/2.CcVNY3NC.js         0.75 kB │ gzip:  0.45 kB
+.svelte-kit/output/client/_app/immutable/entry/app.D7yedZJJ.js       1.09 kB │ gzip:  0.55 kB
+.svelte-kit/output/client/_app/immutable/chunks/Bjy-W4x2.js          1.36 kB │ gzip:  0.65 kB
+.svelte-kit/output/client/_app/immutable/chunks/CRzLMJPS.js          1.53 kB │ gzip:  0.80 kB
+.svelte-kit/output/client/_app/immutable/chunks/D8u5L5gm.js          4.29 kB │ gzip:  1.93 kB
+.svelte-kit/output/client/_app/immutable/chunks/DrDmXdtt.js         32.60 kB │ gzip: 12.67 kB
+.svelte-kit/output/client/_app/immutable/chunks/BnlSoPMQ.js         39.71 kB │ gzip: 14.66 kB
+
+✓ built in 59ms
+(node:23607) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-auto
+Could not detect a supported production environment. See https://svelte.dev/docs/kit/adapters to learn how to configure your app to run on the platform of your choosing
+✔ done
+
+zkit: created examples application in /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/apps/examples-2
+
+  cd /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/apps/examples-2
+  zig build dev
+
+Open http://127.0.0.1:5173

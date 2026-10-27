@@ -1,0 +1,30 @@
+[
+  {
+    "app": "empty",
+    "cycle": 1,
+    "http": 200,
+    "port_released": true,
+    "socket_directory_removed": true
+  },
+  {
+    "app": "empty",
+    "cycle": 2,
+    "http": 200,
+    "port_released": true,
+    "socket_directory_removed": true
+  },
+  {
+    "app": "examples-reinstall",
+    "cycle": 1,
+    "http": 200,
+    "port_released": true,
+    "socket_directory_removed": true
+  },
+  {
+    "app": "examples-reinstall",
+    "cycle": 2,
+    "http": 200,
+    "port_released": true,
+    "socket_directory_removed": true
+  }
+]

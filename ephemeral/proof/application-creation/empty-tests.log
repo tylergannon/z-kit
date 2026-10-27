@@ -1,0 +1,9 @@
+$ vitest --run ⊘ cache disabled
+
+ RUN  v5.0.5 /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/apps/empty-2/web
+
+
+ Test Files  2 passed (2)
+      Tests  2 passed (2)
+   Start at  21:39:54
+   Duration  1.97s (worker 92%, import 4%, transform 3%, tests 1%)

@@ -1,0 +1,11 @@
+$ vitest --run ⊘ cache disabled
+
+ RUN  v5.0.5 /Users/tyler/.codex/worktrees/review-application-creation/z-kit/ephemeral/review-application-creation/empty/web
+
+
+ Test Files  2 passed (2)
+      Tests  2 passed (2)
+   Start at  16:36:30
+   Duration  1.22s (worker 93%, import 3%, transform 3%, tests 1%)
+
+

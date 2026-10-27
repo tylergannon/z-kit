@@ -1,0 +1,252 @@
+package: @skgo/sv@0.0.0-dev
+Tarball Contents
+LICENSE
+package.json
+README.md
+sv-addon.js
+Tarball Details
+/Users/tyler/Library/Caches/skgo/sv-addon-qualification/skgo-sv-0.0.0-dev.tgz
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +2
+++
+Progress: resolved 2, reused 2, downloaded 0, added 2, done
+
+dependencies:
++ sv 1.1.1
+
+Done in 20ms using pnpm v12.14.0
+warn: This project does not use vite-plus. Learn how to migrate: https://viteplus.dev/guide/migrate
+● pnpm@12.14.0 installing...
+● pnpm@12.14.0 installed
+◇ Generating project…
+● Running: pnpm dlx sv@1.1.1 create web --template demo --types jsdoc --add
+  tailwindcss=plugins:none vitest=usages:unit --no-install
+
+HINT: Run "sv --help" to get the full list of commands, add-ons, and examples to one-shot and skip interactive prompts.
+┌  Welcome to the Svelte CLI! (v1.1.1)
+│
+◆  Project created
+│
+◆  Successfully setup add-ons: tailwindcss, vitest, enhanced-img
+│
+│  To skip prompts next time, run:
+●  npx sv@1.1.1 create --template demo --types jsdoc --add tailwindcss="plugins:none" vitest="usages:unit" enhanced-img --no-install web
+│
+◇  What's next? ───────────────────────────────────╮
+│                                                  │
+│  📁 Project steps                                │
+│                                                  │
+│    1: cd web                                     │
+│    2: pnpm i                                     │
+│    3: pnpm run dev --open                        │
+│                                                  │
+│  To close the dev server, hit Ctrl-C             │
+│                                                  │
+│  🧩 Add-on steps                                 │
+│                                                  │
+│    enhanced-img:                                 │
+│      - Imported images now use `<enhanced:img>`  │
+│      - Docs: https://svelte.dev/docs/kit/images  │
+│                                                  │
+│  Stuck? Visit us at https://svelte.dev/chat      │
+│                                                  │
+├──────────────────────────────────────────────────╯
+│
+└  You're all set!
+
+Done in 160ms using pnpm v12.14.0
+◆ Rewrote imports in 2 files
+●   web/vite.config.js
+    web/src/lib/vitest-examples/greet.spec.js
+◆ ✔ Wrapped inline Vite plugins with lazyPlugins in web/vite.config.js
+● Installing dependencies...
+● Dependencies installed
+● Formatting code...
+● Code formatted
+◇ Scaffolded web with Demo + JavaScript
+• Node 24.22.1  pnpm 12.14.0
+✓ Dependencies installed in 3.8s
+→ Next: cd web && vp run
+
+HINT: Run "sv --help" to get the full list of commands, add-ons, and examples to one-shot and skip interactive prompts.
+┌  Welcome to the Svelte CLI! (v1.1.1)
+│
+◇  Resolved community add-on packages
+│
+▲  Svelte maintainers have not reviewed community add-ons for malicious code! Use at your discretion.
+│
+│  @skgo/sv (v0.0.0-dev) (/Users/tyler/Library/Caches/skgo/sv-addon-qualification/package)
+│
+◇  Downloaded community add-on packages
+│
+◆  Successfully setup add-ons: skgo
+│
+│  To skip prompts next time, run:
+●  npx sv@1.1.1 add file:/Users/tyler/Library/Caches/skgo/sv-addon-qualification/package="starter:examples+adapter:file%3A%2FUsers%2Ftyler%2Fsrc%2Fskgo%2Finternal%2Fadapter+name:skgo-demo+origin:http%3A%2F%2F127.0.0.1%3A8080" --no-download-check --no-git-check --no-install
+│
+└  You're all set!
+
+Done in 218ms using pnpm v12.14.0
+│
+│  This command is running via an AI agent: codex. Proceeding with
+│  agentic installation flow.
+
+┌  Initializing Storybook
+│
+●  Package manager: pnpm
+│
+▲  This version is behind the latest release, which is: 10.6.3!
+│  You likely ran the init command through npx, which can use a locally
+│  cached version.
+
+│  To get the latest, please run: npx storybook@latest init
+│  You may want to CTRL+C to stop, and run with the latest version
+│  instead.
+│
+◇  Framework detected: sveltekit
+│
+▲  All features have been disabled via --no-features flag.
+│
+│  - Configuring main.js
+│
+│  - Configuring preview.js
+│
+│  - Adding Storybook command to package.json
+│
+│  - Copying framework templates
+│
+│  Storybook configuration generated
+│
+│  Adding devDependencies:
+│  - storybook@10.6.2
+│  - @storybook/sveltekit@10.6.2
+│  - @storybook/addon-svelte-csf
+│
+│  Dependencies added to package.json
+│
+◇  Storybook was successfully installed in your project!
+│
+│  To run Storybook, run pnpm run storybook. CTRL+C to stop.
+│
+│  Want to learn more about Storybook? https://storybook.js.org/
+│  Having trouble or want to chat? https://discord.gg/storybook/
+│
+└
+
+Done in 1.8s using pnpm v12.14.0
+Configured the Kit 3.1.0 prerender queue correction in /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/proof/new-app/skgo-demo/web.
+Files authored: /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/proof/new-app/skgo-demo/web/package.json, /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/proof/new-app/skgo-demo/web/patches/skgo-kit-3.1.0-queue.patch, and /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/proof/new-app/skgo-demo/web/pnpm-workspace.yaml.
+Installation is still required: run `node_modules/.bin/vp install --no-frozen-lockfile` from /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/proof/new-app/skgo-demo/web, then run `go tool skgo kit-patch --web /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/proof/new-app/skgo-demo/web --check` from the Go app root.
+Progress: resolved 0, reused 1, downloaded 0, added 0
+✓ Lockfile passes supply-chain policies (verified 4s ago)
+Packages: +85 -17
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------------
+Progress: resolved 85, reused 136, downloaded 0, added 85, done
+. prepare$ svelte-kit sync || echo ''
+. prepare: Done
+
+devDependencies:
+- @fontsource/fira-mono 5.3.0
+- @neoconfetti/svelte 2.2.2
++ @skgo/sveltekit-adapter file:../../../../../../../../../src/skgo/internal/adapter(@sveltejs/kit@3.1.0(patch_hash=0d35d370d3e5fb6e0c801cd1079013b3d487d6e301e27777f26fabbf6e0106c4)(@sveltejs/vite-plugin-svelte@7.3.1(@voidzero-dev/vite-plus-core@1.3.0(esbuild@0.28.2)(jiti@2.7.0)(typescript@6.0.3))(svelte@5.57.2))(@voidzero-dev/vite-plus-core@1.3.0(esbuild@0.28.2)(jiti@2.7.0)(typescript@6.0.3))(svelte@5.57.2)(typescript@6.0.3))
++ @storybook/addon-svelte-csf 5.1.5
++ @storybook/sveltekit 10.6.2
+- @sveltejs/adapter-auto 8.0.0
++ storybook 10.6.2
+
+Done in 934ms using pnpm v12.14.0
+skgo: linked internal/skgo/_links/onzggl3sn52xizlt -> web/src/routes
+skgo: generation cache miss
+skgo: linked internal/skgo/_links/onzggl3sn52xizlt -> web/src/routes
+skgo: projected the types in skgo-demo/internal/skgo/_links/onzggl3sn52xizlt to /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/proof/new-app/skgo-demo/web/src/routes/types.js
+skgo: wrote /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/proof/new-app/skgo-demo/internal/app/skgo_gen.go
+skgo: wrote /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/proof/new-app/skgo-demo/internal/skgo/params/skgo_gen.go
+skgo: wrote /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/proof/new-app/skgo-demo/internal/skgo/prerender/skgo_gen.go
+skgo: wrote /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/proof/new-app/skgo-demo/internal/skgo/skgo_gen.go
+skgo: wrote /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/proof/new-app/skgo-demo/web/skgo.remotes.json
+skgo: wrote /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/proof/new-app/skgo-demo/web/src/hooks.server.js
+skgo: wrote /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/proof/new-app/skgo-demo/web/src/routes/example.remote.js
+skgo: wrote /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/proof/new-app/skgo-demo/web/src/routes/skgo_gen.go
+skgo: wrote /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/proof/new-app/skgo-demo/web/src/routes/types.js
+note: You are running `vp check` as a Vite+ built-in command. If you meant to run the check npm script, use `vpr check` instead.
+pass: Formatting completed for checked files (1.8s)
+pass: Found no warnings, lint errors, or type errors in 17 files (787ms, 10 threads)
+note: You are running `vp build` as a Vite+ built-in command. If you meant to run the build npm script, use `vpr build` instead.
+skgo prerender service started (pid 4847)
+transforming...
+✓ 152 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/server/.vite/manifest.json                           4.59 kB │ gzip:  0.72 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.DktYJJwg.css      1.02 kB │ gzip:  0.50 kB
+.svelte-kit/output/server/_app/immutable/assets/_layout.D320ptx_.css    5.06 kB │ gzip:  1.64 kB
+.svelte-kit/output/server/remote-entry.js                               0.10 kB │ gzip:  0.10 kB
+.svelte-kit/output/server/chunks/remote-2b61k.js                        0.23 kB │ gzip:  0.14 kB
+.svelte-kit/output/server/entries/pages/_layout.svelte.js               0.27 kB │ gzip:  0.21 kB │ map:   0.31 kB
+.svelte-kit/output/server/env.js                                        0.31 kB │ gzip:  0.19 kB │ map:   0.57 kB
+.svelte-kit/output/server/entries/hooks.server.js                       0.39 kB │ gzip:  0.22 kB │ map:   0.58 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js             1.34 kB │ gzip:  0.53 kB │ map:   2.86 kB
+.svelte-kit/output/server/chunks/example.remote.js                      1.34 kB │ gzip:  0.65 kB │ map:   1.02 kB
+.svelte-kit/output/server/entries/pages/_page.svelte.js                 1.99 kB │ gzip:  0.80 kB │ map:   3.11 kB
+.svelte-kit/output/server/index.js                                      2.40 kB │ gzip:  1.02 kB │ map:   3.46 kB
+.svelte-kit/output/server/chunks/uneval.js                             19.41 kB │ gzip:  5.37 kB │ map:  40.86 kB
+.svelte-kit/output/server/chunks/server-errors.js                      24.28 kB │ gzip:  4.63 kB │ map:  35.01 kB
+.svelte-kit/output/server/chunks/server.js                             44.94 kB │ gzip: 12.38 kB │ map: 127.41 kB
+.svelte-kit/output/server/chunks/remote.js                             55.34 kB │ gzip: 11.95 kB │ map:  90.77 kB
+.svelte-kit/output/server/chunks/internal.js                          109.03 kB │ gzip: 29.04 kB │ map: 233.97 kB
+.svelte-kit/output/server/chunks/instance.js                          128.71 kB │ gzip: 33.81 kB │ map: 264.83 kB
+
+✓ built in 211ms
+Analysing routes
+(node:4831) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Building app
+transforming...
+✓ 196 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                          0.02 kB │ gzip:  0.04 kB
+.svelte-kit/output/client/.vite/manifest.json                        4.85 kB │ gzip:  0.72 kB
+.svelte-kit/output/client/_app/immutable/assets/2.DktYJJwg.css       1.02 kB │ gzip:  0.50 kB
+.svelte-kit/output/client/_app/immutable/assets/0.D320ptx_.css       5.06 kB │ gzip:  1.64 kB
+.svelte-kit/output/client/_app/immutable/chunks/BRWcBvy6.js          0.05 kB │ gzip:  0.06 kB
+.svelte-kit/output/client/_app/immutable/entry/payload.DSmR2FwN.js   0.06 kB │ gzip:  0.07 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.BWkndm0C.js         0.14 kB │ gzip:  0.14 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.BVBI_vDm.js         0.32 kB │ gzip:  0.24 kB
+.svelte-kit/output/client/_app/immutable/entry/start.VHgSktL-.js     0.54 kB │ gzip:  0.32 kB
+.svelte-kit/output/client/_app/immutable/entry/app.C5a7hvLO.js       1.15 kB │ gzip:  0.58 kB
+.svelte-kit/output/client/_app/immutable/chunks/Bjy-W4x2.js          1.36 kB │ gzip:  0.65 kB
+.svelte-kit/output/client/_app/immutable/chunks/CRzLMJPS.js          1.53 kB │ gzip:  0.80 kB
+.svelte-kit/output/client/_app/immutable/chunks/NNmHFJaF.js          4.74 kB │ gzip:  2.09 kB
+.svelte-kit/output/client/_app/immutable/nodes/2.B5ogkjcf.js         9.22 kB │ gzip:  3.80 kB
+.svelte-kit/output/client/_app/immutable/chunks/zFL53jsx.js         37.68 kB │ gzip: 14.48 kB
+.svelte-kit/output/client/_app/immutable/chunks/F6FOXCKm.js         42.33 kB │ gzip: 15.50 kB
+
+✓ built in 117ms
+(node:4831) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Run npm run preview to preview your production build locally.
+
+> Using skgo
+(node:4831) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+transforming...
+✓ 153 modules transformed.
+rendering chunks...
+computing gzip size...
+build/.goja/bundle.js  203.59 kB │ gzip: 50.80 kB
+
+✓ built in 58ms
+skgo: lowered to es2017 for the engine's parser: 7 module(s)
+skgo: wrote build/
+skgo prerender service stopped (pid 4847)
+✔ done
+
+skgo: created the examples project in /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/proof/new-app/skgo-demo. Now:
+
+	cd /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/proof/new-app/skgo-demo
+	just install
+	just serve
+
+Then open http://127.0.0.1:8080. Run `just storybook` for Storybook and `just test` for Vitest.

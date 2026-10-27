@@ -1,0 +1,51 @@
+warn: This project does not use vite-plus. Learn how to migrate: https://viteplus.dev/guide/migrate
+● pnpm@12.14.0 installing...
+● pnpm@12.14.0 installed
+◇ Generating project…
+● Running: pnpm dlx sv@1.1.1 create web --template demo --types jsdoc --add
+  tailwindcss=plugins:none --no-install
+
+HINT: Run "sv --help" to get the full list of commands, add-ons, and examples to one-shot and skip interactive prompts.
+┌  Welcome to the Svelte CLI! (v1.1.1)
+│
+◆  Project created
+│
+◆  Successfully setup add-ons: tailwindcss, enhanced-img
+│
+│  To skip prompts next time, run:
+●  npx sv@1.1.1 create --template demo --types jsdoc --add tailwindcss="plugins:none" enhanced-img --no-install web
+│
+◇  What's next? ───────────────────────────────────╮
+│                                                  │
+│  📁 Project steps                                │
+│                                                  │
+│    1: cd web                                     │
+│    2: pnpm i                                     │
+│    3: pnpm run dev --open                        │
+│                                                  │
+│  To close the dev server, hit Ctrl-C             │
+│                                                  │
+│  🧩 Add-on steps                                 │
+│                                                  │
+│    enhanced-img:                                 │
+│      - Imported images now use `<enhanced:img>`  │
+│      - Docs: https://svelte.dev/docs/kit/images  │
+│                                                  │
+│  Stuck? Visit us at https://svelte.dev/chat      │
+│                                                  │
+├──────────────────────────────────────────────────╯
+│
+└  You're all set!
+
+Done in 164ms using pnpm v12.14.0
+◆ Rewrote imports in one file
+●   web/vite.config.js
+◆ ✔ Wrapped inline Vite plugins with lazyPlugins in web/vite.config.js
+● Installing dependencies...
+● Dependencies installed
+● Formatting code...
+● Code formatted
+◇ Scaffolded web with Demo + JavaScript
+• Node 24.22.1  pnpm 12.14.0
+✓ Dependencies installed in 1.9s
+→ Next: cd web && vp run

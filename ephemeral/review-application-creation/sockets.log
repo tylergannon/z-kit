@@ -1,0 +1,19 @@
+lsof: WARNING: can't stat() smbfs file system /Volumes/.timemachine/Amritanandamayi._smb._tcp.local./EF840C41-095B-4BDE-838F-AF4D2E992805/Laptop Backups
+      Output information may be incomplete.
+      assuming "dev=360000f7" from mount table
+COMMAND   PID  USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+node    53131 tyler   17u  unix 0x7fe119dfd77886f8      0t0      ->0xa9e5c2b5fbe6572
+node    53131 tyler   18u  unix  0xa9e5c2b5fbe6572      0t0      ->0x7fe119dfd77886f8
+node    53131 tyler   19u  unix 0x7fe119dfd77886f8      0t0      ->0xa9e5c2b5fbe6572
+node    53131 tyler   32u  unix 0xeeab7cacd48b546b      0t0      /tmp/z-kit-ec720e554a8ed9cc/vite.sock
+node    53131 tyler   37u  unix 0x64b6b33ff1f7b14b      0t0      /tmp/z-kit-ec720e554a8ed9cc/vite.sock
+node    53198 tyler   17u  unix 0xc60f816c0c7f5cf3      0t0      ->0x5999cec534805e6b
+node    53198 tyler   18u  unix 0x5999cec534805e6b      0t0      ->0xc60f816c0c7f5cf3
+node    53198 tyler   19u  unix 0xc60f816c0c7f5cf3      0t0      ->0x5999cec534805e6b
+node    53198 tyler   35u  unix 0xa8ef4938bcb4b05c      0t0      /tmp/z-kit-cf5f1bcbff87ef64/vite.sock
+node    53198 tyler   36u  unix  0x6eab478f99d5583      0t0      /tmp/z-kit-cf5f1bcbff87ef64/vite.sock
+node    54024 tyler   17u  unix 0xa990be3c34adda5c      0t0      ->0xeb8874811d7b562d
+node    54024 tyler   18u  unix 0xeb8874811d7b562d      0t0      ->0xa990be3c34adda5c
+node    54024 tyler   19u  unix 0xa990be3c34adda5c      0t0      ->0xeb8874811d7b562d
+node    54024 tyler   35u  unix 0x8e88c148ba389862      0t0      /tmp/z-kit-99bc181b1a4768b3/vite.sock
+node    54024 tyler   40u  unix 0xa73e09f0001068ed      0t0      /tmp/z-kit-99bc181b1a4768b3/vite.sock

@@ -4,13 +4,15 @@
 
 **z-kit** is a Zig backend for ordinary SvelteKit applications, building on SKGo's application model. Use the **current Zig development build** and the actual SvelteKit/Vite toolchains.
 
-Start with [the feature specification](ephemeral/plans/first-application-spec.md). The initial foundation includes `zkit new` wrapping the upstream SvelteKit generator with empty/examples choices, plus a real app running in Vite on a Unix domain socket behind a Zig network listener/proxy. The working repository example is a valid development-server checkpoint; fresh application creation remains required before native remotes. Extend the shared examples progressively. Remote functions, page loads and backend reloads are the current preferred progression; choose each next feature for its usefulness and value to the whole application.
+Start with [the feature specification](ephemeral/plans/first-application-spec.md). The initial foundation includes `zkit new` wrapping the upstream SvelteKit generator with empty/examples choices, plus a real app running in Vite on a Unix domain socket behind a Zig network listener/proxy. Application creation and the development host are implemented; see ephemeral/proof/application-creation/README.md for fresh empty/examples proof. Preserve that generated-app behavior as features progress. Extend the shared examples progressively. Remote functions, page loads and backend reloads are the current preferred progression; choose each next feature for its usefulness and value to the whole application.
 
 The [bring-up baseline](ephemeral/plans/z-kit-bringup.md) maps broader features and product milestones. Development-online, deployable and customer-ready remain distinct outcomes. The full inventory is reference context; implement only selected, specified features. Resolve design decisions when the selected feature needs them.
 
 The projector is an internal source module under `modules/projector`, independent of routing, HTTP, Vite and the renderer. One application-wide generator owns integration. The shared devalue runtime remains a separate dependency. The earlier [generation lifecycle design](ephemeral/plans/generation-lifecycle.md) is deferred reference material, not first-generator scope.
 
-Before implementing `zkit new`, follow the feature spec's SKGo reference-work section: trace the real CLI, VitePlus creation flow and native `sv` add-on. Preserve upstream's prompts and minimal/demo selection, and apply frontend decoration through `sv add`. The rejected `ba23bf2` implementation was reverted; do not reuse its separate starter prompt or forced-minimal/manual-decoration approach.
+When changing `zkit new`, follow the feature spec's SKGo reference-work section: trace the real CLI, VitePlus creation flow and native `sv` add-on. Preserve upstream's prompts and minimal/demo selection, and apply frontend decoration through `sv add`. The rejected `ba23bf2` implementation was reverted; do not reuse its separate starter prompt or forced-minimal/manual-decoration approach.
+
+For creation and any future `zkit add`, dependable behavior is scoped to supported vanilla starter shapes; customized applications are best effort. Coding agents must not design or implement general-purpose merging or reconciliation of arbitrary projects, customization-history tracking, template-provenance tracking, or machinery to certify that an application is vanilla. Reuse upstream warnings and report unsupported shapes directly. Do not expand scope to make arbitrary customizations work.
 
 ## Zig reference cache
 

@@ -1,0 +1,104 @@
+
+zkit: install frontend
+✓ Lockfile passes supply-chain policies (verified 12m ago)
+Lockfile is up to date, resolution step is skipped
+Packages are cloned from the content-addressable store to the virtual store.
+  Content-addressable store is at: /Users/tyler/Library/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Packages: +202
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 202, reused 202, downloaded 0, added 202, done
+. prepare$ svelte-kit sync || echo ''
+. prepare: Done
+
+devDependencies:
++ @storybook/addon-svelte-csf 5.1.5
++ @storybook/sveltekit 10.6.2
++ @sveltejs/adapter-auto 8.0.0
++ @sveltejs/enhanced-img 1.0.0
++ @sveltejs/kit 3.1.0
++ @sveltejs/vite-plugin-svelte 7.3.1
++ @tailwindcss/vite 4.3.3
++ storybook 10.6.2
++ svelte 5.57.2
++ svelte-check 4.7.7
++ tailwindcss 4.3.3
++ typescript 6.0.3
++ vite <- @voidzero-dev/vite-plus-core 1.4.0
++ vite-plus 1.4.0
++ vitest 5.0.5
+
+Done in 1.9s using pnpm v12.14.0
+
+zkit: check Svelte
+$ svelte-kit sync ⊘ cache disabled
+
+$ svelte-check --tsconfig ./jsconfig.json ⊘ cache disabled
+Loading svelte-check in workspace: /Users/tyler/.codex/worktrees/17d0/z-kit/ephemeral/apps/examples-1/web
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+
+---
+vp run: 2/2 successful. (Run `vp run --last-details` for full details)
+
+zkit: check frontend tools
+note: You are running `vp check` as a Vite+ built-in command. If you meant to run the check npm script, use `vpr check` instead.
+pass: All 17 files are correctly formatted (392ms, 10 threads)
+pass: Found no warnings, lint errors, or type errors in 14 files (777ms, 10 threads)
+
+zkit: build frontend
+note: You are running `vp build` as a Vite+ built-in command. If you meant to run the build npm script, use `vpr build` instead.
+transforming...
+✓ 147 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/server/.vite/manifest.json                           3.85 kB │ gzip:  0.60 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.CRKU1cij.css      0.75 kB │ gzip:  0.39 kB
+.svelte-kit/output/server/_app/immutable/assets/_layout.kwzbCS07.css    5.20 kB │ gzip:  1.66 kB
+.svelte-kit/output/server/env.js                                        0.29 kB │ gzip:  0.18 kB │ map:   0.57 kB
+.svelte-kit/output/server/entries/pages/_layout.svelte.js               0.31 kB │ gzip:  0.23 kB │ map:   0.36 kB
+.svelte-kit/output/server/entries/pages/_page.svelte.js                 0.77 kB │ gzip:  0.42 kB │ map:   1.46 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js             1.30 kB │ gzip:  0.50 kB │ map:   2.86 kB
+.svelte-kit/output/server/index.js                                      2.38 kB │ gzip:  0.99 kB │ map:   3.46 kB
+.svelte-kit/output/server/chunks/uneval.js                             19.35 kB │ gzip:  5.35 kB │ map:  40.86 kB
+.svelte-kit/output/server/chunks/server-errors.js                      24.24 kB │ gzip:  4.59 kB │ map:  35.01 kB
+.svelte-kit/output/server/chunks/server.js                             43.86 kB │ gzip: 12.13 kB │ map: 127.05 kB
+.svelte-kit/output/server/remote-entry.js                              55.20 kB │ gzip: 11.91 kB │ map:  90.75 kB
+.svelte-kit/output/server/chunks/internal.js                          109.52 kB │ gzip: 28.79 kB │ map: 238.70 kB
+.svelte-kit/output/server/chunks/instance.js                          130.73 kB │ gzip: 34.78 kB │ map: 260.61 kB
+
+✓ built in 215ms
+Analysing routes
+(node:27198) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Building app
+transforming...
+✓ 174 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                          0.02 kB │ gzip:  0.04 kB
+.svelte-kit/output/client/.vite/manifest.json                        4.67 kB │ gzip:  0.68 kB
+.svelte-kit/output/client/_app/immutable/assets/2.CRKU1cij.css       0.75 kB │ gzip:  0.39 kB
+.svelte-kit/output/client/_app/immutable/assets/0.kwzbCS07.css       5.20 kB │ gzip:  1.66 kB
+.svelte-kit/output/client/_app/immutable/entry/payload.DSmR2FwN.js   0.06 kB │ gzip:  0.07 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.DfGBMhjD.js         0.14 kB │ gzip:  0.13 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.sC1YdhiZ.js         0.32 kB │ gzip:  0.24 kB
+.svelte-kit/output/client/_app/immutable/entry/start.LjZD3sYu.js     0.52 kB │ gzip:  0.30 kB
+.svelte-kit/output/client/_app/immutable/nodes/2.CcVNY3NC.js         0.75 kB │ gzip:  0.45 kB
+.svelte-kit/output/client/_app/immutable/entry/app.BuFdsB9w.js       1.12 kB │ gzip:  0.57 kB
+.svelte-kit/output/client/_app/immutable/chunks/Bjy-W4x2.js          1.36 kB │ gzip:  0.65 kB
+.svelte-kit/output/client/_app/immutable/chunks/CRzLMJPS.js          1.53 kB │ gzip:  0.80 kB
+.svelte-kit/output/client/_app/immutable/chunks/D8u5L5gm.js          4.29 kB │ gzip:  1.93 kB
+.svelte-kit/output/client/_app/immutable/chunks/DrDmXdtt.js         32.60 kB │ gzip: 12.67 kB
+.svelte-kit/output/client/_app/immutable/chunks/BnlSoPMQ.js         39.71 kB │ gzip: 14.66 kB
+
+✓ built in 60ms
+(node:27198) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-auto
+Could not detect a supported production environment. See https://svelte.dev/docs/kit/adapters to learn how to configure your app to run on the platform of your choosing
+✔ done

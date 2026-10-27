@@ -1,0 +1,17 @@
+
+zkit: create upstream SvelteKit application
+● pnpm@12.14.0 installing...
+● pnpm@12.14.0 installed
+◇ Generating project…
+● Running: pnpm dlx sv@1.1.1 create web --template demo --types ts --add 
+  playwright vitest=usages:unit --no-install
+
+HINT: Run "sv --help" to get the full list of commands, add-ons, and examples to one-shot and skip interactive prompts.
+┌  Welcome to the Svelte CLI! (v1.1.1)
+[?25l│
+◆  playwright: Do you want to include a demo?
+│  ● Yes / ○ No
+└
+Done in 86ms using pnpm v12.14.0
+zkit: upstream creation did not produce a readable web/package.json (canceled or incomplete): FileNotFound
+zkit: UpstreamCreationIncomplete
